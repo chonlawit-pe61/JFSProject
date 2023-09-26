@@ -1,0 +1,8 @@
+﻿@model Megazy.StarterKit.Engine.Structure.UserRow[]
+    <h2>ทดสอบการเรียกข้อมูลจาก DB</h2>
+<ol>
+    @foreach (var item in Model)
+    {
+        <li> @(item.FirstName)   @(item.LastName)</li>
+    }
+</ol>

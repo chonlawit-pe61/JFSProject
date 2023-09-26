@@ -1,0 +1,114 @@
+﻿@model Megazy.StarterKit.Mvc.Transaction.Structure.UserRow
+@section styles{
+    <link href="~/Scripts/datetimepicker/local/datepicker.css" rel="stylesheet" />
+}
+<h2>รายละเอียดผู้ใช้งาน</h2>
+<form id="frmuser">
+    <div class="form-horizontal">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="UserName">ชื่อผู้ใช้งาน</label>
+                <input type="hidden" id="UserID" value="@(Model.UserID)" />
+                <input type="text" id="UserName" maxlength="100" class="form-control validate[required]" value="@(Model.UserName)" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="FirstName">นามแฝง</label>
+                <input type="text" id="AliasName" maxlength="100" class="form-control validate[required]" value="@(Model.AliasName)" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="FirstName">ชื่อ</label>
+                <input type="text" id="FirstName" maxlength="100" class="form-control validate[required]" value="@(Model.FirstName)" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="LastName">นามสกุล</label>
+                <input type="text" id="LastName" maxlength="100" class="form-control validate[required]" value="@(Model.LastName)" />
+            </div>
+            <div class="form-group col-md-6">
+                <div class="block">เพศ</div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rdosex" id="rdoMale" value="m">
+                    <label class="form-check-label" for="rdoMale">ชาย</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rdosex" id="rdoFemale" value="f">
+                    <label class="form-check-label" for="rdoFemale">หญิง</label>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="PhoneNumber">เบอร์โทร</label>
+                <input type="text" id="PhoneNumber" maxlength="20" class="form-control validate[required]" value="@(Model.PhoneNumber)" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" id="btsave" value="Save" class="btn btn-primary" />
+        </div>
+        <div class="col text-right">
+            <input type="button" value="Delete" class="btn btn-secondary js--delete" />
+        </div>
+    </div>
+
+</form>
+<div>
+    @Html.ActionLink("Back to List", "UserList")
+</div>
+@section scripts{
+    <!--validate engine-->
+    <script src="~/Scripts/jquery.validationEngine-th.js"></script>
+    <script src="~/Scripts/jquery.validationEngine.js"></script>
+    <!--datetime ไทย -->
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker-thai.js"></script>
+    <script src="~/Scripts/datetimepicker/local/bootstrap-datepicker.th.js"></script>
+    <script src="~/assets/js/scripts-init/form-components/input-mask.min.js"></script>
+    <script src="~/assets/js/vendors/sweetalert2@9.js?v=@(SiteConfig.Instance.ScriptVerision)"></script>
+    <script src="~/assets/js/scripts-init/sweet-alerts.js?v=@(SiteConfig.Instance.ScriptVerision)"></script>
+    <script type="text/javascript">
+        $(document).ready(function () { });
+        $('body')
+            .off('click', '#btsave')
+            .on('click', '#btsave', function (e) {
+                e.preventDefault();
+                //#START ตรวจสอบค่า
+                if ($('#frmuser').validationEngine('validate')) {
+                    SWConfirm.fire().then((result) => {
+                        if (result.value) {
+                            //Coding here
+                        }
+                    });
+                }//#END ตรวจสอบค่า
+            })
+            .off('click', '.js--delete')
+            .on('click', '.js--delete', function (e) {
+                e.preventDefault();
+                //--เริ่มต้นตรวจสอบค่า
+                let userID = $('#UserID').val();
+                if (userID != '') {
+                    SWDelfirm.fire().then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                url: '/test/deleteuserbyid',
+                                method: 'POST',
+                                data: { id: userID },
+                                beforeSend: function () { },
+                                success: function (data) {
+                                    if (data.Status) {
+                                        SWSuccess.fire({ title: 'ลบข้อมูลเรียบร้อยแล้ว' }).then(() => {
+                                            window.location.href = '/test/userlist';
+                                        });
+                                    }
+                                }
+                                , error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }//#END result
+                    });//# END If
+                }//#END userID
+
+            });
+
+    </script>
+}

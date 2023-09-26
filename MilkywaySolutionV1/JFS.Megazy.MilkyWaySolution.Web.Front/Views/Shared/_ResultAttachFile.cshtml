@@ -1,0 +1,172 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "resultattachfile";
+    int caseID = (int)ViewData["caseID"];
+    int applicantID = (int)ViewData["applicantID"];
+    int isSend = (int)ViewData["isSend"];
+
+    List<ProjectResultAttachfile> listResultAttachfiles = null;
+    listResultAttachfiles = (List<ProjectResultAttachfile>)ViewData["ProjectResultAttachfile"];
+
+}
+<form id="frm@(ComponentName)">
+    <div id="accordion5" class="mb-2">
+        <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+        <input id="applicantID@(ComponentName)" type="hidden" value="@(applicantID)" />
+        <div class="card" id="cd@(ComponentName)">
+            <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+                <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">13. เอกสารประกอบโครงการ</span>
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <i class="fa fa-plus animate-icon mr-2"></i>
+                </div>
+            </div>
+            <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion5">
+                <div class="card-body">
+                    <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                        <div class="col-md-12">
+                            <a href="javascript:void(0)" class="btn btn-hover-shine btn btn-outline-primary btn-sm" id="btn-add-attach-file@(ComponentName)">เพิ่มเอกสาร</a>
+                        </div>
+                        <div class="p-2 col-md-12 doc">
+                            <ul class="todo-list-wrapper list-group list-group-flush" id="boxdocs@(ComponentName)">
+                                @if (listResultAttachfiles != null)
+                                {
+                                    foreach (var i in listResultAttachfiles)
+                                    {
+                                        if(i.IsImage == false) 
+                                        { 
+                                            <li class="list-group-item" id="box-attachfile-@(i.AttachFileID)">
+                                                <div class="todo-indicator bg-success"></div>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-wrapper">
+                                                        <div class="widget-content-left mr-2">
+
+                                                        </div>
+                                                        <div class="widget-content-left flex2">
+                                                            <div class="widget-heading js--lablefile">@(i.LableFile)</div>
+                                                            <div class="widget-subheading js--description">@(i.Description)</div>
+                                                        </div>
+
+                                                        <div class="widget-content-right">
+                                                            <div class="badge badge-light mr-2 js--filetype">@(i.FileType)</div>
+                                                        </div>
+                                                        <div class="widget-content-right">
+                                                            <div class="badge badge-secondary mr-2 js--modifieddate">@(i.ModifiedDateStr)</div>
+                                                        </div>
+
+                                                        <div class="widget-content-right">
+                                                            <a href="@(i.Path)"
+                                                               data-toggle="tooltip"
+                                                               title="ดาวน์โหลดเอกสาร"
+                                                               data-placement="top"
+                                                               download target="_blank" class="border-0 btn-transition btn btn-outline-primary">
+                                                                <i class="fa fa-download"></i>
+                                                            </a>
+                                                            <button class="border-0 btn-transition btn btn-outline-secondary js--delete-doc"
+                                                                    data-caseid="@i.CaseID"
+                                                                    data-attachfileid="@(i.AttachFileID)"
+                                                                    data-name="@(i.FileName)"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="ลบเอกสาร">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+
+                                }
+                            </ul>
+                        </div>
+                        <div id="form-edit-docs@(ComponentName)" class="col-md-12" style="display:none;">
+                            <input name="attachFileID" id="attachFileID@(ComponentName)" value="0" type="hidden">
+
+                            <div class="form-row">
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="lableFile" class="required">ชื่อเอกสาร</label>
+                                    <input name="lableFile" id="lableFile@(ComponentName)" maxlength="250" type="text" class="form-control form-control-sm js--text validate[required]">
+                                </div>
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="description" class="">คำอธิบายเพิ่มเติม</label>
+                                    <input name="description" id="description@(ComponentName)" maxlength="500" placeholder="" type="text" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-12">
+                                    <input type="file" id="fileupload@(ComponentName)" accept="application/msword, application/vnd.ms-excel,text/plain, application/pdf" data-max-size="68157440" />
+                                    <small class="form-text text-muted"><span class="required"></span> ไฟล์เอกสารต้องมีขนาดไม่เกิน 65 MB.</small>
+                                    <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                        0%
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix mt-2">
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-secondary" id="cancels-docs@(ComponentName)">ยกเลิก</a>
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-primary" id="btnsave-docs@(ComponentName)">อัปโหลดไฟล์</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+
+<script id="tmpl-@(ComponentName)" type="text/x-handlebars-template">
+    
+    <li class="list-group-item" id="box-attachfile-{{AttachFileID}}">
+        <div class="todo-indicator bg-success"></div>
+        <div class="widget-content p-0">
+            <div class="widget-content-wrapper">
+                <div class="widget-content-left mr-2">
+
+                </div>
+                <div class="widget-content-left flex2">
+                    <div class="widget-heading js--lablefile">{{LableFile}}</div>
+                    <div class="widget-subheading js--description">{{Description}}</div>
+                </div>
+
+                <div class="widget-content-right">
+                    <div class="badge badge-light mr-2 js--filetype">{{FileType}}</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="badge badge-secondary mr-2 js--modifieddate">{{ModifiedDateStr}}</div>
+                </div>
+
+                <div class="widget-content-right">
+                    <a href="{{Path}}"
+                       data-toggle="tooltip"
+                       title="ดาวน์โหลดเอกสาร"
+                       data-placement="top"
+                       download target="_blank" class="border-0 btn-transition btn btn-outline-primary">
+                        <i class="fa fa-download"></i>
+                    </a>
+                    <button class="border-0 btn-transition btn btn-outline-secondary js--delete-doc"
+                            data-caseid="{{CaseID}}"
+                            data-attachfileid="{{AttachFileID}}"
+                            data-name="{{FileName}}"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="ลบเอกสาร">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </li>
+
+    
+</script>

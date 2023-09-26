@@ -1,0 +1,78 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "projectproponent";
+    int caseID = (int)ViewData["caseID"];
+    int applicantID = (int)ViewData["applicantID"];
+    int isSend = (int)ViewData["isSend"];
+    int metaID = 0;
+    CaseApplicantRequestRow caseApplicant = null;
+    ProjectProponentData projectProponent = null;
+    CaseProjectMetaData CaseProjectMetaData = null;
+    if (ViewData["caseApplicant"] != null)
+    {
+        caseApplicant = (CaseApplicantRequestRow)ViewData["caseApplicant"];
+    }
+    if (ViewData["caseProjectProponent"] != null)
+    {
+        CaseProjectMetaData = (CaseProjectMetaData)ViewData["caseProjectProponent"];
+    }
+    if (CaseProjectMetaData != null)
+    {
+        metaID = CaseProjectMetaData.MetaID;
+        projectProponent = JsonConvert.DeserializeObject<ProjectProponentData>(CaseProjectMetaData.MetaValue);
+    }
+
+}
+<form id="frm@(ComponentName)">
+    <div id="accordion4" class="mb-2">
+        <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+        <input id="applicantID@(ComponentName)" type="hidden" value="@(applicantID)" />
+        <input id="metaID@(ComponentName)" type="hidden" value="@(metaID)" />
+        <div class="card" id="cd@(ComponentName)">
+            <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+                <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">12. ผู้เสนอโครงการ</span>
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <i class="fa fa-plus animate-icon mr-2"></i>
+                </div>
+            </div>
+            <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion4">
+                <div class="card-body">
+                    <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                        <div class="form-group col-md-6">
+                            <label for="fullName@(ComponentName)">ชื่อ</label>
+                            <input class="form-control form-control-sm" id="fullName@(ComponentName)" readonly value="@(caseApplicant != null ? (caseApplicant.Title + caseApplicant.FirstName + " " + caseApplicant.LastName) : projectProponent != null ? projectProponent.Fullname : "")" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="position@(ComponentName)">ตำแหน่ง</label>
+                            <input class="form-control form-control-sm js--text" id="position@(ComponentName)" maxlength="120" value="@(projectProponent!=null?projectProponent.Position:"")" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="TelephoneNo@(ComponentName)">เบอร์ติดต่อ</label>
+                            <input class="form-control form-control-sm input-tel js--text" id="TelephoneNo@(ComponentName)" maxlength="120" value="@(projectProponent!=null?projectProponent.Telephone:"")" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="Email@(ComponentName)">Email</label>
+                            <input class="form-control form-control-sm input-email js--text" id="Email@(ComponentName)" maxlength="120" value="@(projectProponent!=null?projectProponent.Email:"")" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="Line@(ComponentName)">Line</label>
+                            <input class="form-control form-control-sm js--text" id="Line@(ComponentName)" maxlength="120" value="@(projectProponent!=null?projectProponent.Line:"")" />
+                        </div>
+                        <div class="col-12 text-right mt-3">
+                            <a href="javascript:void(0)" class="btn btn-outline-secondary btn-sm border-0 js--cancel" style="display:none;">ยกเลิก</a>
+                            <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm border-0 js--btsave" id="btsave@(ComponentName)" style="display:none;">บันทีก</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+

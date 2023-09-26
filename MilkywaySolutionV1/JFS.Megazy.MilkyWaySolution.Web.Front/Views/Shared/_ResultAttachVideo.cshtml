@@ -1,0 +1,102 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "resultattachvideo";
+    int caseID = (int)ViewData["caseID"];
+    int isSend = (int)ViewData["isSend"];
+    //int applicantID = (int)ViewData["applicantID"];
+    List<MetaValueDataRepository> listResultAttachVideo = (List<MetaValueDataRepository>)ViewData["ProjectResultAttachVideo"];
+}
+<form id="frmvideo@(ComponentName)">
+    <div id="accordion5" class="mb-2">
+        <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+        @*<input id="applicantID@(ComponentName)" type="hidden" value="@(applicantID)" />*@
+        <div class="card" id="cdvideo@(ComponentName)">
+            <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+                <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">15. วิดีโอประกอบโครงการ</span>
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <i class="fa fa-plus animate-icon mr-2"></i>
+                </div>
+            </div>
+            <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion5">
+                <div class="card-body">
+                    <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                        <div class="col-md-12">
+                            <a href="javascript:void(0)" class="btn btn-hover-shine btn btn-outline-primary btn-sm" id="btn-add-video">เพิ่มวิดีโอ</a>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-row mt-3 mx-auto d-flex" id="videoview@(ComponentName)"></div>
+                        </div>
+
+                        <div id="form-edit-video" class="col-md-12 mt-3" style="display:none;">
+                            <div class="form-row">
+                                <div class="position-relative form-group col-12">
+                                    <label for="lableFile" class="required">URL</label>
+                                    <input name="urlVideo" id="url_video" maxlength="250" type="text" class="form-control form-control-sm js--text validate[required]">
+                                </div>
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="lableFile" class="required">ชื่อเอกสาร</label>
+                                    <input name="nameVideo" id="name_video" maxlength="250" type="text" class="form-control form-control-sm js--text">
+                                </div>
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="description" class="">คำอธิบายเพิ่มเติม</label>
+                                    <input name="description" id="description_video" maxlength="500" placeholder="" type="text" class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="clearfix mt-2">
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-secondary" id="cancels-video">ยกเลิก</a>
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-primary" id="btnsave-video">อัปโหลดไฟล์</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+@Html.Script(
+    @<script id="tmpl-videoadd@(ComponentName)" type="text/x-handlebars-template">
+         <div class="col-12 col-sm-6 col-md-4 col-lg-3 js-video mb-3 text-center">
+             <span class="remove-video" data-caseid="{{CaseID}}" data-metaid="{{MetaID}}"><i class="lnr-cross"></i></span>
+             {{#projectResultAttachVideo}}
+             <iframe width="525" height="360" src="{{URLVideo}}"
+                     title="{{VideoName}}" frameborder="0"
+                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                     allowfullscreen>
+             </iframe>
+             {{/projectResultAttachVideo}}
+         </div>
+</script>)
+
+@Html.Script(
+    @<script id="tmpl-video@(ComponentName)" type="text/x-handlebars-template">
+    {{#each this}}
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 js-video mb-3 text-center">
+        <span class="remove-video" data-caseid="{{CaseID}}" data-metaid="{{MetaID}}"><i class="lnr-cross"></i></span>
+        {{#projectResultAttachVideo}}
+        <iframe width="525" height="360" src="{{URLVideo}}"
+                title="{{VideoName}}" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+        {{/projectResultAttachVideo}}
+    </div>
+    {{/each}}
+</script>)
+
+@Html.Script(
+    @<script id="tmpl-navcarousel@(ComponentName)" type="text/x-handlebars-template">
+        <li data-target="#carouselExampleIndicators" data-slide-to="{{i}}" class="{{check i}}"></li>
+    </script>
+)

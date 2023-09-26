@@ -1,0 +1,329 @@
+﻿@section styles{@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+<link href="~/Scripts/datetimepicker/local/datepicker.css" rel="stylesheet" />
+<style>
+    input[type="text"]:read-only {
+        background-color: #fff;
+    }
+</style>
+}
+@{
+    CurrentUser currentUser = SiteSession.GetCurrentUser();
+
+}
+
+
+
+<div class="card-title">ทั้งหมด <span class="totalRow"></span> รายการ</div>
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class=" mb-0 table table-hover table-sm" id="tb">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">ลำดับ</th>
+                        <th>รายละเอียด</th>
+                        <th width="200" class="text-center">วันที่สร้าง</th>
+                        <th class="text-center" width="150">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="row  pt-2">
+    <div class="col-12">
+        <input type="hidden" id="totalpage" value="" />
+        <input type="hidden" id="totalrow" value="" />
+        <div id="pagination-container" class="no-margin"></div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery.validationEngine.js"></script>
+    <script src="~/Scripts/jquery.validationEngine-th.js"></script>
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker-thai.js"></script>
+    <script src="~/Scripts/datetimepicker/local/bootstrap-datepicker.th.js"></script>
+    <script type="text/javascript">
+        const subcategory = '';
+        const requeststatus = @(Html.Raw(Json.Encode(SingletonRequestStatus.Instance.RequestStatusDataItem)));
+        var sort = '';
+
+
+        $(document).ready(function () {
+            $('.icheck').iCheck({
+                checkboxClass: 'icheckbox_flat-grey',
+                radioClass: 'iradio_flat-grey'
+            });
+            if ($('#kw').length) {
+                var kw = Common.getParameterByName("kw");
+                if (kw != null) {
+                    $('#kw').val(kw);
+                }
+            }
+            pageRender(1, true);
+            $('body')
+
+                .off('click', '.js--fre')
+                .on('click', '.js--fre', function (e) {
+                })
+                .on('click', '#btsearch', function (e) {
+                    pageRender(1, true);
+                    e.preventDefault();
+                }).on('select2:select', '#province', function (e) {
+                    pageRender(1, true);
+                }).on('select2:select', '#dlOfficeID', function (e) {
+                    pageRender(1, true);
+                }).on('select2:select', '#jfCaseType', function (e) {
+                    pageRender(1, true);
+                }).on('select2:select', '#CaseStatus', function (e) {
+                    pageRender(1, true);
+                }).on('select2:select', '#lawyerofficer', function (e) {
+                    pageRender(1, true);
+                }).on('select2:select', '#workstep', function (e) {
+                    pageRender(1, true);
+                })
+                .off('click', '.js--deletecase')
+                .on('click', '.js--deletecase', function (e) {
+
+                })
+                .off('click', '#btAdSearch')
+                .on('click', '#btAdSearch', function (e) {
+                    $('#modalAdSearch').modal('hide');
+                    setTimeout(function () {
+                        pageRender(1, true);
+                    }, 200);
+
+                })
+                .off('change.select2', '#lawyerOwnerCase')
+                .on('change.select2', '#lawyerOwnerCase', function (e) {
+                    var obj = $('#lawyerOwnerCase').find(":selected").data();
+                    if (typeof obj !== 'undefined') {
+                        $('.js--tel').html(obj.tel)
+                        $('#ckSms').val(obj.tel)
+                        $('.js--email').html(obj.email)
+                        $('#ckEmail').val(obj.email)
+                    }
+
+                })
+                .off('click', '.js--reset')
+                .on('click', '.js--reset', function (e) {
+                    e.preventDefault();
+                    document.getElementById("frmsearch").reset();
+                    $('.multiselect-dropdown').val('');
+                    $('.multiselect-dropdown-other').val('');
+                    $('.multiselect-dropdown').trigger('change');
+                    $('.multiselect-dropdown-other').trigger('change');
+                    $('.datepicker').val('');
+                    $('#selectdaterange').html('');
+                    $('#startDate').val('');
+                    $('#endDate').val('');
+                    $('#kw').val('');
+                    $('.js--Advtext').val('');
+                    window.history.pushState(null, null, window.location.pathname);
+                    $('#btsearch').trigger('click');
+                });
+        });
+
+
+
+        function pageNavRender(page) {
+            pageRender(page, false)
+        }
+        function pageRender(page, search) {
+            var kw = '';
+            if ($('#kw').length) {
+                kw = $('#kw').val();
+            } else {
+                kw = Common.getParameterByName("kw");
+            }
+            if (kw != '' && kw != null)
+                window.history.pushState(null, null, window.location.pathname + '?page=' + page + '&kw=' + kw);
+            else
+                window.history.pushState(null, null, window.location.pathname + '?page=' + page);
+            var tb = $('#tb');
+            var tbody = $('#tb tbody');
+            var filters = {
+                //Query: kw, DateFrom: $('#startDate').val(), DateTo: $('#endDate').val(),
+                //OfficeID: $('#dlOfficeID').val(),
+                //Status: $('#CaseStatus').val(), CaseType: $('#jfCaseType').val(), IsAppeal: 1,
+                //RegisterType: $('#registerType').val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/form/getcaseapplicant',
+                data: { page: page, filters: filters, sort: sort },
+                beforeSend: function () {},
+                success: function (data) {
+                    if (data.Result.Status) {
+                        //console.log(data.Result.Data);
+                        if (data.Result.Data.view_CaseApplicationMemberMapping2Items.length != 0) {
+                            var template = Handlebars.compile($('#tmpl-list').html());
+                            tbody.html(template(data.Result.Data.view_CaseApplicationMemberMapping2Items));
+                        } else {
+                            tbody.html('<tr class="text-center"><td colspan="8">ไม่พบข้อมูลที่ค้นหา</td></tr>');
+                        }
+                        if (search) {
+                            $(".totalRow").html(data.Result.Data.totalRow);
+                            $("#totalrow").html(data.Result.Data.totalRow);
+                            $("#totalpage").val(data.Result.Data.totalPage);
+                            if (data.Result.Data.totalRow > 0) { paging(1, data.Result.Data.totalPage, data.Result.Data.totalRow); } else { $('#pagination-container').html(''); }
+                        }
+                    } else {
+                        tbody.html('<tr class="text-center"><td colspan="9">เกิดข้อผิดพลาด ให้รีเฟรชหน้าใหม่</td></tr>');
+                    }
+                    $('[data-toggle="tooltip"]').tooltip();
+                    //$('.divblock').unblock();
+                }
+            });
+        }
+        function paging(page, totalPage, totalRow) {
+
+            $('#pagination-container').pagination({
+                dataSource: function (done) {
+                    var result = [];
+                    for (var i = 1; i <= totalPage; i++) {
+                        result.push(i);
+                    }
+                    done(result);
+                },
+                pageNumber: page,
+                pageRange: 5,
+                pageSize: 1,//Fix for custom
+                totalPage: totalPage,
+                totalNumber: totalRow,
+                autoHidePrevious: true,
+                autoHideNext: true,
+                beforePreviousOnClick: function (e, pageNumber) {
+                    pageRender(pageNumber);
+                },
+                beforePageOnClick: function (e, pageNumber) {
+                    pageRender(pageNumber);
+                },
+                beforeNextOnClick: function (e, pageNumber) {
+                    pageRender(pageNumber);
+                }
+            });
+        }
+        function getdata() {
+            pageRender(1, true);
+        }
+        function getSubCategory(gid) {
+            let li = {};
+            $.each(subcategory, function (i, v) {
+                if (v.CaseCategoryID == gid) {
+                    li = JSON.parse(v.SubCategory);
+                    return false; //stops the loop
+                }
+            });
+            return li;
+        }
+
+        Handlebars.registerHelper('statusName', function (id) {
+            let text = '';
+            requeststatus.filter((e) => {
+                if (e.StatusID == id) {
+                    if (e.StatusID == 0) {
+                        text = 'ร่างคำขอ';
+                    }
+                    else if (e.StatusID == 5) {
+                        text = 'แก้ไขข้อมูลคำขอ';
+                    }
+                    else {
+                        text = e.StatusName;
+                    }
+                }
+            })
+
+            return new Handlebars.SafeString(text);
+        });
+
+        Handlebars.registerHelper('status', function (id) {
+            let text = 'badge-alternate';
+            switch (id) {
+
+                case 1:
+                    text = 'badge-success';
+                    break;
+                case 2:
+                    text = 'badge-light';
+                    break;
+                case 3:
+                    text = 'badge-secondary';
+                    break;
+                default:
+                    text = 'badge-alternate';
+            }
+            return new Handlebars.SafeString(text);
+        });
+
+        Handlebars.registerHelper('worksteprename', function (wid) {
+            let text = '';
+            console.log(wid);
+            if (wid > 2) {
+                text = 'แสวงหาข้อเท็จจริง/ทำความเห็น/พิจารณา (JFS)';
+            }
+            else
+            {
+                text = 'ยื่นเรื่อง/รับเรื่อง (JFS)';
+            }
+            return new Handlebars.SafeString(text);
+        });
+
+
+    </script>
+    <script id="tmpl-listsubcategory" type="text/x-handlebars-template">
+        <option value="" disabled selected>เลือก</option>
+        {{#each this}}
+        <option value="{{CaseSubCategoryID}}">{{CaseSubCategoryName}}</option>
+        {{/each}}
+    </script>
+    <script type="text/x-handlebars-template" id="tmpl-list">
+        {{#each this}}
+        <tr data-id="{{ApplicantID}}" data-caseid="{{CaseID}}" data-depid="{{DepartmentID}}">
+            <td class="text-center">
+                {{RowRank}}
+            </td>
+
+            <td>
+                <div class="d-flex bd-highlight text-break">
+                    <div class="flex-grow-1">
+                        <div class="font-weight-bold">
+                            {{Subject}}
+                        </div>
+                        <div class="text-wrap text-muted">
+                            <span>ยื่นโดย : </span>
+                            {{Title}}{{FirstName}} {{LastName}}
+                        </div>
+                        <div class="text-wrap text-muted">
+                            {{JFCaseNo}}
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-truncate text-center">{{JSONShortDateThai CreateDate}}</td>
+            <td class="text-center">
+                {{#ifCond WorkStepID '>=' 9}}
+                <a href="/form/detail?caseid={{CaseID}}&applicantid={{ApplicantID}}&depid={{DepartmentID}}" class="border-0 btn-hover-shine mb-2 mr-2 badge badge-pill badge-primary">
+                    รายงานผลโครงการ
+                </a>
+                {{else}}
+            <div>
+                {{worksteprename WorkStepID}}
+            </div>
+                {{/ifCond}}
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+
+}

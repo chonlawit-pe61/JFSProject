@@ -1,0 +1,132 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>กองทุนยุติธรรม</title>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest">-->
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/jquery")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/bootstrap")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/modernizr")
+
+</head>
+<body>
+    <style>
+        body {
+            /*background-image: url(/Images/BG-error2.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            padding-bottom: 0 !important;*/
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        html {
+            height: 100%
+        }
+
+        .btn-home {
+            color: #fff !important;
+            background-color: #efb7d1 !important;
+            border-color: #f8f9fa !important;
+        }
+
+        .bg-error {
+            background-color: rgba(252, 248, 244, 0.6);
+        }
+
+        .font-title {
+            font-size: 48px;
+            /*font-family: kanit;*/
+            color: #585e63;
+        }
+
+        .font-des {
+            font-size: 30px;
+            /*font-family: kanit;*/
+            color: #585e63;
+        }
+
+        p {
+            margin: 0px !important;
+        }
+
+        @@media(max-width: 500px) {
+            .font-des {
+                font-size: 19px;
+                /*font-family: kanit;*/
+                color: #585e63;
+            }
+
+            .font-title {
+                font-size: 35px;
+                /*font-family: kanit;*/
+                color: #585e63;
+            }
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <div class="col-10 offset-1">
+                @{
+                    if (ViewBag.StatusCode != 200)
+                    {
+                        <div class="error-msg-container" style="padding-top:7em;">
+                            <div class="bg-error" style="padding-top: 1.5em; border-radius: 10px 10px 0px 0px;">
+                                <div class="text-center">
+                                    <img src="~/Images/mascot.png" alt="กองทุนยุติธรรม" />
+                                    @{
+                                        if (ViewBag.StatusCode == 404)
+                                        {
+                                            <p class="font-title">404</p>
+                                        }
+                                        else if (ViewBag.StatusCode == 401)
+                                        {
+                                            <p class="font-title">401</p>
+                                        }
+                                        else if (ViewBag.StatusCode == 500)
+                                        {
+                                            <p class="font-title">500</p>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-error">
+                            <div class="error-text text-center">
+                                <p class="font-des">"@ViewBag.Title"</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-error" style="padding-bottom: 3.5em;border-radius: 0px 0px 10px 10px;padding-top:1em;">
+                            <div class="button-nav-container text-center" style="padding-top:1em;">
+                                <a class="btn btn-home" href="/">กลับสู่หน้าหลัก</a>
+                            </div>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#landing-wrapper").hide();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Singleton;
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository.Navigation;
+@using JFS.Megazy.MilkyWaySolution.Engine.Structure;
+@{ 
+    CurrentUser currentUser = SiteSession.GetCurrentUser();
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <title>กองทุนยุติธรรม  กระทรวงยุติธรรม</title>
+    <title>@(ViewBag.Title) กองทุนยุติธรรม  กระทรวงยุติธรรม</title>
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.MetaKeywords))
+        {
+            <meta name="keywords" content="@ViewBag.MetaKeywords" />
+        }
+        if (!string.IsNullOrEmpty(ViewBag.MetaDescription))
+        {
+            <meta name="description" content="@Html.Raw(ViewBag.MetaDescription)" />
+            @*<meta property="og:description" content="@Html.Raw(ViewBag.MetaDescription)" />*@
+        }
+        if (!string.IsNullOrEmpty(ViewBag.CanonicalURL))
+        {
+            <link rel="canonical" href="@ViewBag.CanonicalURL">
+        }
+        if (!string.IsNullOrEmpty(ViewBag.MetaImage))
+        {
+            <meta property="og:image" content="@Html.Raw(ViewBag.MetaImage)" />
+        }
+        @*if (!string.IsNullOrEmpty(ViewBag.Og))
+            {
+                @Html.Raw(ViewBag.Og)
+            }*@
+        @Html.Raw(ViewBag.Og)
+        <meta name="author" content="กองทุนยุติธรรม">
+    }
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    @*<link href="~/assets/css/base.css" rel="stylesheet" />*@
+     @Styles.RenderFormat(VersionScript.StyleVersion,"~/Content/bootstrap.css")
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/assets/css/base.css")
+    <link href="~/assets/js/scripts-init/paginationjs/pagination.css" rel="stylesheet" />
+    <link href="~/assets/css/skins/grey.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-table.min.css" rel="stylesheet" />
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/Content/css")
+    @RenderSection("styles", required: false)
+    <style type="text/css">
+        input[type="text"]:read-only {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white navbar-fixed-top border-bottom">
+        <a href="/form"><div class="moj-src"></div></a>
+        <div class="ml-2 mb-0 h4 d-none d-sm-inline" style="color: #d44863;">
+            สำนักงานกองทุนยุติธรรม
+            <span class="d-block text-muted" style="font-size:11px;">Office OF Justice Fund |  Ministry Of Justice</span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav ml-auto">
+
+                @if (!currentUser.IsLogin)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-jfs" href="/form/register">ยื่นคำขอ <span class="sr-only">(current)</span></a>
+                    </li>
+                }
+                else
+                {
+            <li class="nav-item dropdown">
+                @*<a class="nav-link text-jfs" href="/form/register">ยื่นคำขอ</a>*@
+                <a class="nav-link dropdown-toggle  text-jfs" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                   คำขอ/คำร้อง
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item  text-jfs" href="/form/register">ยื่นคำขอ</a>
+                    <a class="dropdown-item" href="/form/">รายการยื่นคำขอ</a>
+                    <a class="dropdown-item" href="/form/applicant">รายการที่รับเรื่องแล้ว</a>
+                    @*<div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>*@
+                </div>
+
+            </li>
+                }
+                @if (currentUser.IsLogin)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-jfs" href="/searchingcase">ค้นหาสำนวน</a>
+                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-jfs" href="/searchingcliam">ขอสิทธิ์ยืนยันรายงานผลโครงการที่ไม่ได้ยื่นออนไลน์</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-jfs" href="/tracking">ติดตามผลการพิจารณา</a>
+                    </li>
+                }
+
+                @if (!currentUser.IsLogin)
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link text-jfs" href="/login">เข้าสู่ระบบ</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-jfs" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @(currentUser.AliasName)
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            @*<a class="dropdown-item" href="/form/">รายการยื่นคำขอ</a>*@
+                            <a class="dropdown-item" href="/usr/">จัดการกับบัญชี</a>
+                            <a class="dropdown-item" href="/usr/changepwd">เปลี่ยนรหัสผ่าน</a>
+                            <a class="dropdown-item" href="/logout">ออกจากระบบ</a>
+                        </div>
+                    </li>
+
+                }
+
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <!-- Content here -->
+        @RenderBody()
+    </div>
+    <footer class="mastfoot mt-auto">
+        <div class="container-fluid">
+            <span class="text-muted small">© @(DateTime.Now.Year) สงวนลิขสิทธิ์โดย สำนักงานกองทุนยุติธรรม สำนักงานปลัดกระทรวงยุติธรรม</span>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/assets/js/scripts-init/sweetalert2@9.js"></script>
+    <script src="~/assets/js/scripts-init/sweet-alerts.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/scripts-init/handlebars.min-v4.5.3.js" asyn></script>
+    <script src="~/assets/js/scripts-init/paginationjs/pagination.js"></script>
+    <script src="~/assets/js/vendors/form-components/icheck.min.js"></script>
+    <script src="~/assets/js/vendors/bootstrap-table.min.js"></script>
+    <script src="~/assets/js/scripts-init/paginationjs/pagination.js"></script>
+    @Scripts.Render("~/bundles/common")
+    @RenderSection("scripts", required: false)
+    @Html.RenderScripts()
+
+</body>
+</html>

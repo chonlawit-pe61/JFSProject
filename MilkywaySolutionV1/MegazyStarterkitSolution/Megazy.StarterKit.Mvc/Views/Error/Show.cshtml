@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+   
+</head>
+<style>
+    .text-er-primary {
+        color: #003880;
+    }
+    .text-er-primary h1{
+        font-size:6rem;
+        color: #003880;
+    }
+    .text-er-primary h2 {
+            font-size: 2rem;
+            color: #14b09b;
+     }
+    .btn-er {
+        background-color: #14b09b;
+        color: #fff;
+        font-size: 1.3rem;
+        width: 230px;
+        border-radius: 50px;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+        @@media only screen and (max-width: 480px) {
+
+            .text-er-primary h1 {
+                font-size: 5rem;
+                color: #003880;
+            }
+
+            .text-er-primary h2 {
+                font-size: 1.3rem;
+                color: #14b09b;
+            }
+        }
+    
+</style>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 py-5">
+                <div class="col-12 py-1 " align="center">
+                </div>
+                <div class="text-er-primary" align="center"><h1> @ViewBag.StatusCode</h1></div>
+                <div class="text-er-primary" align="center"><h2>Oops! @ViewBag.Title</h2> </div>
+
+                <div class="text-er-primary" align="center"><span>หน้าที่คุณกำลังค้นหาอาจถูกลบออกไปแล้วหรือเปลี่ยนชื่อจึงไม่สามารถใช้งานได้ชั่วคราว</span></div>
+               
+                <div class="justify-content-center pt-2" align="center">
+                    <a class="btn btn-er" type="button" href="@Url.Action("Index", "Home")">Homepage</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+ 
+</body>

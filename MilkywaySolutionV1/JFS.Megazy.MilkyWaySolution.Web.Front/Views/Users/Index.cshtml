@@ -1,0 +1,34 @@
+﻿@model JFS.Megazy.MilkyWaySolution.Engine.Structure.View_MembersData
+
+@if (Model != null)
+{
+    if (Model.MemberTypeID == "1")
+    {
+        <div class="row">
+            <div class="col-12"><span class="text-muted">ชื่อ: </span>@(Model.FirstName)  @(Model.LastName)</div>
+            <div class="col-12">
+                <span class="text-muted">อีเมล: </span> @(Model.Email)<br />
+                <span class="text-muted">เบอร์ติดต่อ: </span> @(Model.PhoneNumber)
+            </div>
+        </div>
+        }
+    else
+    {
+        <div class="row">
+            <div class="col-12"><span class="text-muted">ชื่อหน่วยงาน/องค์กร: </span>@(Model.OrgName) </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-primary btn-sm" href="/usr/changepwd">เปลี่ยนรหัสผ่าน</a>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+}
+else
+{
+    <h4>ไม่พบข้อมูล</h4>
+}

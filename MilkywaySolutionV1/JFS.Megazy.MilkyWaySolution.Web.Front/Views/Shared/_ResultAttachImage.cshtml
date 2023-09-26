@@ -1,0 +1,161 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "resultattachimage";
+    int caseID = (int)ViewData["caseID"];
+    int applicantID = (int)ViewData["applicantID"];
+    int isSend = (int)ViewData["isSend"];
+    List<ProjectResultAttachfile> listResultAttachfiles = (List<ProjectResultAttachfile>)ViewData["ProjectResultAttachfile"];
+}
+<form id="frmimage@(ComponentName)">
+    <div id="accordion5" class="mb-2">
+        <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+        <input id="applicantID@(ComponentName)" type="hidden" value="@(applicantID)" />
+        <div class="card" id="cd-img@(ComponentName)">
+            <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+                <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">14. รูปถ่ายประกอบโครงการ</span>
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <i class="fa fa-plus animate-icon mr-2"></i>
+                </div>
+            </div>
+            <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion5">
+                <div class="card-body">
+                    <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                        <div class="col-md-12">
+                            <label for="fileimage@(ComponentName)" class="btn btn-outline-primary btn-hover-shine btn-sm mb-0"><i class="lnr-picture btn-icon-wrapper"></i> เลือกรูปภาพ</label>
+                            <input type="file" id="fileimage@(ComponentName)" class="d-none" accept="image/*" data-max-size="5242880" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-row mt-3" id="imgview@(ComponentName)"></div>
+                        </div>
+
+                        <div id="form-edit-docs" class="col-md-12" style="display:none;">
+                            <input name="attachFileID" id="attachFileID@(ComponentName)" value="0" type="hidden">
+
+                            <div class="form-row">
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="lableFile" class="required">ชื่อเอกสาร</label>
+                                    <input name="lableFile" id="lableFile@(ComponentName)" maxlength="250" type="text" class="form-control form-control-sm js--text validate[required]">
+                                </div>
+
+                                <div class="position-relative form-group col-6">
+                                    <label for="description" class="">คำอธิบายเพิ่มเติม</label>
+                                    <input name="description" id="description@(ComponentName)" maxlength="500" placeholder="" type="text" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-12">
+                                    <input type="file" id="fileupload@(ComponentName)" accept="image/*" data-max-size="68157440" />
+                                    <small class="form-text text-muted"><span class="required"></span> ไฟล์เอกสารต้องมีขนาดไม่เกิน 65 MB.</small>
+                                    <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                        0%
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix mt-2">
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-secondary" id="cancels-docs@(ComponentName)">ยกเลิก</a>
+                                <a href="javascript:void(0)" class="border-0 btn-transition float-right btn btn-outline-primary" id="btnsave-docs@(ComponentName)">อัปโหลดไฟล์</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form id="frmimagemodal">
+    <div class="modal fade" id="previewImage@(ComponentName)" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">ตัวอย่างรูปภาพ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+
+                        <div class="row">
+                            <div class="col-md-8 " style="text-align:center">
+                                <img src="" class="img-fluid m-2 " id="sample_image" />
+                            </div>
+                            <div class="col-md-4">
+                                <div class="preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-12 m-2">
+                                <span> ขนาดภาพที่ต้องการตัด </span>
+                                <button type="button" class="btn-transition btn btn-primary js--btratio" data-ratio="2">16:9</button>
+                                <button type="button" class="btn-transition btn btn-primary js--btratio" data-ratio="3">9:16</button>
+                                <button type="button" class="btn-transition btn btn-primary js--btratio" data-ratio="1">free</button>
+                                @*<button type="button" class="btn-transition btn btn-primary" data-ratio="16/9">4:3</button>
+                                    <button type="button" class="btn-transition btn btn-primary" data-ratio="16/9">3:4</button>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="position-relative form-group col-6">
+                            <label for="labelFile" class="required">ชื่อภาพ</label>
+                            <input name="labelFile" id="labelFile_img@(ComponentName)" maxlength="250" type="text" class="form-control form-control-sm validate[required]">
+                        </div>
+
+                        <div class="position-relative form-group col-6">
+                            <label for="description" class="">คำอธิบายเพิ่มเติม</label>
+                            <input name="description" id="description_img@(ComponentName)" maxlength="500" placeholder="" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="border-0 btn-transition float-right btn btn-outline-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="border-0 btn-transition float-right btn btn-outline-primary" id="btsaveImage@(ComponentName)">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+
+@Html.Script(
+    @<script id="tmpl-navcarousel@(ComponentName)" type="text/x-handlebars-template">
+        <li data-target="#carouselExampleIndicators" data-slide-to="{{i}}" class="{{check i}}"></li>
+    </script>
+)
+
+@Html.Script(
+    @<script id="tmpl-img@(ComponentName)" type="text/x-handlebars-template">
+    {{#each this}}
+    
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 js-img mb-3 text-center ">
+            <span class="remove-img" data-attachfileid="{{AttachFileID}}" data-applicantid="{{ApplicantID}}" data-caseid="{{CaseID}}"><i class="lnr-cross"></i></span>
+            <img class="img-thumb-ct js-imagethumb" src="{{Path}}" title="{{FileName}}" alt="{{LabelFile}}" />
+        </div>
+
+    {{/each}}
+</script>
+)
+@Html.Script(
+    @<script id="tmpl-imgadd@(ComponentName)" type="text/x-handlebars-template">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 js-img mb-3 text-center">
+            <span class="remove-img" data-attachfileid="{{AttachFileID}}" data-applicantid="{{ApplicantID}}" data-caseid="{{CaseID}}"><i class="lnr-cross"></i></span>
+            <img class="img-thumb-ct js-imagethumb" src="{{Path}}" title="{{FileName}}" alt="{{LabelFile}}" />
+        </div>
+    </script>)
+
+

@@ -1,0 +1,175 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "caseschedule";
+    int caseID = (int)ViewData["caseID"];
+    int isSend = (int)ViewData["isSend"];
+    CaseProjectMetaData CaseProjectMetaData = null;
+    List<CaseProjectSchedule> schedule = null;
+    if (ViewData["CaseProjectMetaData"] != null)
+    {
+        CaseProjectMetaData = (CaseProjectMetaData)ViewData["CaseProjectMetaData"];
+    }
+    if (CaseProjectMetaData != null)
+    {
+        schedule = JsonConvert.DeserializeObject<List<CaseProjectSchedule>>(CaseProjectMetaData.MetaValue);
+    }
+}
+<form id="frm@(ComponentName)">
+    <input id="metaID@(ComponentName)" type="hidden" value="@(CaseProjectMetaData != null ? CaseProjectMetaData.MetaID : 0)" />
+    <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+    <div class="card" id="cd@(ComponentName)">
+        <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+            <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">7. กำหนดการ</span>
+            <div class="btn-actions-pane-right actions-icon-btn">
+                <i class="fa fa-plus animate-icon mr-2"></i>
+            </div>
+        </div>
+        <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion1">
+            <div class="card-body">
+                <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                    <div class="col-12 text-right mb-1">
+                        <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm border-0 font-size-lg" id="btadd@(ComponentName)"><i class="lnr-plus-circle"></i></a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="tb@(ComponentName)">
+                            <thead>
+                                <tr>
+                                    <th>ลำดับ</th>
+                                    <th>เวลา</th>
+                                    <th>กิจกรรม</th>
+                                    <th>วิทยากร</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (schedule != null)
+                                {
+                                    for (int i = 0; i < schedule.Count; i++)
+                                    {
+                                        <tr>
+                                            <td width="10%" class="js--rowrank@(ComponentName)">
+                                                @(i + 1)
+                                            </td>
+                                            <td width="20%">
+                                                <input class="form-control form-control-sm js--text js--time@(ComponentName)" maxlength="200" value="@(schedule[i].Time)"/>
+                                            </td>
+                                            <td width="50%">
+                                                <div class="form-row">
+
+
+                                                    <div class="col-12 col-md-6 col-lg-8">
+                                                        <textarea class="form-control form-control-sm js--text autosize-input js--activity@(ComponentName)" @(schedule[i].IsBreak?"disabled":"")  maxlength="1000" rows="1">@(schedule[i].Activity)</textarea>
+
+                                                    </div>
+                                                    <div class="col-12 col-md-6 col-lg-4 pt-1">
+                                                        <div class="form-check form-check-inlinek">
+                                                            <label class="form-check-label " for="ckIsBreak1" style="cursor:pointer;">
+                                                                <input class="form-check-input icheck col-auto js--text" type="checkbox" @(schedule[i].IsBreak?"checked":"") name="ckIsBreak" id="ckIsBreak1" value="1">
+                                                                พักเบรค
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td width="20%">
+                                                <input class="form-control  form-control-sm js--text js--lecturer@(ComponentName)" @(schedule[i].IsBreak?"disabled":"") maxlength="200" value="@(schedule[i].Lecturer)"/>
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm border-0 font-size-lg js--delete@(ComponentName)"><i class="lnr-cross-circle"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td width="10%" class="js--rowrank@(ComponentName)">
+                                            1
+                                        </td>
+                                        <td width="20%">
+                                            <input class="form-control form-control-sm js--text js--time@(ComponentName)" maxlength="200" />
+                                        </td>
+                                        <td width="50%">
+                                            <div class="form-row">
+
+
+                                                <div class="col-12 col-md-6 col-lg-8">
+                                                    <textarea class="form-control form-control-sm js--text autosize-input js--activity@(ComponentName)" maxlength="1000" rows="1"></textarea>
+
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-4 pt-1">
+                                                    <div class="form-check form-check-inlinek">
+                                                        <label class="form-check-label " for="ckIsBreak1" style="cursor:pointer;">
+                                                            <input class="form-check-input icheck col-auto js--text" type="checkbox" name="ckIsBreak" id="ckIsBreak1" value="1">
+                                                            พักเบรค
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td width="20%">
+                                            <input class="form-control  form-control-sm js--text js--lecturer@(ComponentName)" maxlength="200" />
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm border-0 font-size-lg js--delete@(ComponentName)"><i class="lnr-cross-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 text-right">
+                        <a href="javascript:void(0)" class="btn btn-outline-secondary btn-sm border-0 js--cancel" style="display:none;">ยกเลิก</a>
+                        <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm border-0 js--btsave" id="btsave@(ComponentName)" style="display:none;">บันทีก</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+
+@Html.Script(
+@<script id="tmpl-listcaseschedule" type="text/x-handlebars-template">
+    <tr>
+        <td width="10%" class="js--rowrank@(ComponentName)">
+            {{rank}}
+        </td>
+        <td width="20%">
+            <input class="form-control form-control-sm js--text js--time@(ComponentName)" maxlength="200" />
+        </td>
+        <td width="50%">
+            <div class="form-row">
+
+
+                <div class="col-12 col-md-6 col-lg-8">
+                    <textarea class="form-control form-control-sm js--text autosize-input js--activity@(ComponentName)" maxlength="1000" rows="1"></textarea>
+
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 pt-1">
+                    <div class="form-check form-check-inlinek">
+                        <label class="form-check-label " for="ckIsBreak{{rank}}" style="cursor:pointer;">
+                            <input class="form-check-input icheck col-auto js--text" type="checkbox" name="ckIsBreak" id="ckIsBreak{{rank}}" value="1">
+                            พักเบรค
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td width="20%">
+            <input class="form-control  form-control-sm js--text js--lecturer@(ComponentName)" maxlength="200" />
+        </td>
+        <td>
+            <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm border-0 font-size-lg js--delete@(ComponentName)"><i class="lnr-cross-circle"></i></a>
+        </td>
+    </tr>
+</script>
+)

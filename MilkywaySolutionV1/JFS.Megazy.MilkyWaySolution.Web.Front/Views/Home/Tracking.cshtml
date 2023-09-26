@@ -1,0 +1,155 @@
+﻿@section styles{
+
+
+}
+
+<form id="frm ">
+    @*<div class="form-group row">
+            <label for="jfcaseNo" class="col-md-2 col-form-label">เลขที่ กทย.</label>
+            <div class="col-md-10">
+                <input type="text" id="jfcaseNo" maxlength="10" class="form-control form-control-sm validate[required]" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" id="btsearch">ค้นหา</button>
+            </div>
+        </div>*@
+
+
+    <div class="form-row mt-4 justify-content-md-center">
+        <div class="form-group col-md-6">
+            @*<label for="jfcaseNo">เลขที่ กทย.</label>*@
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend"><label for="jfcaseNO" class="pr-2">เลขที่ กทย. </label></div>
+                <input type="text" maxlength="10" class="form-control validate[required]" id="jfcaseNO" value="@(Request["caseno"])" autocomplete="off" placeholder="กทxxxx/xx">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" id="btsearch">ค้นหา</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" id="result"></div>
+
+    </div>
+
+</form>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var caseno = Common.getParameterByName("caseno");          
+            if (caseno != null && caseno != '') {
+                console.log(caseno);
+                window.history.pushState(null, null, window.location.pathname + '?caseno=' + caseno);
+                gettracking(caseno);
+            }
+            
+            $('body').off('click', '#btsearch')
+                .on('click', '#btsearch', function (e) {
+                    if ($('#frm').validationEngine('validate')) {
+                       
+                        if ($('#jfcaseNO').length) {
+                            caseno = $('#jfcaseNO').val();
+                        } else {
+                            caseno = Common.getParameterByName("caseno");
+                        }
+                        if (caseno != '')
+                            window.history.pushState(null, null, window.location.pathname + '?caseno=' + caseno);
+                       
+                        gettracking($('#jfcaseNO').val());
+
+                    }
+
+                });
+
+        });
+        function gettracking(caseno) {
+            tbody = $('#result');
+            $.ajax({
+                url: '/api/gettrackingresult',
+                method: 'POST',
+                data: { id: caseno },
+                beforeSend: function () { },
+                success: function (data) {
+                    console.log(data);
+                    if (data.Result.Status) {
+                        if (data.Result.Data.length != 0) {
+                            var template = Handlebars.compile($('#tmpl-list').html());
+                            tbody.html(template(data.Result.Data));
+                        } else {
+                            tbody.html('<div class="text-center text-danger h4">ไม่พบข้อมูลที่ค้นหา</div>');
+                        }
+                    } else {
+                        let elestr = '<div class="text-center text-danger h4">' + data.Result.Message + '</div>';
+                        tbody.html(elestr);
+                    }
+                }
+                , error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            //SWConfirm.fire().then((result) => {
+            //    if (result.value) {
+            //        SWSuccess.fire()
+            //    }
+            //});
+
+
+
+        }
+
+    </script>
+    <script id="tmpl-list" type="text/x-handlebars-template">
+       
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">สถานะ</h5>
+                <div class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+
+                    {{#each this}}
+                    <div class="vertical-timeline-item vertical-timeline-element">
+                        <div>
+                            <span class="vertical-timeline-element-icon bounce-in"></span>
+                            <div class="vertical-timeline-element-content bounce-in">
+                                {{#if DataJudgeResult}}
+                                <h4 class="timeline-title text-primary"><span class="text-success">{{{DataJudgeResult.JudgeDate}}}</span> {{{DataJudgeResult.Message}}}</h4>
+                                
+                                {{/if}}
+                               
+                            <h4 class="timeline-title">
+                                <span class="text-success">{{ProcessDate}}</span>
+                                {{Message}}
+                            </h4>
+                                {{#each SubProcess}}<p class="pl-3 text-dark"><span class="small font-italic">{{{ProcessDate}}}</span> {{{Status}}} </p> {{/each}}
+                            </div>
+
+                        </div>
+                    </div>
+                    {{/each}}
+                    @*<div class="vertical-timeline-item vertical-timeline-element">
+            <div>
+                <span class="vertical-timeline-element-icon bounce-in"></span>
+                <div class="vertical-timeline-element-content bounce-in"><p>Yet another one, at <span class="text-success">15:00 PM</span></p></div>
+            </div>
+        </div>
+        <div class="vertical-timeline-item vertical-timeline-element">
+            <div>
+                <span class="vertical-timeline-element-icon bounce-in"></span>
+                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Build the production release</h4></div>
+            </div>
+        </div>
+        <div class="vertical-timeline-item vertical-timeline-element">
+            <div>
+                <span class="vertical-timeline-element-icon bounce-in"></span>
+                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title text-success">Something not important</h4></div>
+            </div>
+        </div>*@
+                </div>
+            </div>
+        </div>
+    </script>
+}
+

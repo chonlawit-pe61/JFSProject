@@ -1,0 +1,96 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "allocatebudget";
+    int caseID = (int)ViewData["caseID"];
+    int applicantID = (int)ViewData["applicantID"];
+    int isSend = (int)ViewData["isSend"];
+    List<CaseExpenseExtensionData> caseExpenseEx = null;
+    if (ViewData["CaseExpenseEx"] != null)
+    {
+        caseExpenseEx = (List<CaseExpenseExtensionData>)ViewData["CaseExpenseEx"];
+    }
+
+}
+<form id="frm@(ComponentName)">
+    <div id="accordion3" class="mb-2">
+        <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+        <input id="applicantID@(ComponentName)" type="hidden" value="@(applicantID)" />
+        <div class="card" id="cd@(ComponentName)">
+            <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+                <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">10. งบประมาณที่ได้รับจัดสรร</span>
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <i class="fa fa-plus animate-icon mr-2"></i>
+                </div>
+            </div>
+            <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion3">
+                <div class="card-body">
+                    <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="td@(ComponentName)">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>รายการ</th>
+                                        <th>เกณฑ์ราคา</th>
+                                        <th>จำนวน</th>
+                                        <th>ยอดเงิน</th>
+                                        <th>หมายเหตุ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ 
+                                        int PriceThreshold = 0;
+                                        int Unit = 0;
+                                    }
+                                    @foreach (var item in SingletonExpense.GetByJFCaseType(4))
+                                    {
+                                        PriceThreshold = caseExpenseEx != null ? caseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().PriceThreshold : 0;
+                                        Unit = caseExpenseEx != null ? caseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().Unit : 0;
+                                        <tr data-id="@(item.ExpenseID)">
+                                            <td>@(item.ExpenseName)</td>
+                                            <td align="center" width="150"><input type="text" class="form-control form-control-sm js--text js--pricethreshold@(ComponentName) input-decimal" maxlength="15" value="@(PriceThreshold == 0 ? item.PriceThreshold : PriceThreshold)"/></td>
+                                            <td align="center" width="150">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control input-number js--text form-control-sm js--unit@(ComponentName) input-number" id="Observer@(ComponentName)" maxlength="15" value="@(Unit)" placeholder="" />
+                                                    <div class="input-group-append ">
+                                                        @if (item.ExpenseID == 11)
+                                                        {
+                                                            <span class="input-group-text">ชม.</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="input-group-text">คน</span>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  width="150" align="right"><span class="js--amount@(ComponentName)">@(caseExpenseEx!=null?caseExpenseEx.Where(p=>p.ExpenseID == item.ExpenseID).FirstOrDefault().Amount:0.00)</span><span> บาท</span></td>
+                                            <td><textarea class="form-control form-control-sm js--remark@(ComponentName) js--text autosize-input" maxlength="1000" rows="1">@(caseExpenseEx!=null?caseExpenseEx.Where(p=>p.ExpenseID == item.ExpenseID).FirstOrDefault().Remark:"")</textarea></td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td align="center" colspan="3">รวม</td>
+
+                                        <td colspan="2" align="right"><span class="js--totalamount@(ComponentName)" id="totalamount@(ComponentName)">0</span><span> บาท</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 text-right mt-3">
+                            <a href="javascript:void(0)" class="btn btn-outline-secondary btn-sm border-0 js--cancel" style="display:none;">ยกเลิก</a>
+                            <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm border-0 js--btsave" id="btsave@(ComponentName)" style="display:none;">บันทีก</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+

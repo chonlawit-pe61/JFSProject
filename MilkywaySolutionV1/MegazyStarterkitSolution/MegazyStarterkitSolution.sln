@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazy.StarterKit.Mvc", "Megazy.StarterKit.Mvc\Megazy.StarterKit.Mvc.csproj", "{90648E2F-CE48-4C0D-B830-0C449650194B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazy.StarterKit.Engine", "Megazy.StarterKit.Engine\Megazy.StarterKit.Engine.csproj", "{69A591D7-E7B0-4E4B-BB11-6945DFB94035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazy.StarterKit.Engine.Mvc", "Megazy.StarterKit.Engine.Mvc\Megazy.StarterKit.Engine.Mvc.csproj", "{0FA85C2F-2121-4A44-93BB-467593F802BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLL", "DLL", "{263AF257-AB11-48C2-A91F-C4F3AB3E3D05}"
+	ProjectSection(SolutionItems) = preProject
+		Dll\Archi.DevelopComponent.Transaction.Engine.dll = Dll\Archi.DevelopComponent.Transaction.Engine.dll
+		Dll\Banish.Treasure.Megazy.dll = Dll\Banish.Treasure.Megazy.dll
+		Dll\CaptchaMvc.dll = Dll\CaptchaMvc.dll
+		Dll\Sk.StepUpSolution.SComponent.dll = Dll\Sk.StepUpSolution.SComponent.dll
+		Dll\Thaibulksms.Megazy.UltraBoostSolution.Library.dll = Dll\Thaibulksms.Megazy.UltraBoostSolution.Library.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazy.StarterKit.Localization", "Megazy.StarterKit.Localization\Megazy.StarterKit.Localization.csproj", "{2AA8DE2E-A740-45C3-B57F-55AF8C5DEA17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90648E2F-CE48-4C0D-B830-0C449650194B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90648E2F-CE48-4C0D-B830-0C449650194B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90648E2F-CE48-4C0D-B830-0C449650194B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90648E2F-CE48-4C0D-B830-0C449650194B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69A591D7-E7B0-4E4B-BB11-6945DFB94035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69A591D7-E7B0-4E4B-BB11-6945DFB94035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A591D7-E7B0-4E4B-BB11-6945DFB94035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69A591D7-E7B0-4E4B-BB11-6945DFB94035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FA85C2F-2121-4A44-93BB-467593F802BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA85C2F-2121-4A44-93BB-467593F802BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA85C2F-2121-4A44-93BB-467593F802BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA85C2F-2121-4A44-93BB-467593F802BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AA8DE2E-A740-45C3-B57F-55AF8C5DEA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AA8DE2E-A740-45C3-B57F-55AF8C5DEA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AA8DE2E-A740-45C3-B57F-55AF8C5DEA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AA8DE2E-A740-45C3-B57F-55AF8C5DEA17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2B76341-51EF-479B-8297-8A058BA7A487}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://c.megazy.co.th/tfs/pandoracollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Megazy.StarterKit.Engine.Mvc\\Megazy.StarterKit.Engine.Mvc.csproj
+		SccProjectName1 = Megazy.StarterKit.Engine.Mvc
+		SccLocalPath1 = Megazy.StarterKit.Engine.Mvc
+		SccProjectUniqueName2 = Megazy.StarterKit.Engine\\Megazy.StarterKit.Engine.csproj
+		SccProjectName2 = Megazy.StarterKit.Engine
+		SccLocalPath2 = Megazy.StarterKit.Engine
+		SccProjectUniqueName3 = Megazy.StarterKit.Localization\\Megazy.StarterKit.Localization.csproj
+		SccProjectName3 = Megazy.StarterKit.Localization
+		SccLocalPath3 = Megazy.StarterKit.Localization
+		SccProjectUniqueName4 = Megazy.StarterKit.Mvc\\Megazy.StarterKit.Mvc.csproj
+		SccProjectName4 = Megazy.StarterKit.Mvc
+		SccLocalPath4 = Megazy.StarterKit.Mvc
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,172 @@
+﻿
+@section styles{
+    <style>
+        .bodybox 
+        {
+            position: absolute;
+            top: 32%;
+            width: 400px;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        @@media only screen and (max-width: 1024px) {
+            .bodybox {
+                width: 350px;
+                top: 40%;
+            }
+        }
+        @@media only screen and (max-width: 768px) {
+            .bodybox {
+                width: 350px;
+                top: 40%;
+            }
+        }
+        @@media only screen and (max-width: 425px) {
+            .bodybox {
+                width: 350px;
+                top: 40%;
+            }
+        }
+        @@media only screen and (max-width: 375px) {
+            .bodybox {
+                width: 350px;
+                top: 40%;
+            }
+        }
+        @@media only screen and (max-width: 320px) {
+            .bodybox {
+                width: 300px;
+                top: 40%;
+            }
+        }
+    </style>
+}
+
+@*<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form id="form-changepassword">
+            <div class="modal-header">
+                เปลี่ยนรหัสผ่าน
+            </div>
+            <div class="modal-body pb-0">
+                <div class="form-group">
+                    <label class="star-require" for="member-password-new">
+                        รหัสผ่านใหม่
+                    </label>
+                    <div class="input-group">
+                        <input type="password" placeholder="กรอกรหัสผ่านใหม่" class="form-control form-control-sm validate[required]" id="member-password-new">
+                        <div class="input-group-append">
+                            <span id="pw-see-new" onclick="seePassword('new')" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                        </div>
+                    </div>
+
+                    <label class="star-require" for="member-password-renew">
+                        พิมพ์รหัสผ่านอีกครั้ง
+                    </label>
+                    <div class="input-group">
+                        <input type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" class="form-control form-control-sm validate[required,equals[member-password-renew]]" id="member-password-renew">
+                        <div class="input-group-append">
+                            <span id="pw-see-renew" onclick="seePassword('renew')" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" data-dismiss="modal" class="btn-transition btn btn-outline-secondary border-0"> ยกเลิก </button>
+                <button type="button" onclick="changePassword()" class="btn-transition btn btn-outline-primary border-0"> ยืนยันรหัสผ่าน </button>
+            </div>
+        </form>
+    </div>
+</div>*@
+
+<form id="form-changepassword">
+    <div class="card bodybox">
+        <div class="card-header fsize-1">
+            เปลี่ยนรหัสผ่าน
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label class="star-require" for="member-password-new">
+                    รหัสผ่านใหม่
+                </label>
+                <div class="input-group">
+                    <input type="password" placeholder="กรอกรหัสผ่านใหม่" class="form-control form-control-sm validate[required]" id="member-password-new">
+                    <div class="input-group-append">
+                        <span id="pw-see-new" onclick="seePassword('new')" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+
+                <label class="star-require" for="member-password-renew">
+                    พิมพ์รหัสผ่านอีกครั้ง
+                </label>
+                <div class="input-group">
+                    <input type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" class="form-control form-control-sm validate[required,equals[member-password-renew]]" id="member-password-renew">
+                    <div class="input-group-append">
+                        <span id="pw-see-renew" onclick="seePassword('renew')" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <button type="button" class="btn-transition btn btn-outline-secondary border-0"> ยกเลิก </button>
+            <button type="button" onclick="changePassword()" class="btn-transition btn btn-primary border-0 ml-2"> ยืนยันรหัสผ่าน </button>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    function seePassword(passwordType) {
+        var x = document.getElementById("member-password-" + passwordType);
+        if (x.type === "password") {
+            x.type = "text";
+            $("#pw-see-" + passwordType).html("<i class='fas fa-eye-slash'></i>");
+        }
+        else {
+            x.type = "password";
+            $("#pw-see-" + passwordType).html("<i class='fas fa-eye'></i>");
+        }
+    }
+    function changePassword() {
+        //var oldpassword = null;
+        var newpassword = null;
+        if ($('#form-changepassword').validationEngine('validate')) {
+            if ($('#member-password-new').val() == $('#member-password-renew').val()) {
+                //oldpassword = $('#member-password-oldpass').val();
+                newpassword = $('#member-password-new').val();
+                SWConfirm.fire().then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/usr/changepassword',
+                            data: {
+                                //OldPassword: oldpassword,
+                                Password: newpassword
+                            },
+                            beforeSend: function () { },
+                            success: function (data) {
+                                if (data.Status == true) {
+                                    SWSuccess.fire({
+                                        title: 'ทำการเปลี่ยนรหัสผ่านสำเร็จแล้ว'
+                                        , onClose: () => {
+                                            window.location.href = '/logout';
+                                        }
+                                    });
+                                }
+                                else {
+                                    SWError.fire({ title: data.Message });
+                                }
+                            }, error: function (err) {
+                                SWError.fire();
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                SWError.fire({ title: 'รหัสผ่านไม่ตรงกัน' });
+            }
+        }
+    }
+</script>
+

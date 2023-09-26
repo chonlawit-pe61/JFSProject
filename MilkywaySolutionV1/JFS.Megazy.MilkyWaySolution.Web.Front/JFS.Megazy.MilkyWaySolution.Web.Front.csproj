@@ -1,0 +1,1033 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D58A2998-C14C-4FCA-A26E-4E7817A24955}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JFS.Megazy.MilkyWaySolution.Web.Front</RootNamespace>
+    <AssemblyName>JFS.Megazy.MilkyWaySolution.Web.Front</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44381</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Banish.Treasure.Megazy, Version=1.9.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Banish.Treasure.Megazy.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.10.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.10\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.14.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.14.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MailKit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.3.0.0-preview1\lib\net47\MailKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.3.0.0-preview1\lib\net47\MimeKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.15-beta1\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.1\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="Sk.StepUpSolution.SComponent, Version=1.0.6530.26027, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Sk.StepUpSolution.SComponent.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="CommonProvide\ContentType.cs" />
+    <Compile Include="CommonProvide\CurrentUser.cs" />
+    <Compile Include="CommonProvide\ErrorUtility.cs" />
+    <Compile Include="CommonProvide\MessageService.cs" />
+    <Compile Include="CommonProvide\RegexUtility.cs" />
+    <Compile Include="CommonProvide\SiteConfig.cs" />
+    <Compile Include="CommonProvide\SiteCookies.cs" />
+    <Compile Include="CommonProvide\SiteSession.cs" />
+    <Compile Include="CommonProvide\SysMailConfigInfo.cs" />
+    <Compile Include="CommonProvide\Utility.cs" />
+    <Compile Include="ComponentHead.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FormServiceController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\FormController.cs" />
+    <Compile Include="Controllers\JFServicesController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DataRepository\Breadcrumb.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionScript.cs" />
+    <Compile Include="WebViewAuthorizeFilter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="apple-touch-icon.png" />
+    <Content Include="assets\css\base.css" />
+    <Content Include="assets\css\skins\grey%402x.png" />
+    <Content Include="assets\css\skins\grey.css" />
+    <Content Include="assets\css\skins\grey.png" />
+    <Content Include="assets\images\avatars\1.jpg" />
+    <Content Include="assets\images\avatars\10.jpg" />
+    <Content Include="assets\images\avatars\11.jpg" />
+    <Content Include="assets\images\avatars\12.jpg" />
+    <Content Include="assets\images\avatars\2.jpg" />
+    <Content Include="assets\images\avatars\3.jpg" />
+    <Content Include="assets\images\avatars\4.jpg" />
+    <Content Include="assets\images\avatars\5.jpg" />
+    <Content Include="assets\images\avatars\6.jpg" />
+    <Content Include="assets\images\avatars\7.jpg" />
+    <Content Include="assets\images\avatars\8.jpg" />
+    <Content Include="assets\images\avatars\9.jpg" />
+    <Content Include="assets\images\correct.png" />
+    <Content Include="assets\images\correct.svg" />
+    <Content Include="assets\images\djop.png" />
+    <Content Include="assets\images\djop.svg" />
+    <Content Include="assets\images\dropdown-header\abstract1.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract10.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract2.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract3.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract4.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract5.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract6.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract7.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract8.jpg" />
+    <Content Include="assets\images\dropdown-header\abstract9.jpg" />
+    <Content Include="assets\images\dropdown-header\city1.jpg" />
+    <Content Include="assets\images\dropdown-header\city2.jpg" />
+    <Content Include="assets\images\dropdown-header\city3.jpg" />
+    <Content Include="assets\images\dropdown-header\city4.jpg" />
+    <Content Include="assets\images\dropdown-header\city5.jpg" />
+    <Content Include="assets\images\favicon.ico" />
+    <Content Include="assets\images\flagkit-svg\AD.svg" />
+    <Content Include="assets\images\flagkit-svg\AE.svg" />
+    <Content Include="assets\images\flagkit-svg\AF.svg" />
+    <Content Include="assets\images\flagkit-svg\AG.svg" />
+    <Content Include="assets\images\flagkit-svg\AI.svg" />
+    <Content Include="assets\images\flagkit-svg\AL.svg" />
+    <Content Include="assets\images\flagkit-svg\AM.svg" />
+    <Content Include="assets\images\flagkit-svg\AO.svg" />
+    <Content Include="assets\images\flagkit-svg\AR.svg" />
+    <Content Include="assets\images\flagkit-svg\AS.svg" />
+    <Content Include="assets\images\flagkit-svg\AT.svg" />
+    <Content Include="assets\images\flagkit-svg\AU.svg" />
+    <Content Include="assets\images\flagkit-svg\AW.svg" />
+    <Content Include="assets\images\flagkit-svg\AX.svg" />
+    <Content Include="assets\images\flagkit-svg\AZ.svg" />
+    <Content Include="assets\images\flagkit-svg\BA.svg" />
+    <Content Include="assets\images\flagkit-svg\BB.svg" />
+    <Content Include="assets\images\flagkit-svg\BD.svg" />
+    <Content Include="assets\images\flagkit-svg\BE.svg" />
+    <Content Include="assets\images\flagkit-svg\BF.svg" />
+    <Content Include="assets\images\flagkit-svg\BG.svg" />
+    <Content Include="assets\images\flagkit-svg\BH.svg" />
+    <Content Include="assets\images\flagkit-svg\BI.svg" />
+    <Content Include="assets\images\flagkit-svg\BJ.svg" />
+    <Content Include="assets\images\flagkit-svg\BL.svg" />
+    <Content Include="assets\images\flagkit-svg\BM.svg" />
+    <Content Include="assets\images\flagkit-svg\BN.svg" />
+    <Content Include="assets\images\flagkit-svg\BO.svg" />
+    <Content Include="assets\images\flagkit-svg\BR.svg" />
+    <Content Include="assets\images\flagkit-svg\BS.svg" />
+    <Content Include="assets\images\flagkit-svg\BT.svg" />
+    <Content Include="assets\images\flagkit-svg\BV.svg" />
+    <Content Include="assets\images\flagkit-svg\BW.svg" />
+    <Content Include="assets\images\flagkit-svg\BY.svg" />
+    <Content Include="assets\images\flagkit-svg\BZ.svg" />
+    <Content Include="assets\images\flagkit-svg\CA.svg" />
+    <Content Include="assets\images\flagkit-svg\CC.svg" />
+    <Content Include="assets\images\flagkit-svg\CD.svg" />
+    <Content Include="assets\images\flagkit-svg\CF.svg" />
+    <Content Include="assets\images\flagkit-svg\CG.svg" />
+    <Content Include="assets\images\flagkit-svg\CH.svg" />
+    <Content Include="assets\images\flagkit-svg\CI.svg" />
+    <Content Include="assets\images\flagkit-svg\CK.svg" />
+    <Content Include="assets\images\flagkit-svg\CL.svg" />
+    <Content Include="assets\images\flagkit-svg\CM.svg" />
+    <Content Include="assets\images\flagkit-svg\CN.svg" />
+    <Content Include="assets\images\flagkit-svg\CO.svg" />
+    <Content Include="assets\images\flagkit-svg\CR.svg" />
+    <Content Include="assets\images\flagkit-svg\CU.svg" />
+    <Content Include="assets\images\flagkit-svg\CV.svg" />
+    <Content Include="assets\images\flagkit-svg\CW.svg" />
+    <Content Include="assets\images\flagkit-svg\CX.svg" />
+    <Content Include="assets\images\flagkit-svg\CY.svg" />
+    <Content Include="assets\images\flagkit-svg\CZ.svg" />
+    <Content Include="assets\images\flagkit-svg\DE.svg" />
+    <Content Include="assets\images\flagkit-svg\DJ.svg" />
+    <Content Include="assets\images\flagkit-svg\DK.svg" />
+    <Content Include="assets\images\flagkit-svg\DM.svg" />
+    <Content Include="assets\images\flagkit-svg\DO.svg" />
+    <Content Include="assets\images\flagkit-svg\DZ.svg" />
+    <Content Include="assets\images\flagkit-svg\EC.svg" />
+    <Content Include="assets\images\flagkit-svg\EE.svg" />
+    <Content Include="assets\images\flagkit-svg\EG.svg" />
+    <Content Include="assets\images\flagkit-svg\ER.svg" />
+    <Content Include="assets\images\flagkit-svg\ES.svg" />
+    <Content Include="assets\images\flagkit-svg\ET.svg" />
+    <Content Include="assets\images\flagkit-svg\EU.svg" />
+    <Content Include="assets\images\flagkit-svg\FI.svg" />
+    <Content Include="assets\images\flagkit-svg\FJ.svg" />
+    <Content Include="assets\images\flagkit-svg\FK.svg" />
+    <Content Include="assets\images\flagkit-svg\FM.svg" />
+    <Content Include="assets\images\flagkit-svg\FO.svg" />
+    <Content Include="assets\images\flagkit-svg\FR.svg" />
+    <Content Include="assets\images\flagkit-svg\GA.svg" />
+    <Content Include="assets\images\flagkit-svg\GB-ENG.svg" />
+    <Content Include="assets\images\flagkit-svg\GB-NIR.svg" />
+    <Content Include="assets\images\flagkit-svg\GB-SCT.svg" />
+    <Content Include="assets\images\flagkit-svg\GB-WLS.svg" />
+    <Content Include="assets\images\flagkit-svg\GB-ZET.svg" />
+    <Content Include="assets\images\flagkit-svg\GB.svg" />
+    <Content Include="assets\images\flagkit-svg\GD.svg" />
+    <Content Include="assets\images\flagkit-svg\GE.svg" />
+    <Content Include="assets\images\flagkit-svg\GF.svg" />
+    <Content Include="assets\images\flagkit-svg\GG.svg" />
+    <Content Include="assets\images\flagkit-svg\GH.svg" />
+    <Content Include="assets\images\flagkit-svg\GI.svg" />
+    <Content Include="assets\images\flagkit-svg\GL.svg" />
+    <Content Include="assets\images\flagkit-svg\GM.svg" />
+    <Content Include="assets\images\flagkit-svg\GN.svg" />
+    <Content Include="assets\images\flagkit-svg\GP.svg" />
+    <Content Include="assets\images\flagkit-svg\GQ.svg" />
+    <Content Include="assets\images\flagkit-svg\GR.svg" />
+    <Content Include="assets\images\flagkit-svg\GS.svg" />
+    <Content Include="assets\images\flagkit-svg\GT.svg" />
+    <Content Include="assets\images\flagkit-svg\GU.svg" />
+    <Content Include="assets\images\flagkit-svg\GW.svg" />
+    <Content Include="assets\images\flagkit-svg\GY.svg" />
+    <Content Include="assets\images\flagkit-svg\HK.svg" />
+    <Content Include="assets\images\flagkit-svg\HM.svg" />
+    <Content Include="assets\images\flagkit-svg\HN.svg" />
+    <Content Include="assets\images\flagkit-svg\HR.svg" />
+    <Content Include="assets\images\flagkit-svg\HT.svg" />
+    <Content Include="assets\images\flagkit-svg\HU.svg" />
+    <Content Include="assets\images\flagkit-svg\ID.svg" />
+    <Content Include="assets\images\flagkit-svg\IE.svg" />
+    <Content Include="assets\images\flagkit-svg\IL.svg" />
+    <Content Include="assets\images\flagkit-svg\IM.svg" />
+    <Content Include="assets\images\flagkit-svg\IN.svg" />
+    <Content Include="assets\images\flagkit-svg\IO.svg" />
+    <Content Include="assets\images\flagkit-svg\IQ.svg" />
+    <Content Include="assets\images\flagkit-svg\IR.svg" />
+    <Content Include="assets\images\flagkit-svg\IS.svg" />
+    <Content Include="assets\images\flagkit-svg\IT.svg" />
+    <Content Include="assets\images\flagkit-svg\JE.svg" />
+    <Content Include="assets\images\flagkit-svg\JM.svg" />
+    <Content Include="assets\images\flagkit-svg\JO.svg" />
+    <Content Include="assets\images\flagkit-svg\JP.svg" />
+    <Content Include="assets\images\flagkit-svg\KE.svg" />
+    <Content Include="assets\images\flagkit-svg\KG.svg" />
+    <Content Include="assets\images\flagkit-svg\KH.svg" />
+    <Content Include="assets\images\flagkit-svg\KI.svg" />
+    <Content Include="assets\images\flagkit-svg\KM.svg" />
+    <Content Include="assets\images\flagkit-svg\KN.svg" />
+    <Content Include="assets\images\flagkit-svg\KP.svg" />
+    <Content Include="assets\images\flagkit-svg\KR.svg" />
+    <Content Include="assets\images\flagkit-svg\KW.svg" />
+    <Content Include="assets\images\flagkit-svg\KY.svg" />
+    <Content Include="assets\images\flagkit-svg\KZ.svg" />
+    <Content Include="assets\images\flagkit-svg\LA.svg" />
+    <Content Include="assets\images\flagkit-svg\LB.svg" />
+    <Content Include="assets\images\flagkit-svg\LC.svg" />
+    <Content Include="assets\images\flagkit-svg\LGBT.svg" />
+    <Content Include="assets\images\flagkit-svg\LI.svg" />
+    <Content Include="assets\images\flagkit-svg\LK.svg" />
+    <Content Include="assets\images\flagkit-svg\LR.svg" />
+    <Content Include="assets\images\flagkit-svg\LS.svg" />
+    <Content Include="assets\images\flagkit-svg\LT.svg" />
+    <Content Include="assets\images\flagkit-svg\LU.svg" />
+    <Content Include="assets\images\flagkit-svg\LV.svg" />
+    <Content Include="assets\images\flagkit-svg\LY.svg" />
+    <Content Include="assets\images\flagkit-svg\MA.svg" />
+    <Content Include="assets\images\flagkit-svg\MC.svg" />
+    <Content Include="assets\images\flagkit-svg\MD.svg" />
+    <Content Include="assets\images\flagkit-svg\ME.svg" />
+    <Content Include="assets\images\flagkit-svg\MF.svg" />
+    <Content Include="assets\images\flagkit-svg\MG.svg" />
+    <Content Include="assets\images\flagkit-svg\MH.svg" />
+    <Content Include="assets\images\flagkit-svg\MK.svg" />
+    <Content Include="assets\images\flagkit-svg\ML.svg" />
+    <Content Include="assets\images\flagkit-svg\MM.svg" />
+    <Content Include="assets\images\flagkit-svg\MN.svg" />
+    <Content Include="assets\images\flagkit-svg\MO.svg" />
+    <Content Include="assets\images\flagkit-svg\MP.svg" />
+    <Content Include="assets\images\flagkit-svg\MQ.svg" />
+    <Content Include="assets\images\flagkit-svg\MR.svg" />
+    <Content Include="assets\images\flagkit-svg\MS.svg" />
+    <Content Include="assets\images\flagkit-svg\MT.svg" />
+    <Content Include="assets\images\flagkit-svg\MU.svg" />
+    <Content Include="assets\images\flagkit-svg\MV.svg" />
+    <Content Include="assets\images\flagkit-svg\MW.svg" />
+    <Content Include="assets\images\flagkit-svg\MX.svg" />
+    <Content Include="assets\images\flagkit-svg\MY.svg" />
+    <Content Include="assets\images\flagkit-svg\MZ.svg" />
+    <Content Include="assets\images\flagkit-svg\NA.svg" />
+    <Content Include="assets\images\flagkit-svg\NC.svg" />
+    <Content Include="assets\images\flagkit-svg\NE.svg" />
+    <Content Include="assets\images\flagkit-svg\NF.svg" />
+    <Content Include="assets\images\flagkit-svg\NG.svg" />
+    <Content Include="assets\images\flagkit-svg\NI.svg" />
+    <Content Include="assets\images\flagkit-svg\NL.svg" />
+    <Content Include="assets\images\flagkit-svg\NO.svg" />
+    <Content Include="assets\images\flagkit-svg\NP.svg" />
+    <Content Include="assets\images\flagkit-svg\NR.svg" />
+    <Content Include="assets\images\flagkit-svg\NU.svg" />
+    <Content Include="assets\images\flagkit-svg\NZ.svg" />
+    <Content Include="assets\images\flagkit-svg\OM.svg" />
+    <Content Include="assets\images\flagkit-svg\PA.svg" />
+    <Content Include="assets\images\flagkit-svg\PE.svg" />
+    <Content Include="assets\images\flagkit-svg\PF.svg" />
+    <Content Include="assets\images\flagkit-svg\PG.svg" />
+    <Content Include="assets\images\flagkit-svg\PH.svg" />
+    <Content Include="assets\images\flagkit-svg\PK.svg" />
+    <Content Include="assets\images\flagkit-svg\PL.svg" />
+    <Content Include="assets\images\flagkit-svg\PM.svg" />
+    <Content Include="assets\images\flagkit-svg\PN.svg" />
+    <Content Include="assets\images\flagkit-svg\PR.svg" />
+    <Content Include="assets\images\flagkit-svg\PS.svg" />
+    <Content Include="assets\images\flagkit-svg\PT.svg" />
+    <Content Include="assets\images\flagkit-svg\PW.svg" />
+    <Content Include="assets\images\flagkit-svg\PY.svg" />
+    <Content Include="assets\images\flagkit-svg\QA.svg" />
+    <Content Include="assets\images\flagkit-svg\RE.svg" />
+    <Content Include="assets\images\flagkit-svg\RO.svg" />
+    <Content Include="assets\images\flagkit-svg\RS.svg" />
+    <Content Include="assets\images\flagkit-svg\RU.svg" />
+    <Content Include="assets\images\flagkit-svg\RW.svg" />
+    <Content Include="assets\images\flagkit-svg\SA.svg" />
+    <Content Include="assets\images\flagkit-svg\SB.svg" />
+    <Content Include="assets\images\flagkit-svg\SC.svg" />
+    <Content Include="assets\images\flagkit-svg\SD.svg" />
+    <Content Include="assets\images\flagkit-svg\SE.svg" />
+    <Content Include="assets\images\flagkit-svg\SG.svg" />
+    <Content Include="assets\images\flagkit-svg\SH.svg" />
+    <Content Include="assets\images\flagkit-svg\SI.svg" />
+    <Content Include="assets\images\flagkit-svg\SJ.svg" />
+    <Content Include="assets\images\flagkit-svg\SK.svg" />
+    <Content Include="assets\images\flagkit-svg\SL.svg" />
+    <Content Include="assets\images\flagkit-svg\SM.svg" />
+    <Content Include="assets\images\flagkit-svg\SN.svg" />
+    <Content Include="assets\images\flagkit-svg\SO.svg" />
+    <Content Include="assets\images\flagkit-svg\SR.svg" />
+    <Content Include="assets\images\flagkit-svg\SS.svg" />
+    <Content Include="assets\images\flagkit-svg\ST.svg" />
+    <Content Include="assets\images\flagkit-svg\SV.svg" />
+    <Content Include="assets\images\flagkit-svg\SX.svg" />
+    <Content Include="assets\images\flagkit-svg\SY.svg" />
+    <Content Include="assets\images\flagkit-svg\SZ.svg" />
+    <Content Include="assets\images\flagkit-svg\TC.svg" />
+    <Content Include="assets\images\flagkit-svg\TD.svg" />
+    <Content Include="assets\images\flagkit-svg\TF.svg" />
+    <Content Include="assets\images\flagkit-svg\TG.svg" />
+    <Content Include="assets\images\flagkit-svg\TH.svg" />
+    <Content Include="assets\images\flagkit-svg\TJ.svg" />
+    <Content Include="assets\images\flagkit-svg\TK.svg" />
+    <Content Include="assets\images\flagkit-svg\TL.svg" />
+    <Content Include="assets\images\flagkit-svg\TM.svg" />
+    <Content Include="assets\images\flagkit-svg\TN.svg" />
+    <Content Include="assets\images\flagkit-svg\TO.svg" />
+    <Content Include="assets\images\flagkit-svg\TR.svg" />
+    <Content Include="assets\images\flagkit-svg\TT.svg" />
+    <Content Include="assets\images\flagkit-svg\TV.svg" />
+    <Content Include="assets\images\flagkit-svg\TW.svg" />
+    <Content Include="assets\images\flagkit-svg\TZ.svg" />
+    <Content Include="assets\images\flagkit-svg\UA.svg" />
+    <Content Include="assets\images\flagkit-svg\UG.svg" />
+    <Content Include="assets\images\flagkit-svg\UM.svg" />
+    <Content Include="assets\images\flagkit-svg\US-CA.svg" />
+    <Content Include="assets\images\flagkit-svg\US.svg" />
+    <Content Include="assets\images\flagkit-svg\UY.svg" />
+    <Content Include="assets\images\flagkit-svg\UZ.svg" />
+    <Content Include="assets\images\flagkit-svg\VA.svg" />
+    <Content Include="assets\images\flagkit-svg\VC.svg" />
+    <Content Include="assets\images\flagkit-svg\VE.svg" />
+    <Content Include="assets\images\flagkit-svg\VG.svg" />
+    <Content Include="assets\images\flagkit-svg\VI.svg" />
+    <Content Include="assets\images\flagkit-svg\VN.svg" />
+    <Content Include="assets\images\flagkit-svg\VU.svg" />
+    <Content Include="assets\images\flagkit-svg\WF.svg" />
+    <Content Include="assets\images\flagkit-svg\WS.svg" />
+    <Content Include="assets\images\flagkit-svg\XK.svg" />
+    <Content Include="assets\images\flagkit-svg\YE.svg" />
+    <Content Include="assets\images\flagkit-svg\YT.svg" />
+    <Content Include="assets\images\flagkit-svg\ZA.svg" />
+    <Content Include="assets\images\flagkit-svg\ZM.svg" />
+    <Content Include="assets\images\flagkit-svg\ZW.svg" />
+    <Content Include="assets\images\icon\business-and-finance.svg" />
+    <Content Include="assets\images\icon\case.svg" />
+    <Content Include="assets\images\icon\constitution.svg" />
+    <Content Include="assets\images\icon\criminal-in-jail-silhouette.svg" />
+    <Content Include="assets\images\icon\customer.svg" />
+    <Content Include="assets\images\icon\hand.svg" />
+    <Content Include="assets\images\icon\handcuffs.svg" />
+    <Content Include="assets\images\icon\handcuffs2.svg" />
+    <Content Include="assets\images\icon\handshake.svg" />
+    <Content Include="assets\images\icon\interview.svg" />
+    <Content Include="assets\images\icon\judge.svg" />
+    <Content Include="assets\images\icon\law-book.svg" />
+    <Content Include="assets\images\icon\social-care.svg" />
+    <Content Include="assets\images\icon\teamwork.svg" />
+    <Content Include="assets\images\img-not-available.png" />
+    <Content Include="assets\images\led.png" />
+    <Content Include="assets\images\led.svg" />
+    <Content Include="assets\images\logo-inverse.png" />
+    <Content Include="assets\images\logo.png" />
+    <Content Include="assets\images\logo.svg" />
+    <Content Include="assets\images\moj.png" />
+    <Content Include="assets\images\moj.svg" />
+    <Content Include="assets\images\ops1.png" />
+    <Content Include="assets\images\ops1.svg" />
+    <Content Include="assets\images\originals\abstract.jpg" />
+    <Content Include="assets\images\originals\abstract2.jpg" />
+    <Content Include="assets\images\originals\abstract3.jpg" />
+    <Content Include="assets\images\originals\abstract4.jpg" />
+    <Content Include="assets\images\originals\abstract5.jpg" />
+    <Content Include="assets\images\originals\abstract6.jpg" />
+    <Content Include="assets\images\originals\buildings.jpg" />
+    <Content Include="assets\images\originals\city.jpg" />
+    <Content Include="assets\images\originals\citydark.jpg" />
+    <Content Include="assets\images\originals\citynights.jpg" />
+    <Content Include="assets\images\originals\colors.jpg" />
+    <Content Include="assets\images\originals\fence-small.jpg" />
+    <Content Include="assets\images\originals\fence.jpg" />
+    <Content Include="assets\images\originals\interconnected.jpg" />
+    <Content Include="assets\images\originals\nightcolors.jpg" />
+    <Content Include="assets\images\originals\water.jpg" />
+    <Content Include="assets\images\probation.png" />
+    <Content Include="assets\images\probation.svg" />
+    <Content Include="assets\images\reqeststep.png" />
+    <Content Include="assets\images\sidebar\abstract1.jpg" />
+    <Content Include="assets\images\sidebar\abstract10.jpg" />
+    <Content Include="assets\images\sidebar\abstract2.jpg" />
+    <Content Include="assets\images\sidebar\abstract3.jpg" />
+    <Content Include="assets\images\sidebar\abstract4.jpg" />
+    <Content Include="assets\images\sidebar\abstract5.jpg" />
+    <Content Include="assets\images\sidebar\abstract6.jpg" />
+    <Content Include="assets\images\sidebar\abstract7.jpg" />
+    <Content Include="assets\images\sidebar\abstract8.jpg" />
+    <Content Include="assets\images\sidebar\abstract9.jpg" />
+    <Content Include="assets\images\sidebar\city1.jpg" />
+    <Content Include="assets\images\sidebar\city2.jpg" />
+    <Content Include="assets\images\sidebar\city3.jpg" />
+    <Content Include="assets\images\sidebar\city4.jpg" />
+    <Content Include="assets\images\sidebar\city5.jpg" />
+    <Content Include="assets\js\scripts-init\adminlte.js" />
+    <Content Include="assets\js\scripts-init\app.js" />
+    <Content Include="assets\js\scripts-init\app.min.js" />
+    <Content Include="assets\js\scripts-init\blockui.js" />
+    <Content Include="assets\js\scripts-init\blockui.min.js" />
+    <Content Include="assets\js\scripts-init\calendar.js" />
+    <Content Include="assets\js\scripts-init\calendar.min.js" />
+    <Content Include="assets\js\scripts-init\carousel-slider.js" />
+    <Content Include="assets\js\scripts-init\carousel-slider.min.js" />
+    <Content Include="assets\js\scripts-init\charts\apex-charts.js" />
+    <Content Include="assets\js\scripts-init\charts\apex-charts.min.js" />
+    <Content Include="assets\js\scripts-init\charts\apex-series.js" />
+    <Content Include="assets\js\scripts-init\charts\apex-series.min.js" />
+    <Content Include="assets\js\scripts-init\charts\chartjs.js" />
+    <Content Include="assets\js\scripts-init\charts\chartjs.min.js" />
+    <Content Include="assets\js\scripts-init\charts\charts-sparklines.js" />
+    <Content Include="assets\js\scripts-init\charts\charts-sparklines.min.js" />
+    <Content Include="assets\js\scripts-init\charts\chartsjs-utils.js" />
+    <Content Include="assets\js\scripts-init\charts\chartsjs-utils.min.js" />
+    <Content Include="assets\js\scripts-init\circle-progress.js" />
+    <Content Include="assets\js\scripts-init\circle-progress.min.js" />
+    <Content Include="assets\js\scripts-init\count-up.js" />
+    <Content Include="assets\js\scripts-init\count-up.min.js" />
+    <Content Include="assets\js\scripts-init\demo.js" />
+    <Content Include="assets\js\scripts-init\demo.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\clipboard.js" />
+    <Content Include="assets\js\scripts-init\form-components\clipboard.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\datepicker.js" />
+    <Content Include="assets\js\scripts-init\form-components\datepicker.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\form-validation.js" />
+    <Content Include="assets\js\scripts-init\form-components\form-validation.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\form-wizard.js" />
+    <Content Include="assets\js\scripts-init\form-components\form-wizard.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\input-mask.js" />
+    <Content Include="assets\js\scripts-init\form-components\input-mask.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\input-select.js" />
+    <Content Include="assets\js\scripts-init\form-components\input-select.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\range-slider.js" />
+    <Content Include="assets\js\scripts-init\form-components\range-slider.min.js" />
+    <Content Include="assets\js\scripts-init\form-components\textarea-autosize.js" />
+    <Content Include="assets\js\scripts-init\form-components\textarea-autosize.min.js" />
+    <Content Include="assets\js\scripts-init\guided-tours.js" />
+    <Content Include="assets\js\scripts-init\guided-tours.min.js" />
+    <Content Include="assets\js\scripts-init\handlebars-helper.js" />
+    <Content Include="assets\js\scripts-init\handlebars.min-v4.5.3.js" />
+    <Content Include="assets\js\scripts-init\image-crop.js" />
+    <Content Include="assets\js\scripts-init\image-crop.min.js" />
+    <Content Include="assets\js\scripts-init\jf-resultattachfile.js" />
+    <Content Include="assets\js\scripts-init\jf-projectproponent.js" />
+    <Content Include="assets\js\scripts-init\jf-appeal.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantattachfile.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantbail.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantcareer.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantcrime.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantdetail.js" />
+    <Content Include="assets\js\scripts-init\jf-applicanteducationlevel.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantexpense.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantfamily.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantincome.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantnoincome.js" />
+    <Content Include="assets\js\scripts-init\jf-applicantrelateperson.js" />
+    <Content Include="assets\js\scripts-init\jf-attachfile.js" />
+    <Content Include="assets\js\scripts-init\jf-caseapplicantdeportation.js" />
+    <Content Include="assets\js\scripts-init\jf-caseattachfile.js" />
+    <Content Include="assets\js\scripts-init\jf-casechiefopinion.js" />
+    <Content Include="assets\js\scripts-init\jf-casecompensation.js" />
+    <Content Include="assets\js\scripts-init\jf-casecomplicate.js" />
+    <Content Include="assets\js\scripts-init\jf-caseconsideration.js" />
+    <Content Include="assets\js\scripts-init\jf-casecounsel.js" />
+    <Content Include="assets\js\scripts-init\jf-casecreditscoring.js" />
+    <Content Include="assets\js\scripts-init\jf-casedesire.js" />
+    <Content Include="assets\js\scripts-init\jf-casedetail.js" />
+    <Content Include="assets\js\scripts-init\jf-casedirectoropinion.js" />
+    <Content Include="assets\js\scripts-init\jf-casedispute.js" />
+    <Content Include="assets\js\scripts-init\jf-caseescapesupport.js" />
+    <Content Include="assets\js\scripts-init\jf-caseexpense.js" />
+    <Content Include="assets\js\scripts-init\jf-allocatebudget.js" />
+    <Content Include="assets\js\scripts-init\jf-followupresults.js" />
+    <Content Include="assets\js\scripts-init\jf-participant.js" />
+    <Content Include="assets\js\scripts-init\jf-caseheader.js" />
+    <Content Include="assets\js\scripts-init\jf-caseindenture.js" />
+    <Content Include="assets\js\scripts-init\jf-caseschedule.js" />
+    <Content Include="assets\js\scripts-init\jf-caseinformation.js" />
+    <Content Include="assets\js\scripts-init\jf-caseinterviewbail.js" />
+    <Content Include="assets\js\scripts-init\jf-caseInterviewHumanRight.js" />
+    <Content Include="assets\js\scripts-init\jf-caseinterviewlitigation.js" />
+    <Content Include="assets\js\scripts-init\jf-caseinvestigate.js" />
+    <Content Include="assets\js\scripts-init\jf-caseopinionofficer.js" />
+    <Content Include="assets\js\scripts-init\jf-caseopposebailagency.js" />
+    <Content Include="assets\js\scripts-init\jf-caseother.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectapplicant.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectcharacteristics.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectcontactperson.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectdocumentcheck.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectexpense.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectreferenceperson.js" />
+    <Content Include="assets\js\scripts-init\jf-caseprojectsourcefund.js" />
+    <Content Include="assets\js\scripts-init\jf-caserefund.js" />
+    <Content Include="assets\js\scripts-init\jf-caserequestbail.js" />
+    <Content Include="assets\js\scripts-init\jf-caseresult.js" />
+    <Content Include="assets\js\scripts-init\jf-casestore.js" />
+    <Content Include="assets\js\scripts-init\jf-casesubcommitteeopinion.js" />
+    <Content Include="assets\js\scripts-init\jf-casetransaction.js" />
+    <Content Include="assets\js\scripts-init\jf-causesofterminate.js" />
+    <Content Include="assets\js\scripts-init\jf-contractform.js" />
+    <Content Include="assets\js\scripts-init\jf-currentcasestatus.js" />
+    <Content Include="assets\js\scripts-init\jf-drug.js" />
+    <Content Include="assets\js\scripts-init\jf-finalapproved.js" />
+    <Content Include="assets\js\scripts-init\jf-guaranteeform.js" />
+    <Content Include="assets\js\scripts-init\jf-helpcaselevel.js" />
+    <Content Include="assets\js\scripts-init\jf-helpreason.js" />
+    <Content Include="assets\js\scripts-init\jf-infromationcontract.js" />
+    <Content Include="assets\js\scripts-init\jf-infromationguarantee.js" />
+    <Content Include="assets\js\scripts-init\jf-interviewfactconflict.js" />
+    <Content Include="assets\js\scripts-init\jf-interviewsummary.js" />
+    <Content Include="assets\js\scripts-init\jf-lawyercontractform.js" />
+    <Content Include="assets\js\scripts-init\jf-lawyerdetail.js" />
+    <Content Include="assets\js\scripts-init\jf-lawyerselect.js" />
+    <Content Include="assets\js\scripts-init\jf-maincaseproject.js" />
+    <Content Include="assets\js\scripts-init\jf-marital.js" />
+    <Content Include="assets\js\scripts-init\jf-mattersoflaw.js" />
+    <Content Include="assets\js\scripts-init\jf-mediate.js" />
+    <Content Include="assets\js\scripts-init\jf-occupation.js" />
+    <Content Include="assets\js\scripts-init\jf-persondetailcontract.js" />
+    <Content Include="assets\js\scripts-init\jf-projectcontractform.js" />
+    <Content Include="assets\js\scripts-init\jf-projectdetailcontract.js" />
+    <Content Include="assets\js\scripts-init\jf-projectinfromationcontract.js" />
+    <Content Include="assets\js\scripts-init\jf-projectlocation.js" />
+    <Content Include="assets\js\scripts-init\jf-proxy.js" />
+    <Content Include="assets\js\scripts-init\jf-resultattachimage.js" />
+    <Content Include="assets\js\scripts-init\jf-resultattachvideo.js" />
+    <Content Include="assets\js\scripts-init\jf-victim.js" />
+    <Content Include="assets\js\scripts-init\ladda-loading.js" />
+    <Content Include="assets\js\scripts-init\ladda-loading.min.js" />
+    <Content Include="assets\js\scripts-init\maps-word-map.js" />
+    <Content Include="assets\js\scripts-init\maps-word-map.min.js" />
+    <Content Include="assets\js\scripts-init\maps.js" />
+    <Content Include="assets\js\scripts-init\maps.min.js" />
+    <Content Include="assets\js\scripts-init\paginationjs\pagination.css" />
+    <Content Include="assets\js\scripts-init\paginationjs\pagination.js" />
+    <Content Include="assets\js\scripts-init\rating.js" />
+    <Content Include="assets\js\scripts-init\rating.min.js" />
+    <Content Include="assets\js\scripts-init\scrollbar.js" />
+    <Content Include="assets\js\scripts-init\scrollbar.min.js" />
+    <Content Include="assets\js\scripts-init\sweet-alerts.js" />
+    <Content Include="assets\js\scripts-init\sweet-alerts.min.js" />
+    <Content Include="assets\js\scripts-init\sweetalert2%409.js" />
+    <Content Include="assets\js\scripts-init\sweetalert2.all.min.js" />
+    <Content Include="assets\js\scripts-init\tables.js" />
+    <Content Include="assets\js\scripts-init\tables.min.js" />
+    <Content Include="assets\js\scripts-init\toastr.js" />
+    <Content Include="assets\js\scripts-init\toastr.min.js" />
+    <Content Include="assets\js\scripts-init\treeview.js" />
+    <Content Include="assets\js\scripts-init\treeview.min.js" />
+    <Content Include="assets\js\scripts-init\web-common.js" />
+    <Content Include="assets\js\scripts-init\web-upload.js" />
+    <Content Include="assets\js\vendors\Blob.js" />
+    <Content Include="assets\js\vendors\blockui.js" />
+    <Content Include="assets\js\vendors\blockui.min.js" />
+    <Content Include="assets\js\vendors\bootstrap-table.min.js" />
+    <Content Include="assets\js\vendors\calendar.js" />
+    <Content Include="assets\js\vendors\calendar.min.js" />
+    <Content Include="assets\js\vendors\canvas-toBlob.js" />
+    <Content Include="assets\js\vendors\carousel-slider.js" />
+    <Content Include="assets\js\vendors\carousel-slider.min.js" />
+    <Content Include="assets\js\vendors\charts\apex-charts.js" />
+    <Content Include="assets\js\vendors\charts\apex-charts.min.js" />
+    <Content Include="assets\js\vendors\charts\Chart.min.js" />
+    <Content Include="assets\js\vendors\charts\Chart.PieceLabel.min.js" />
+    <Content Include="assets\js\vendors\charts\charts-sparklines.js" />
+    <Content Include="assets\js\vendors\charts\charts-sparklines.min.js" />
+    <Content Include="assets\js\vendors\circle-progress.js" />
+    <Content Include="assets\js\vendors\circle-progress.min.js" />
+    <Content Include="assets\js\vendors\count-up.js" />
+    <Content Include="assets\js\vendors\count-up.min.js" />
+    <Content Include="assets\js\vendors\cropper.js" />
+    <Content Include="assets\js\vendors\cropper.min.js" />
+    <Content Include="assets\js\vendors\FileSaver.min.js" />
+    <Content Include="assets\js\vendors\form-components\bootstrap-multiselect.js" />
+    <Content Include="assets\js\vendors\form-components\bootstrap-multiselect.min.js" />
+    <Content Include="assets\js\vendors\form-components\clipboard.js" />
+    <Content Include="assets\js\vendors\form-components\clipboard.min.js" />
+    <Content Include="assets\js\vendors\form-components\datepicker.js" />
+    <Content Include="assets\js\vendors\form-components\datepicker.min.js" />
+    <Content Include="assets\js\vendors\form-components\datepicker.th-TH.js" />
+    <Content Include="assets\js\vendors\form-components\daterangepicker.js" />
+    <Content Include="assets\js\vendors\form-components\daterangepicker.min.js" />
+    <Content Include="assets\js\vendors\form-components\form-validation.js" />
+    <Content Include="assets\js\vendors\form-components\form-validation.min.js" />
+    <Content Include="assets\js\vendors\form-components\form-wizard.js" />
+    <Content Include="assets\js\vendors\form-components\form-wizard.min.js" />
+    <Content Include="assets\js\vendors\form-components\icheck.min.js" />
+    <Content Include="assets\js\vendors\form-components\input-mask.js" />
+    <Content Include="assets\js\vendors\form-components\input-mask.min.js" />
+    <Content Include="assets\js\vendors\form-components\moment.js" />
+    <Content Include="assets\js\vendors\form-components\moment.min.js" />
+    <Content Include="assets\js\vendors\form-components\range-slider.js" />
+    <Content Include="assets\js\vendors\form-components\range-slider.min.js" />
+    <Content Include="assets\js\vendors\form-components\textarea-autosize.js" />
+    <Content Include="assets\js\vendors\form-components\textarea-autosize.min.js" />
+    <Content Include="assets\js\vendors\form-components\toggle-switch.js" />
+    <Content Include="assets\js\vendors\form-components\toggle-switch.min.js" />
+    <Content Include="assets\js\vendors\form-components\wnumb.js" />
+    <Content Include="assets\js\vendors\form-components\wnumb.min.js" />
+    <Content Include="assets\js\vendors\gmaps.js" />
+    <Content Include="assets\js\vendors\gmaps.min.js" />
+    <Content Include="assets\js\vendors\guided-tours.js" />
+    <Content Include="assets\js\vendors\guided-tours.min.js" />
+    <Content Include="assets\js\vendors\jquery-cropper.js" />
+    <Content Include="assets\js\vendors\jquery-cropper.min.js" />
+    <Content Include="assets\js\vendors\jquery-sortable.js" />
+    <Content Include="assets\js\vendors\jvectormap.js" />
+    <Content Include="assets\js\vendors\jvectormap.min.js" />
+    <Content Include="assets\js\vendors\ladda-loading.js" />
+    <Content Include="assets\js\vendors\ladda-loading.min.js" />
+    <Content Include="assets\js\vendors\metismenu.js" />
+    <Content Include="assets\js\vendors\rating.js" />
+    <Content Include="assets\js\vendors\rating.min.js" />
+    <Content Include="assets\js\vendors\scrollbar.js" />
+    <Content Include="assets\js\vendors\scrollbar.min.js" />
+    <Content Include="assets\js\vendors\form-components\select2.min.js" />
+    <Content Include="assets\js\vendors\Sortable.js" />
+    <Content Include="assets\js\vendors\spin.js" />
+    <Content Include="assets\js\vendors\spin.min.js" />
+    <Content Include="assets\js\vendors\tables.js" />
+    <Content Include="assets\js\vendors\tables.min.js" />
+    <Content Include="assets\js\vendors\toastr.js" />
+    <Content Include="assets\js\vendors\treeview.js" />
+    <Content Include="assets\js\vendors\treeview.min.js" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-table.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fontawesome-all.css" />
+    <Content Include="assets\fonts\linearicons\Linearicons-Free.svg" />
+    <Content Include="Content\sweetalert2.min.css" />
+    <Content Include="Content\validationEngine.jquery.css" />
+    <Content Include="Content\webfonts\fa-brands-400.svg" />
+    <Content Include="Content\webfonts\fa-regular-400.svg" />
+    <Content Include="Content\webfonts\fa-solid-900.svg" />
+    <Content Include="favicon-16x16.png" />
+    <Content Include="favicon-32x32.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="FormTemplate\wordStyleSheet.txt" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datepicker-thai.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\datetimepicker\local\bootstrap-datepicker.th.js" />
+    <Content Include="Scripts\datetimepicker\local\datepicker.css" />
+    <Content Include="bin\config.ini" />
+    <Content Include="Content\webfonts\fa-brands-400.eot" />
+    <Content Include="Content\webfonts\fa-brands-400.ttf" />
+    <Content Include="Content\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\webfonts\fa-regular-400.eot" />
+    <Content Include="Content\webfonts\fa-regular-400.ttf" />
+    <Content Include="Content\webfonts\fa-regular-400.woff" />
+    <Content Include="Content\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\webfonts\fa-solid-900.eot" />
+    <Content Include="Content\webfonts\fa-solid-900.ttf" />
+    <Content Include="Content\webfonts\fa-solid-900.woff" />
+    <Content Include="Content\webfonts\fa-solid-900.woff2" />
+    <Content Include="assets\fonts\linearicons\Linearicons-Free.eot" />
+    <Content Include="assets\fonts\linearicons\Linearicons-Free.ttf" />
+    <Content Include="assets\fonts\linearicons\Linearicons-Free.woff" />
+    <Content Include="assets\fonts\linearicons\Linearicons-Free.woff2" />
+    <Content Include="FormTemplate\FormProjectResult.docx" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\index.js.flow" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.validationEngine-en.js" />
+    <Content Include="Scripts\jquery.validationEngine-th.js" />
+    <Content Include="Scripts\jquery.validationEngine.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\methods\defaults.js" />
+    <Content Include="Scripts\src\methods\destroy.js" />
+    <Content Include="Scripts\src\methods\disableEventListeners.js" />
+    <Content Include="Scripts\src\methods\enableEventListeners.js" />
+    <Content Include="Scripts\src\methods\placements.js" />
+    <Content Include="Scripts\src\methods\update.js" />
+    <Content Include="Scripts\src\modifiers\applyStyle.js" />
+    <Content Include="Scripts\src\modifiers\arrow.js" />
+    <Content Include="Scripts\src\modifiers\computeStyle.js" />
+    <Content Include="Scripts\src\modifiers\flip.js" />
+    <Content Include="Scripts\src\modifiers\hide.js" />
+    <Content Include="Scripts\src\modifiers\index.js" />
+    <Content Include="Scripts\src\modifiers\inner.js" />
+    <Content Include="Scripts\src\modifiers\keepTogether.js" />
+    <Content Include="Scripts\src\modifiers\offset.js" />
+    <Content Include="Scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="Scripts\src\modifiers\shift.js" />
+    <Content Include="Scripts\src\utils\clockwise.js" />
+    <Content Include="Scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="Scripts\src\utils\debounce.js" />
+    <Content Include="Scripts\src\utils\find.js" />
+    <Content Include="Scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="Scripts\src\utils\findIndex.js" />
+    <Content Include="Scripts\src\utils\getBordersSize.js" />
+    <Content Include="Scripts\src\utils\getBoundaries.js" />
+    <Content Include="Scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="Scripts\src\utils\getClientRect.js" />
+    <Content Include="Scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetRect.js" />
+    <Content Include="Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="Scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="Scripts\src\utils\getOuterSizes.js" />
+    <Content Include="Scripts\src\utils\getParentNode.js" />
+    <Content Include="Scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="Scripts\src\utils\getReferenceNode.js" />
+    <Content Include="Scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="Scripts\src\utils\getRoot.js" />
+    <Content Include="Scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="Scripts\src\utils\getScroll.js" />
+    <Content Include="Scripts\src\utils\getScrollParent.js" />
+    <Content Include="Scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="Scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getWindow.js" />
+    <Content Include="Scripts\src\utils\getWindowSizes.js" />
+    <Content Include="Scripts\src\utils\includeScroll.js" />
+    <Content Include="Scripts\src\utils\index.js" />
+    <Content Include="Scripts\src\utils\isBrowser.js" />
+    <Content Include="Scripts\src\utils\isFixed.js" />
+    <Content Include="Scripts\src\utils\isFunction.js" />
+    <Content Include="Scripts\src\utils\isIE.js" />
+    <Content Include="Scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="Scripts\src\utils\isModifierRequired.js" />
+    <Content Include="Scripts\src\utils\isNumeric.js" />
+    <Content Include="Scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="Scripts\src\utils\removeEventListeners.js" />
+    <Content Include="Scripts\src\utils\runModifiers.js" />
+    <Content Include="Scripts\src\utils\setAttributes.js" />
+    <Content Include="Scripts\src\utils\setStyles.js" />
+    <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Form\Index.cshtml" />
+    <Content Include="Views\Shared\_HelperContact.cshtml" />
+    <Content Include="Views\Home\Tracking.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Error\Show.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\_UsrMenu.cshtml" />
+    <Content Include="Views\Shared\_UserLayout.cshtml" />
+    <Content Include="Views\Home\Signup.cshtml" />
+    <Content Include="Views\Shared\_Applicant.cshtml" />
+    <Content Include="Views\Shared\_ApplicantList.cshtml" />
+    <Content Include="Views\Form\Register.cshtml" />
+    <Content Include="Views\Home\SearchingCase.cshtml" />
+    <Content Include="Views\Form\Applicant.cshtml" />
+    <Content Include="Views\Shared\_CaseSchedule.cshtml" />
+    <Content Include="Views\Form\Detail.cshtml" />
+    <Content Include="Views\Shared\_Participant.cshtml" />
+    <Content Include="Views\Shared\_FollowUpResults.cshtml" />
+    <Content Include="Views\Shared\_AllocateBudget.cshtml" />
+    <Content Include="Views\Shared\_ProjectResultForm.cshtml" />
+    <Content Include="Views\Shared\_ProjectProponent.cshtml" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper.js.flow" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_ResultAttachFile.cshtml" />
+    <Content Include="Views\Shared\_ResultAttachImage.cshtml" />
+    <Content Include="Views\Shared\_ResultAttachVideo.cshtml" />
+    <Content Include="Views\Users\ChangePwd.cshtml" />
+    <Content Include="Views\Home\VerifyMobile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="assets\json\" />
+    <Folder Include="fonts\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JFS.Megazy.MilkyWaySolution.Engine\JFS.Megazy.MilkyWaySolution.Engine.csproj">
+      <Project>{c4009792-064d-4092-ba50-b30d847ec4e9}</Project>
+      <Name>JFS.Megazy.MilkyWaySolution.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>24937</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44381/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,385 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>กองทุนยุติธรรม</title>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest">-->
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/skins/grey.css" rel="stylesheet" />
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/jquery")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/bootstrap")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/modernizr")
+    <style>
+
+/*        body {
+            background-image: linear-gradient( 135deg, #fde9f2 0%, #d881d2 100%) !important;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }*/
+        .required:after {
+            content: " *";
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        @*<div class="d-flex">
+            <div class="p-2 bd-highlight"><a style="font-size: x-large;" href="/" title="หน้าแรก"><i class="fa fa-home"></i></a></div>
+        </div>*@
+        <div class="card" style="width:100%; max-width:540px; margin:auto;">
+            <div class="card-body">
+
+
+                <h1 class="text-center h4">สร้างบัญชี</h1>
+                <div class="row mt-3">
+                    <div class="col-md-6 text-center">
+                        <div class="form-check form-check-inline icheck">
+                            <input class="form-check-input" type="radio" name="rdoUsrType" id="rdopersonal" checked="checked" value="1">
+                            <label class="form-check-label ml-2" for="rdopersonal" style="cursor:pointer;">บุคคล</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="form-check form-check-inline icheck">
+                            <input class="form-check-input" type="radio" name="rdoUsrType" id="rdoorganize" value="2">
+                            <label class="form-check-label ml-2" for="rdoorganize" style="cursor:pointer;">นิติบุคคล(หน่วยงาน,องค์กร)</label>
+                        </div>
+                    </div>
+
+                </div>
+                <hr class="mb-4">
+                <form id="frmPersonal" class="form-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="required">ชื่อ</label>
+                            <input type="text" class="form-control form-control-sm" id="firstName" placeholder="" name="firstName" value="" required>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="required">นามสกุล</label>
+                            <input type="text" class="form-control form-control-sm " id="lastName" placeholder="" name="lastName" value="" required>
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="MobileNo" class="required">เบอร์มือถือ(ต้องเป็นเบอร์มือถือที่ใช้งานจริงเพื่อรับ OTP ในการตรวจสอบ)</label>
+                            <input type="text" class="form-control form-control-sm input-tel js--phonenumber " id="MobileNo" name="MobileNo" placeholder="" value="" required>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="username" class="required">Username</label>
+                                <input type="text" class="form-control form-control-sm js--username " id="username" placeholder="Username" name="username" autocomplete="off" required>
+                                <small id="usernameal" class="form-text js--textalert text-danger d-none">กรอกเฉพาะภาษาอังกฤษ</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="required">Email</label>
+                                <input type="text" class="form-control form-control-sm input-email js--email" id="email" name="email" placeholder="you@example.com" required>
+
+                            </div>
+
+
+                        </div>
+                        <div class="form-group  col-md-12">
+                            <label for="password" class="required">รหัสผ่าน</label>
+                            <div class="input-group input-group-sm">
+                                <input type="password" placeholder="รหัสผ่าน" class="form-control form-control-sm js--password " id="password" name="password" autocomplete="off" required>
+                                <div class="input-group-append" style="cursor:pointer;">
+                                    <span id="user-pw-see" onclick="seePasswordUser(this.id)" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                                </div>
+                                <div class="input-group-append" style="cursor:pointer;">
+                                    <span id="genpassword" onclick="genPasswordUser(this.id)" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;">Create password</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-danger h5 js--alert d-none text-center"></div>
+                    <button type="submit" class="mt-4 btn btn-primary btn-lg btn-block btn-sm js--save mb-5" data-type="1">บันทึกและถัดไป</button>
+                </form>
+                <form id="frmOrg" style="display:none" class="form-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="OrgName" class="required">ชื่อหน่วยงาน,องค์กร</label>
+                            <input type="text" class="form-control form-control-sm" id="OrgName" name="OrgName" placeholder="" value="" required>
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="OrgMobileNo" class="required">เบอร์มือถือ(ต้องเป็นเบอร์มือถือที่ใช้งานจริงเพื่อรับ OTP ในการตรวจสอบ)</label>
+                            <input type="text" class="form-control form-control-sm input-tel js--phonenumber" id="OrgMobileNo" name="OrgMobileNo" placeholder="" value="" required>
+
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="Orgusername" class="required">Username</label>
+                                <input type="text" class="form-control form-control-sm js--username" id="Orgusername" placeholder="Username" name="Orgusername" autocomplete="off" required>
+                                <small id="Orusernameal" class="form-text text-danger js--textalert d-none">กรอกเฉพาะภาษาอังกฤษ</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="OrgEmail" class="required">Email</label>
+                                <input type="text" class="form-control form-control-sm input-email js--email" id="OrgEmail" name="OrgEmail" placeholder="you@example.com" required>
+
+                            </div>
+
+
+                        </div>
+                        <div class="form-group  col-md-12">
+                            <label for="password" class="required">รหัสผ่าน</label>
+                            <div class="input-group input-group-sm">
+                                <input type="password" placeholder="รหัสผ่าน" class="form-control form-control-sm js--password" id="password2" name="password2" autocomplete="off" required>
+                                <div class="input-group-append" style="cursor:pointer;">
+                                    <span id="user-pw-see2" onclick="seePasswordUser(this.id)" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;"><i class="fas fa-eye"></i></span>
+                                </div>
+                                <div class="input-group-append" style="cursor:pointer;">
+                                    <span id="genpassword2" onclick="genPasswordUser(this.id)" class="input-group-text" style="border-bottom: 1px solid #e0e0e0;">Create password</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <span class="js--alert d-none text-center" style="color:#d9534f;"></span>
+                    <button class="mt-4 btn btn-primary btn-lg btn-block btn-sm js--save mb-5" type="submit" data-type="2">บันทึกและถัดไป</button>
+                </form>
+                <div class=" d-flex justify-content-end">
+                    <div>
+                        <a href="/login" class="btn btn-sm btn-link">เข้าสู่ระบบ</a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <span class="text-muted small">© @(DateTime.Now.Year) สงวนลิขสิทธิ์โดย สำนักงานกองทุนยุติธรรม สำนักงานปลัดกระทรวงยุติธรรม</span>
+
+            </footer>
+       
+    </div>
+    <script src="~/assets/js/scripts-init/sweetalert2@9.js"></script>
+    <script src="~/assets/js/scripts-init/sweet-alerts.js"></script>
+    <script src="~/Scripts/jquery.validationEngine-th.js"></script>
+    <script src="~/Scripts/jquery.validationEngine.js"></script>
+    <script src="~/assets/js/vendors/form-components/icheck.min.js"></script>
+    <script src="~/assets/js/vendors/form-components/input-mask.min.js"></script>
+    <script type="text/javascript">
+
+        var arr = [];
+        for (var i = 33; i < 127; ++i) {
+            arr.push(String.fromCharCode(i))
+        };
+        function checkchar(text) {
+            var x = 1;
+            var result = true;
+            for (i = 0; i < text.length; i++) {
+                if (!arr.filter(p => p == text.substring(i, x)).length > 0) {
+                    result = false;
+                    break;
+                }
+                x++;
+            }
+            return result
+        }
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('form-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+
+        })();
+        $(document).ready(function () {
+            $(".input-tel").inputmask({ mask: "99-99999999", placeholder: " " });
+            $(".input-email").inputmask({ alias: "email" });
+            $('.form-validation').submit(function () {
+                sendContactForm($(this));
+                return false;
+            });
+            $('.icheck').iCheck({
+                checkboxClass: 'icheckbox_flat-grey',
+                radioClass: 'iradio_flat-grey'
+            });
+            $('input[type=radio][name=rdoUsrType]').on('ifChanged', function () {
+                if (this.value == '1') {
+                    $("#frmPersonal").show();
+                    $("#frmOrg").hide();
+                    $('#frmOrg')[0].reset();
+                }
+                else if (this.value == '2') {
+                    $("#frmPersonal").hide();
+                    $("#frmOrg").show();
+                    $('#frmPersonal')[0].reset();
+                    //$("#frmOrg").delay(300).slideDown("slow");
+                }
+            });
+            $('body')
+                .off('change', '.js--username')
+                .on('change', '.js--username', function () {
+                    const $this = $(this);
+                    const text = $this.val()
+                    if (text != '') {
+                        if (!checkchar(text)) {
+                            $this.closest('.mb-3').find('.js--textalert').removeClass('d-none');
+                            $this.addClass('border-danger')
+                            setTimeout(function () {
+                                $this.val('')
+                            }, 1000);
+                        };
+                    }
+                })
+                .off('focus', '.js--username')
+                .on('focus', '.js--username', function () {
+                    const $this = $(this);
+                    $this.removeClass('border-danger')
+                    $this.closest('.mb-3').find('.js--textalert').addClass('d-none');
+                })
+                .off('focus', '.js--email')
+                .on('focus', '.js--email', function () {
+                    const $this = $(this);
+                    $this.removeClass('border-danger')
+                })
+
+        });
+        function sendContactForm(ele) {
+            const type = ele.find('button').data('type');
+            let formdata = ele.serializeArray();
+            let checknull = true;
+            $.each(formdata, function (i, v) {
+                if (v.value == '') {
+                    checknull = false;
+                    return false;
+                }
+            })
+            var data = {};
+            if (type == '1') {
+                data = {
+                    FirstName: $('#firstName').val(),
+                    LastName: $('#lastName').val(),
+                    PhoneNumber: ele.find('.js--phonenumber').val(),
+                    Email: ele.find('.js--email').val(),
+                    MemberName: ele.find('.js--username').val(),
+                    Password: ele.find('.js--password').val(),
+                    MemberTypeID: type
+                }
+            } else {
+                data = {
+                    OrgName: $('#OrgName').val(),
+                    PhoneNumber: ele.find('.js--phonenumber').val(),
+                    Email: ele.find('.js--email').val(),
+                    MemberName: ele.find('.js--username').val(),
+                    Password: ele.find('.js--password').val(),
+                    MemberTypeID: type
+                }
+            }
+            if (checknull) {
+                SWConfirm.fire().then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '/register',
+                            method: 'POST',
+                            data: { data: data },
+                            beforeSend: function () {
+                                SWSaveing.fire({ timer: 30000 });
+                            },
+                            success: function (data) {
+
+                                if (data.Status) {
+                                    SWSuccess.fire({
+                                        onClose: () => {
+                                            window.location.href = '/login';
+                                        }
+                                    });
+                                }
+                                else {
+                                    swal.close()
+                                    ele.find('.js--password').val('');
+                                    ele.find('.js--alert').removeClass('d-none');
+                                    ele.find('.js--alert').html(data.Message);
+                                    if (data.DataID == 1) {
+                                        ele.find('.js--username').addClass('border-danger');
+                                    } else if (data.DataID == 2) {
+                                        ele.find('.js--email').addClass('border-danger');
+                                    } else {
+                                        ele.find('.js--username').addClass('border-danger');
+                                        ele.find('.js--email').addClass('border-danger');
+                                    }
+                                }
+                            }
+                            , error: function (err) {
+                                SWError.fire();
+                                console.log(err);
+                            }
+                        });
+
+                    }
+                });
+            }
+        }
+        function seePasswordUser(thisID) {
+            //var x = document.getElementsByClassName("password");
+            const thisele = document.getElementById(thisID);
+
+            const x = thisele.closest('.input-group').querySelector('.js--password');
+            if (x.type === "password") {
+                x.type = "text";
+                $("#" + thisID).html("<i class='fas fa-eye-slash'></i>");
+            }
+            else {
+                x.type = "password";
+                $("#" + thisID).html("<i class='fas fa-eye'></i>");
+            }
+        }
+        function genPasswordUser(thisID) {
+            var j, x, i;
+            var result = '';
+            var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            var numbers = '0123456789';
+            for (i = 0; i < 7; i++) {
+                result += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            for (i = 0; i < 3; i++) {
+                result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+            }
+            result = result.split("");
+            for (i = result.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = result[i];
+                result[i] = result[j];
+                result[j] = x;
+            }
+            result = result.join("");
+            const thisele = document.getElementById(thisID);
+            const password = thisele.closest('.input-group').querySelector('.js--password');
+            password.value = result
+        }
+    </script>
+
+</body>
+</html>

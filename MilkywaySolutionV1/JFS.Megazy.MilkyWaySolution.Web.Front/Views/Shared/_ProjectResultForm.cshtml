@@ -1,0 +1,654 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using JFS.Megazy.MilkyWaySolution.Engine.Structure;
+@using JFS.Megazy.MilkyWaySolution.Engine.Helpers
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using Newtonsoft.Json
+
+
+@{
+    ProjectAddressDataRequest address = null;
+    CaseProjectData caseProject = null;
+    ProjectContactPersonDataRequest projectContact = null;
+    AddressRow projectContactAddressRow = null;
+    CaseApplicantData caseApplicantData = null;
+    CaseApplicantRequestRow caseApplicant = null;
+    CaseApplicantExtensionData caseApplicantEx = null;
+    ProjectLocationData location = null;
+    AddressRowRes locationAddress = null;
+    CaseProjectSourceFundData[] caseProjectSourceFundData = null;
+    CaseProjectReferencePersonData[] caseProjectReferencePersonData = null;
+    CaseProjectCharacteristicsData[] caseProjectCharacteristicsData = null;
+    CaseProjectDocumentCheckData[] caseProjectDocumentCheckData = null;
+    CaseExpenseData[] caseExpense = null;
+    ProxyData ProxyData = null;
+    ProxyAddressRow[] ProxAddress = null;
+    AddressRow[] ProxAddressDetail = null;
+    CaseProjectMetaData caseProjectMetaSchedule = null;
+    CaseProjectMetaData caseProjectMetaParicipant = null;
+    List<CaseExpenseExtensionData> CaseExpenseEx = null;
+    CaseProjectMetaData caseProjectProponent = null;
+
+    var currentUser = SiteSession.GetCurrentUser();
+    string fname = "";
+    string lname = "";
+    string PxReligionother = "";
+    string phonenumber = currentUser.PhoneNumber;
+    string email = currentUser.Email;
+    string locationProject = "";
+    int status = 0;
+    int caseID = 0;
+    int applicantID = 0;
+    int depID = 0;
+    string FollowUpResults = "";
+    if (currentUser.MemberTypeID == "1")
+    {
+        fname = currentUser.AliasName.Split(' ')[0];
+        lname = currentUser.AliasName.Split(' ')[1];
+    }
+    var caseregisterdata = (CaseRegisterDataResponse)ViewData.Model["CaseRegisterData"];
+    if (caseregisterdata != null)
+    {
+        if (caseregisterdata.CaseExpenseEx.Count > 0)
+        {
+            CaseExpenseEx = caseregisterdata.CaseExpenseEx;
+        }
+        if (caseregisterdata.caseMetaData.Count > 0)
+        {
+            caseProjectProponent = caseregisterdata.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_PROJECTPROPONENT").FirstOrDefault();
+
+            caseProjectMetaSchedule = caseregisterdata.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_SCHEDULE").FirstOrDefault();
+            caseProjectMetaParicipant = caseregisterdata.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_PARTICIPANT").FirstOrDefault();
+            if (caseregisterdata.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_FOLLOWUPRESULT").FirstOrDefault() != null)
+            {
+                FollowUpResults = caseregisterdata.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_FOLLOWUPRESULT").FirstOrDefault().MetaValue;
+            }
+        }
+        status = caseregisterdata.caseApplicant.StatusID;
+        if (caseregisterdata.caseProjectData != null)
+        {
+            caseID = caseregisterdata.caseProjectData.CaseProjectData.CaseID;
+            caseApplicant = caseregisterdata.caseApplicant;
+            address = caseregisterdata.caseProjectData.ProjectAddressData;
+            caseProject = caseregisterdata.caseProjectData.CaseProjectData;
+            applicantID = caseregisterdata.caseProjectData.CaseApplicantData.ApplicantID;
+            depID = caseregisterdata.caseProjectData.CaseApplicationData.DepartmentID;
+            caseApplicantData = caseregisterdata.caseProjectData.CaseApplicantData;
+            caseApplicantEx = caseregisterdata.caseProjectData.CaseApplicantExData;
+
+
+            if (caseregisterdata.caseProjectData.ProxyData != null)
+            {
+                PxReligionother = caseregisterdata.caseProjectData.ProxyData.Religionother;
+
+                ProxyData = caseregisterdata.caseProjectData.ProxyData.ProxyDetail;
+                if (caseregisterdata.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddress = caseregisterdata.caseProjectData.ProxyData.ProxAddress;
+                }
+                if (caseregisterdata.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddressDetail = caseregisterdata.caseProjectData.ProxyData.Address;
+                }
+            }
+
+            if (caseregisterdata.caseProjectData.ProjectLocation != null)
+            {
+                location = caseregisterdata.caseProjectData.ProjectLocation.ProjectLocation;
+                locationAddress = caseregisterdata.caseProjectData.ProjectLocation.AddressRow;
+                locationProject = location.LocationName + " ตำบล " + locationAddress.SubdistrictName + " อำเภอ " + locationAddress.DisctrictName + " จังหวัด " + locationAddress.ProvinceName + " " + locationAddress.PostCode;
+            }
+            if (caseregisterdata.caseProjectData.ProjectContactPersonData != null)
+            {
+                projectContact = caseregisterdata.caseProjectData.ProjectContactPersonData;
+                if (caseregisterdata.caseProjectData.ProjectContactPersonData.AddressRow != null)
+                {
+                    projectContactAddressRow = caseregisterdata.caseProjectData.ProjectContactPersonData.AddressRow;
+
+                }
+            }
+            if (caseregisterdata.caseProjectData.CaseProjectSourceFundData != null)
+            {
+                caseProjectSourceFundData = caseregisterdata.caseProjectData.CaseProjectSourceFundData;
+            }
+            if (caseregisterdata.caseProjectData.CaseProjectReferencePersonData != null)
+            {
+                caseProjectReferencePersonData = caseregisterdata.caseProjectData.CaseProjectReferencePersonData;
+            }
+            if (caseregisterdata.caseProjectData.CaseProjectCharacteristicsData != null)
+            {
+                caseProjectCharacteristicsData = caseregisterdata.caseProjectData.CaseProjectCharacteristicsData;
+            }
+            if (caseregisterdata.caseProjectData.CaseProjectDocumentCheckData != null)
+            {
+                caseProjectDocumentCheckData = caseregisterdata.caseProjectData.CaseProjectDocumentCheckData;
+            }
+            if (caseregisterdata.caseProjectData.ProjectCaseExpenseData != null)
+            {
+                caseExpense = caseregisterdata.caseProjectData.ProjectCaseExpenseData.caseExpense;
+
+            }
+        }
+    }
+}
+
+<table class="col-12">
+    <thead>
+        <tr>
+            <th colspan="3">
+                <h1 style="margin:0px;">แบบรายงานผลการสนับสนุนโครงการให้ความรู้</h1>
+                <h1 style="margin:0px;">ทางกฎหมายแก่ประชาชน</h1>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td width="35%">
+                ๑. หัวข้อโครงการ
+            </td>
+            <td width="65%" colspan="2">
+                @(caseApplicant != null ? caseApplicant.Subject.ConvertToThaiNumerals() : "")
+            </td>
+        </tr>
+        <tr>
+            <td width="35%">
+                ๒. ชื่อผู้เสนอโครงการ
+            </td>
+            <td width="65%" colspan="2">
+                @(caseApplicant != null ? caseApplicant.Title + caseApplicant.FirstName + " " + caseApplicant.LastName : "")
+            </td>
+        </tr>
+
+
+
+
+
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td style="width:33.33%;">
+                ตำบล <span>@(address != null ? address.AddressRow.SubdistrictName : "")</span>
+            </td>
+            <td style="width:33.33%;">
+                อำเภอ <span>@(address != null ? address.AddressRow.DisctrictName : "")</span>
+            </td>
+            <td style="width:33.33%;">
+                จังหวัด <span>@(address != null ? address.AddressRow.ProvinceName : "")</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td width="50%">
+                เบอร์ติดต่อ <span>@(address != null ? address.ProjectAddress.TelephoneNo.ConvertToThaiNumerals() : "")</span>
+            </td>
+            <td width="50%">
+                Email <span>@(address != null ? address.ProjectAddress.Email.ConvertToThaiNumerals() : "")</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <!--วิธีการยื่นคำขอ-->
+        <tr>
+            <td colspan="2">
+                ๓. วิธีการติดต่อ
+            </td>
+        </tr>
+        @{
+            foreach (var i in SingletonComplaintChannel.Instance.ComplaintChannelItem)
+            {
+                <tr>
+                    <td width="10%"></td>
+                    <td width="90%">
+                        @if (i.ChannelID == caseApplicant.ChannelID)
+                        {
+                            <span>&#9745;</span>
+                        }
+                        else
+                        {
+                            <span>&#9744;</span>
+                        }
+                        @(i.ChannelName)
+                    </td>
+                </tr>
+            }
+        }
+
+        <!--วิธีการยื่นคำขอ-->
+    </tbody>
+</table>
+<table class="col-12">
+    <!--ประเภทโครงการ-->
+    <tr>
+        <td colspan="2">
+            ๔. ประเภทโครงการที่ขอสนับสนุน (&#10003; &#9744;) เฉพาะประเภทที่เกี่ยวข้องหัวข้อโครงการ
+        </td>
+    </tr>
+    @{
+        int running = 0;
+        List<CaseProjectCharacteristicsData> check = new List<CaseProjectCharacteristicsData>();
+        CaseProjectCharacteristicsData data = null;
+        if (caseProjectCharacteristicsData != null)
+        {
+            foreach (var item in SingletonProject.Instance.CharacteristicsOfProjectItem)
+            {
+                data = caseProjectCharacteristicsData.Where(p => p.CharacteristicID == item.CharacteristicID).FirstOrDefault();
+                if (data != null)
+                {
+                    check.Add(new CaseProjectCharacteristicsData { CharacteristicID = data.CharacteristicID,Remark = data.Remark});
+                }
+                else
+                {
+                    check.Add(new CaseProjectCharacteristicsData { CharacteristicID = 999 });
+
+                }
+            }
+        }
+
+        foreach (var i in SingletonProject.Instance.CharacteristicsOfProjectItem)
+        {
+            <tr>
+                <td width="10%"></td>
+                <td width="90%">
+                    @if (i.CharacteristicID == check[running].CharacteristicID)
+                    {
+                        <span>&#9745;</span>
+                    }
+                    else
+                    {
+                        <span>&#9744;</span>
+                    }
+                    @(i.Characteristic)
+                    @if(i.CharacteristicID == 4)
+                    {
+                    <span>@(check[running].Remark.ConvertToThaiNumerals())</span>
+                    }
+                </td>
+            </tr>
+            running++;
+        }
+    }
+    <!--ประเภทโครงการ-->
+</table>
+<table class="col-12">
+    <tbody>
+        <!--วัตถุประสงค์-->
+        <tr>
+            <td colspan="3">
+                ๕. วัตถุประสงค์
+            </td>
+        </tr>
+
+        <tr>
+            <td width="10%"></td>
+            <td width="90%" colspan="2">
+                @(caseProject != null ? caseProject.ProjectObjective : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+@{ 
+    CaseProjectParticipant participant = null;
+    if (caseProjectMetaParicipant != null)
+    {
+        participant = JsonConvert.DeserializeObject<CaseProjectParticipant>(caseProjectMetaParicipant.MetaValue);
+    }
+}
+<table class="col-12">
+    <!--ผู้เข้าร่วมโครงการ-->
+    <tr>
+        <td colspan="3">
+            ๖. ผู้เข้าร่วมโครงการ(กรุณาแนบเอกสารหลักฐาน)
+        </td>
+    </tr>
+    <tr>
+        <td width="10%"></td>
+        <td width="90%" colspan="2">
+            ๖.๑ เจ้าหน้าที่
+        </td>
+    </tr>
+    @{
+        if (caseProjectMetaParicipant != null)
+        {
+            int rank = 0;
+            if (participant.participantofficers.Length > 0)
+            {
+                foreach (var i in participant.participantofficers)
+                {
+                    rank += 1;
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="50%">
+                          @(rank.ToString().ConvertToThaiNumerals()).  @(i.OfficerName)
+                        </td>
+                        <td width="40%">
+                            รับผิดชอบ <span>@(i.Responsibility)</span>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    }
+
+    <!--ผู้เข้าร่วมโครงการ-->
+
+</table>
+<table class="col-12">
+    <tr>
+        <td width="10%"></td>
+        <td width="90%" colspan="2">
+            ๖.๒ วิทยากร
+        </td>
+    </tr>
+    @{
+        if (caseProjectMetaParicipant != null)
+        {
+            int rank = 0;
+            if (participant.participantLecturers.Length > 0)
+            {
+                foreach (var i in participant.participantLecturers)
+                {
+                    rank += 1;
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="50%" colspan="2">
+                            @(rank.ToString().ConvertToThaiNumerals()). <span>@(i.LecturerName)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="50%" colspan="2">
+                            <table class="col-12">
+                                <tr>
+                                    <td width="40%">
+                                        หัวข้อ <span>@(i.Subject.ConvertToThaiNumerals())</span>
+                                    </td>
+                                    <td width="40%">
+                                        เวลา <span>@(i.Time.ConvertToThaiNumerals())</span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    }
+
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                ๖.๓ ผู้เข้าร่วมโครงการ (เอกสารแนบท้าย ๑)
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="50%">
+                จำนวน @(participant != null ? participant.Participant.ToString().ConvertToThaiNumerals() : 0.ToString().ConvertToThaiNumerals()) คน
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                ๖.๓ ผู้สังเกต (ถ้ามี)
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="50%">
+                จำนวน @(participant != null ? participant.Observer.ToString().ConvertToThaiNumerals() : 0.ToString().ConvertToThaiNumerals()) คน (เอกสารแนบท้าย)
+            </td>
+        </tr>
+    </tbody>
+</table>
+@{ 
+    List<CaseProjectSchedule> schedule = null;
+    if (caseProjectMetaSchedule != null)
+    {
+        schedule = JsonConvert.DeserializeObject<List<CaseProjectSchedule>>(caseProjectMetaSchedule.MetaValue);
+    }
+}
+<table class="col-12">
+    <tr>
+        <td width="100%">
+            ๗. กำหนดการ
+        </td>
+    </tr>
+    <tr>
+        <td width="100%">
+            <table  class="catalogGeneralTable" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th align="center">
+                            เวลา
+                        </th>
+                        <th align="center">
+                            กิจกรรม
+                        </th>
+                        <th align="center">
+                            วิทยากร
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (schedule != null)
+                        {
+                            foreach (var i in schedule)
+                            {
+                                <tr>
+                                    <td width="20%">
+                                        @(i.Time.ConvertToThaiNumerals())
+                                    </td>
+                                    <td width="40%">
+                                        @(i.Activity.ConvertToThaiNumerals())
+                                    </td>
+                                    <td width="40%">
+                                        @(i.Lecturer.ConvertToThaiNumerals())
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td>
+                ๘. วันที่/เวลา/สถานที่ดำเนินการ
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @(!string.IsNullOrEmpty(locationProject) ? locationProject.ConvertToThaiNumerals() : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td colspan="2">
+                ๙. ผลที่คาดว่าจะได้รับ
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                @(caseProject != null ? caseProject.ProjectResult.ConvertToThaiNumerals() : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tr>
+        <td width="100%">
+            ๑๐. งบประมาณที่ได้รับจัดสรร
+        </td>
+    </tr>
+    <tr>
+        <td width="100%">
+            <table class="catalogGeneralTable" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th align="center">
+                            รายการ
+                        </th>
+                        <th align="center">
+                            เกณฑ์ราคา
+                        </th>
+                        <th align="center">
+                            (คูณ)
+                        </th>
+                        <th align="center">
+                            จำนวน
+                        </th>
+
+                        <th align="center">
+                            ยอดเงิน
+                        </th>
+                        <th align="center">
+                            หมายเหตุ
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ 
+                        double sum = 0.00;
+                        foreach (var item in SingletonExpense.GetByJFCaseType(4))
+                        {
+                        <tr>
+                            <td>
+                                @(item.ExpenseName)
+                            </td>
+                            <td align="center">
+                                @(CaseExpenseEx != null ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().PriceThreshold != 0 ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().PriceThreshold.ToString().ConvertToThaiNumerals() : item.PriceThreshold.ToString().ConvertToThaiNumerals() : item.PriceThreshold.ToString().ConvertToThaiNumerals())
+                            </td>
+                            <td align="center">
+                                <span>X</span> 
+                            </td>
+                            <td align="right">
+                                @(CaseExpenseEx != null ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().Unit.ToString().ConvertToThaiNumerals() : 0.ToString().ConvertToThaiNumerals())
+                            </td>
+                            <td align="right">
+                                @(CaseExpenseEx != null ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().Amount.ToString().ConvertToThaiNumerals() : 0.00.ToString().ConvertToThaiNumerals())
+                            </td>
+                            <td>
+                                @(CaseExpenseEx != null ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().Remark.ConvertToThaiNumerals() : "")
+                            </td>
+                        </tr>
+                            sum += CaseExpenseEx != null ? CaseExpenseEx.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault().Amount:0;
+                        }
+                        }
+
+                    <tr>
+                        <td align="center">
+                            รวม
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td colspan="2" align="right">
+                            @(sum.ToString().ConvertToThaiNumerals()) บาท
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td colspan="2">
+                ๑๑. ผลการติดตามและประเมินผล (เอกสารแนบท้าย ๒)
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                @(FollowUpResults.ConvertToThaiNumerals())
+            </td>
+        </tr>
+    </tbody>
+</table>
+@{ 
+    ProjectProponentData projectProponent = null;
+    if (caseProjectProponent != null)
+    {
+        projectProponent = JsonConvert.DeserializeObject<ProjectProponentData>(caseProjectProponent.MetaValue);
+    }
+}
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td colspan="2">
+                ๑๒. ผู้เสนอโครงการ
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                ชื่อ @(projectProponent != null ? projectProponent.Fullname : "")
+            </td>
+        </tr>
+        <tr>
+            <td width="10%"></td>
+            <td width="90%">
+                ตำแหน่ง @(projectProponent != null ? projectProponent.Position : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td width="10%"></td>
+            <td width="35%">
+                เบอร์ติดต่อ @(projectProponent != null ? projectProponent.Telephone.ConvertToThaiNumerals() : "")
+            </td>
+            <td idth="35%">
+                Email @(projectProponent != null ? projectProponent.Email.ConvertToThaiNumerals() : "")
+            </td>
+            <td idth="20%">
+                Line @(projectProponent != null ? projectProponent.Line.ConvertToThaiNumerals() : "")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12">
+    <tbody>
+        <tr>
+            <td>
+                ๑๓. รูปถ่ายและคลิปวีดีโอประกอบโครงการ (อย่างน้อย ๕ รูปภาพ และคลปวีดีโอ ๑๐ นาที บรรจุลงในแผ่น CD)
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="col-12" style="margin-top: 2rem;">
+    <tbody>
+        <tr>
+            <td>
+                หมายเหตุ : กรุณาแนบเอกสาร หลักฐานประกอบการจัดโครงการ ตามที่ระบุในคู่มือฯ หัวข้อ ๓.๒
+            </td>
+        </tr>
+    </tbody>
+</table>

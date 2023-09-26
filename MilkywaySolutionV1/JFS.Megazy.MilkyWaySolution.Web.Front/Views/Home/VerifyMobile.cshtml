@@ -1,0 +1,162 @@
+﻿@{
+    CurrentUser currentUser = SiteSession.GetCurrentUser();
+}
+@section styles{
+    <link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+}
+<form id="frm">
+    <div class="form-group row justify-content-md-center">
+        <label for="TelNo" class="col-sm-2 col-form-label">เบอร์มือถือลงท้ายด้วย</label>
+        <div class="col-sm-4">
+            <div class="input-group input-group-sm">
+                <input type="text" maxlength="10" class="form-control form-control-sm" id="TelNo" value="***-***-*@(currentUser.PhoneNumber.Substring(currentUser.PhoneNumber.Length-3,3))" readonly>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" id="btOTP">ขอ OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row justify-content-md-center">
+        <label for="OTP" class="col-sm-2 col-form-label">รหัส OTP</label>
+        <div class="col-sm-4">
+            <div class="input-group input-group-sm">
+                <input type="text" maxlength="4" class="form-control form-control-sm  validate[required]" id="OTP" value="">
+
+            </div>
+            <div class="text-danger small" id="errmesage"></div>
+
+        </div>
+
+    </div>
+    <div class="d-block text-center">
+        <button type="button" class="btn btn-primary" id="btVerify">ตรวจสอบ</button>
+    </div>
+</form>
+@section scripts{
+    <script src="~/Scripts/jquery.validationEngine.js"></script>
+    <script src="~/Scripts/jquery.validationEngine-th.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('body').off('click', '#btVerify')
+                .on('click', '#btVerify', function (e) {
+                    if ($('#frm').validationEngine('validate')) {
+                        $.ajax({
+                            url: '/verifyotp',
+                            method: 'POST',
+                            data: {
+                                otp: $('#OTP').val(),
+                                verificationType: 'mobile'
+                            },
+                            beforeSend: function () { },
+                            success: function (data) {
+                                if (data.Status) {
+                                    window.location.href = "/form";
+                                } else {
+                                    $('#errmesage').html(data.Message);
+                                }
+                            }
+                            , error: function (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                }).off('click', '#btOTP')
+                .on('click', '#btOTP', function (e) {
+                    $.ajax({
+                        url: '/getotp',
+                        method: 'POST',
+                        data: {},
+                        beforeSend: function () { $(this).html('กำลังขอ OTP...') },
+                        success: function (data) {
+                            console.log(data);
+                            if (data.Status) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'ระบบส่ง OTP แล้ว โปรดตรวจสอบ',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                }).then((result) => {
+                                    window.location.reload();
+                                })
+                               
+                            }
+                        }
+                        , error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+
+        });
+        function gettracking(caseno) {
+            tbody = $('#result');
+            $.ajax({
+                url: '/api/gettrackingresult',
+                method: 'POST',
+                data: { id: caseno },
+                beforeSend: function () { },
+                success: function (data) {
+                    if (data.Result.Status) {
+                        if (data.Result.Data.length != 0) {
+                            var template = Handlebars.compile($('#tmpl-list').html());
+                            tbody.html(template(data.Result.Data));
+                        } else {
+                            tbody.html('<div class="text-center text-danger h4">ไม่พบข้อมูลที่ค้นหา</div>');
+                        }
+                    } else {
+                        let elestr = '<div class="text-center text-danger h4">' + data.Result.Message + '</div>';
+                        tbody.html(elestr);
+                    }
+                }
+                , error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            //SWConfirm.fire().then((result) => {
+            //    if (result.value) {
+            //        SWSuccess.fire()
+            //    }
+            //});
+
+
+
+        }
+
+    </script>
+    <script id="tmpl-list" type="text/x-handlebars-template">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">สถานะ</h5>
+                <div class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+
+                    {{#each this}}
+                    <div class="vertical-timeline-item vertical-timeline-element">
+                        <div>
+                            <span class="vertical-timeline-element-icon bounce-in"></span>
+                            <div class="vertical-timeline-element-content bounce-in">
+                                {{#if DataJudgeResult}}
+                                <h4 class="timeline-title text-primary"><span class="text-success">{{{DataJudgeResult.JudgeDate}}}</span> {{{DataJudgeResult.Message}}}</h4>
+
+                                {{/if}}
+
+                                <h4 class="timeline-title">
+                                    <span class="text-success">{{ProcessDate}}</span>
+                                    {{Message}}
+                                </h4>
+                                {{#each SubProcess}}<p class="pl-3 text-dark"><span class="small font-italic">{{{ProcessDate}}}</span> {{{Status}}} </p> {{/each}}
+                            </div>
+
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </script>
+}
+

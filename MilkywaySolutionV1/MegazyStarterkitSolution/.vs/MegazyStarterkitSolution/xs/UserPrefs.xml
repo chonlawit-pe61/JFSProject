@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{90648E2F-CE48-4C0D-B830-0C449650194B}|" DisableMonoRequiredInfoBar="True">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Megazy.StarterKit.Engine/DalBase.cs">
+    <Files>
+      <File FileName="Megazy.StarterKit.Engine/DalBase.cs" Line="41" Column="37" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MegazyStarterkitSolution" expanded="True">
+            <Node name="Megazy.StarterKit.Engine" expanded="True">
+              <Node name="DalBase.cs" selected="True" />
+            </Node>
+            <Node name="Megazy.StarterKit.Engine.Mvc" expanded="True" />
+            <Node name="Megazy.StarterKit.Localization" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Megazy.StarterKit.Mvc PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>

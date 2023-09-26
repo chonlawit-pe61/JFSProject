@@ -1,0 +1,46 @@
+﻿<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <title>ระบบสารสนเทศกองทุนยุติธรรม  กระทรวงยุติธรรม</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/skins/grey.css" rel="stylesheet" />
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/jquery")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/bootstrap")
+    @Scripts.RenderFormat(VersionScript.ScriptVersion, "~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    @RenderBody()
+
+    @RenderSection("modals", required: false)
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/assets/js/scripts-init/sweetalert2@9.js"></script>
+    <script src="~/assets/js/scripts-init/sweet-alerts.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/vendors/metismenu.js"></script>
+    <script src="~/assets/js/scripts-init/app.js"></script>
+    <script src="~/assets/js/scripts-init/demo.js"></script>
+    <script src="~/assets/js/scripts-init/adminlte.js"></script>
+    <script src="~/assets/js/scripts-init/handlebars.min-v4.5.3.js" asyn></script>
+    <script src="~/assets/js/scripts-init/paginationjs/pagination.js"></script>
+    <script src="~/assets/js/vendors/form-components/icheck.min.js"></script>
+    <script src="~/assets/js/vendors/form-components/input-mask.min.js"></script>
+    @Scripts.Render("~/bundles/common")
+    @RenderSection("scripts", required: false)
+    @Html.RenderScripts()
+    <!--Toggle Switch -->
+    <script src="~/assets/js/vendors/form-components/toggle-switch.js"></script>
+    <!--Slick Carousel -->
+    <script src="~/assets/js/vendors/carousel-slider.js"></script>
+    <script src="~/assets/js/scripts-init/carousel-slider.js"></script>
+</body>
+</html>

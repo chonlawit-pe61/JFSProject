@@ -1,0 +1,97 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Singleton;
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository.Navigation;
+@using JFS.Megazy.MilkyWaySolution.Engine.Structure;
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <title>กองทุนยุติธรรม  กระทรวงยุติธรรม</title>
+    <title>@(ViewBag.Title) กองทุนยุติธรรม  กระทรวงยุติธรรม</title>
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.MetaKeywords))
+        {
+            <meta name="keywords" content="@ViewBag.MetaKeywords" />
+        }
+        if (!string.IsNullOrEmpty(ViewBag.MetaDescription))
+        {
+            <meta name="description" content="@Html.Raw(ViewBag.MetaDescription)" />
+            @*<meta property="og:description" content="@Html.Raw(ViewBag.MetaDescription)" />*@
+        }
+        if (!string.IsNullOrEmpty(ViewBag.CanonicalURL))
+        {
+            <link rel="canonical" href="@ViewBag.CanonicalURL">
+        }
+        if (!string.IsNullOrEmpty(ViewBag.MetaImage))
+        {
+            <meta property="og:image" content="@Html.Raw(ViewBag.MetaImage)" />
+        }
+        @*if (!string.IsNullOrEmpty(ViewBag.Og))
+            {
+                @Html.Raw(ViewBag.Og)
+            }*@
+        @Html.Raw(ViewBag.Og)
+        <meta name="author" content="กองทุนยุติธรรม">
+    }
+    @*<link href="~/assets/css/base.css" rel="stylesheet" />*@
+    <link href="~/Content/bootstrap.css?v=@(VersionScript.StyleVersion)" rel="stylesheet" />
+    <link href="~/assets/css/base.css?v=@(VersionScript.StyleVersion)" rel="stylesheet" />
+    @Styles.RenderFormat(VersionScript.StyleVersion, "~/Content/css")
+    @RenderSection("styles", required: false)
+    <style type="text/css">
+    </style>
+</head>
+<body class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white navbar-fixed-top border-bottom">
+     
+        <a href="/"><div class="moj-src"></div></a>
+        <div class="ml-2 mb-0 h4" style="color: #d44863;">
+            สำนักงานกองทุนยุติธรรม
+            <span class="d-block text-muted" style="font-size:11px;">Office OF Justice Fund |  Ministry Of Justice</span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-jfs" href="/form/">ยื่นคำขอ <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-jfs" href="#">ดาวน์โหลด</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-jfs" href="/tracking">ติดตามผลการพิจารณา</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-jfs" href="/contact">ติดต่อเรา</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <!-- Content here -->
+        @RenderBody()
+    </div>
+    <footer class="mastfoot mt-auto">
+        <div class="container-fluid">
+            <span class="text-muted small">© @(DateTime.Now.Year) สงวนลิขสิทธิ์โดย สำนักงานกองทุนยุติธรรม สำนักงานปลัดกระทรวงยุติธรรม</span>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/scripts-init/handlebars.min-v4.5.3.js" asyn></script>
+    <script src="~/assets/js/scripts-init/paginationjs/pagination.js"></script>
+    @Scripts.Render("~/bundles/common")
+    @RenderSection("scripts", required: false)
+    @Html.RenderScripts()
+
+</body>
+</html>

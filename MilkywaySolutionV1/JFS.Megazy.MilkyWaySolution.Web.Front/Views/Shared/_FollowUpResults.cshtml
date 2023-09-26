@@ -1,0 +1,38 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Structure
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using Newtonsoft.Json;
+@{
+    string ComponentName = "followupresults";
+    string FollowUpResults = (string)ViewData["FollowUpResults"];
+    int caseID = (int)ViewData["caseID"];
+    int isSend = (int)ViewData["isSend"];
+}
+<form id="frm@(ComponentName)">
+    <input id="caseID@(ComponentName)" type="hidden" value="@(caseID)" />
+    <div class="card" id="cd@(ComponentName)">
+        <div class="card-header" id="headingOne@(ComponentName)" data-toggle="collapse" data-target="#collapseOne@(ComponentName)" aria-expanded="true" aria-controls="collapseOne@(ComponentName)">
+            <span class="font-weight-bold h6 pb-0" style="margin-top: 0.5rem;">11. ผลการติดตามและประเมินผล</span>
+            <div class="btn-actions-pane-right actions-icon-btn">
+                <i class="fa fa-plus animate-icon mr-2"></i>
+            </div>
+        </div>
+        <div id="collapseOne@(ComponentName)" class="collapse" aria-labelledby="headingOne@(ComponentName)" data-parent="#accordion2">
+            <div class="card-body">
+                <div class="form-row @(isSend != 0 ? "donttouch":"")">
+                    <input type="hidden" value="@(FollowUpResults)" id="textResult@(ComponentName)"/>
+                    <textarea class="form-control form-control-sm js--text" rows="3" maxlength="1000" id="result@(ComponentName)"></textarea>
+                    <div class="col-12 text-right mt-3">
+                        <a href="javascript:void(0)" class="btn btn-outline-secondary btn-sm border-0 js--cancel" style="display:none;">ยกเลิก</a>
+                        <a href="javascript:void(0)" class="btn btn-outline-primary btn-sm border-0 js--btsave" id="btsave@(ComponentName)" style="display:none;">บันทีก</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+@Html.Script(
+    @<script src="@Url.Content("~/assets/js/scripts-init/jf-"+ComponentName+".js")" type="text/javascript"></script>
+)
+

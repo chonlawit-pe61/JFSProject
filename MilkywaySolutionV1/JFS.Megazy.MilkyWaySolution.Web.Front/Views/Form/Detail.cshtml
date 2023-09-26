@@ -1,0 +1,498 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using JFS.Megazy.MilkyWaySolution.Engine.Structure;
+@using JFS.Megazy.MilkyWaySolution.Engine.Helpers
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+@using System.Web.Script.Serialization
+@model CaseRegisterDataResponse
+@{
+    ProjectAddressDataRequest address = null;
+    CaseProjectData caseProject = null;
+    ProjectContactPersonDataRequest projectContact = null;
+    AddressRow projectContactAddressRow = null;
+    CaseApplicantData caseApplicantData = null;
+    CaseApplicantRequestRow caseApplicant = null;
+    CaseApplicantExtensionData caseApplicantEx = null;
+    ProjectLocationData location = null;
+    AddressRowRes locationAddress = null;
+    CaseProjectSourceFundData[] caseProjectSourceFundData = null;
+    CaseProjectReferencePersonData[] caseProjectReferencePersonData = null;
+    CaseProjectCharacteristicsData[] caseProjectCharacteristicsData = null;
+    CaseProjectDocumentCheckData[] caseProjectDocumentCheckData = null;
+    CaseExpenseData[] caseExpense = null;
+    List<ProjectAttachfile> listAttachfiles = null;
+    List<ProjectResultAttachfile> listResultAttachfiles = null;
+    ProxyData ProxyData = null;
+    ProxyAddressRow[] ProxAddress = null;
+    AddressRow[] ProxAddressDetail = null;
+    ReviewReport[] reviewdata = null;
+    CaseProjectMetaData caseProjectMetaSchedule = null;
+    CaseProjectMetaData caseProjectMetaParicipant = null;
+    CaseProjectMetaData caseProjectProponent = null;
+    CaseProjectMetaData caseSendReport = null;
+    List<MetaValueDataRepository> listResultAttachVideo = null;
+    List<CaseExpenseExtensionData> CaseExpenseEx = null;
+
+    var currentUser = SiteSession.GetCurrentUser();
+    string fname = "";
+    string lname = "";
+    string PxReligionother = "";
+    string phonenumber = currentUser.PhoneNumber;
+    string email = currentUser.Email;
+    string locationProject = "";
+    int status = 0;
+    int caseID = 0;
+    int applicantID = 0;
+    int depID = 0;
+    string FollowUpResults = "";
+    DateTime date = DateTime.Now;
+    if (currentUser.MemberTypeID == "1")
+    {
+        fname = currentUser.AliasName.Split(' ')[0];
+        lname = currentUser.AliasName.Split(' ')[1];
+    }
+    if (Model != null)
+    {
+        if (Model.CaseExpenseEx.Count > 0)
+        {
+            CaseExpenseEx = Model.CaseExpenseEx;
+        }
+        if (Model.caseMetaData.Count > 0)
+        {
+            caseProjectProponent = Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_PROJECTPROPONENT").FirstOrDefault();
+            caseProjectMetaSchedule = Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_SCHEDULE").FirstOrDefault();
+            caseProjectMetaParicipant = Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_PARTICIPANT").FirstOrDefault();
+            if (Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_FOLLOWUPRESULT").FirstOrDefault() != null)
+            {
+                FollowUpResults = Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_OF_FOLLOWUPRESULT").FirstOrDefault().MetaValue;
+            }
+        }
+        status = Model.caseApplicant.StatusID;
+        if (Model.caseProjectData != null)
+        {
+            caseID = Model.caseProjectData.CaseProjectData.CaseID;
+            caseApplicant = Model.caseApplicant;
+            address = Model.caseProjectData.ProjectAddressData;
+            caseProject = Model.caseProjectData.CaseProjectData;
+            applicantID = Model.caseProjectData.CaseApplicantData.ApplicantID;
+            depID = Model.caseProjectData.CaseApplicationData.DepartmentID;
+            caseApplicantData = Model.caseProjectData.CaseApplicantData;
+            caseApplicantEx = Model.caseProjectData.CaseApplicantExData;
+
+
+            if (Model.caseProjectData.ProxyData != null)
+            {
+                PxReligionother = Model.caseProjectData.ProxyData.Religionother;
+
+                ProxyData = Model.caseProjectData.ProxyData.ProxyDetail;
+                if (Model.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddress = Model.caseProjectData.ProxyData.ProxAddress;
+                }
+                if (Model.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddressDetail = Model.caseProjectData.ProxyData.Address;
+                }
+            }
+
+            if (Model.caseProjectData.ProjectLocation != null)
+            {
+                location = Model.caseProjectData.ProjectLocation.ProjectLocation;
+                locationAddress = Model.caseProjectData.ProjectLocation.AddressRow;
+                locationProject = location.LocationName + " ตำบล " + locationAddress.SubdistrictName + " อำเภอ " + locationAddress.DisctrictName + " จังหวัด " + locationAddress.ProvinceName + " " + locationAddress.PostCode;
+            }
+            if (Model.caseProjectData.ProjectContactPersonData != null)
+            {
+                projectContact = Model.caseProjectData.ProjectContactPersonData;
+                if (Model.caseProjectData.ProjectContactPersonData.AddressRow != null)
+                {
+                    projectContactAddressRow = Model.caseProjectData.ProjectContactPersonData.AddressRow;
+
+                }
+            }
+            if (Model.caseProjectData.CaseProjectSourceFundData != null)
+            {
+                caseProjectSourceFundData = Model.caseProjectData.CaseProjectSourceFundData;
+            }
+            if (Model.caseProjectData.CaseProjectReferencePersonData != null)
+            {
+                caseProjectReferencePersonData = Model.caseProjectData.CaseProjectReferencePersonData;
+            }
+            if (Model.caseProjectData.CaseProjectCharacteristicsData != null)
+            {
+                caseProjectCharacteristicsData = Model.caseProjectData.CaseProjectCharacteristicsData;
+            }
+            if (Model.caseProjectData.CaseProjectDocumentCheckData != null)
+            {
+                caseProjectDocumentCheckData = Model.caseProjectData.CaseProjectDocumentCheckData;
+            }
+            if (Model.caseProjectData.ProjectCaseExpenseData != null)
+            {
+                caseExpense = Model.caseProjectData.ProjectCaseExpenseData.caseExpense;
+
+            }
+        }
+
+        if (caseID != 0 && Model.caseMetaData.Count > 0)
+        {
+            caseSendReport = Model.caseMetaData.Where(p => p.MetaKey.Trim() == "CASEPROJECT_SENDREPORT").OrderByDescending(p => p.MetaID).FirstOrDefault();
+        }
+        if (caseSendReport != null)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            reviewdata = js.Deserialize<ReviewReport[]>(caseSendReport.MetaValue);
+        }
+
+        listAttachfiles = (List<ProjectAttachfile>)ViewData["ProjectAttachfile"];
+        listResultAttachfiles = (List<ProjectResultAttachfile>)ViewData["ProjectResultAttachfile"];
+        listResultAttachVideo = (List<MetaValueDataRepository>)ViewData["ProjectResultAttachVideo"];
+
+
+    }
+}
+@section styles{
+    <style>
+        body {
+            background-color: #dbdbdb
+        }
+
+        .autosize-input {
+            height: 2rem;
+        }
+
+        .donttouch {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .card-header {
+            cursor: pointer;
+        }
+
+        .animate-icon {
+            transition: 0.5s;
+        }
+
+        .alerttext {
+            text-align: center;
+            color: snow;
+            background-color: #dc3545;
+            width: 122px;
+            border-radius: 5px;
+            height: 25px;
+            font-size: 16px;
+        }
+
+        .comment {
+            color: red;
+            font-size: 16px;
+        }
+
+        #accordion > form {
+            margin: 0.5rem 0px 0.5rem 0px;
+        }
+
+        .rotate-right {
+            transform: rotate(225deg);
+        }
+
+        .rotate-left {
+            transform: rotate(-90deg);
+        }
+
+        .card-body > .row > div {
+            padding: 0.65rem;
+        }
+
+            .card-body > .row > div > span {
+                font-size: 16px;
+            }
+
+        .img-thumb-ct {
+            max-width: 600px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .sendreport {
+            color: red;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /*.fontalert {
+            z-index: 5;
+            font-size: 2rem;
+            font-weight: bold;
+            color: red;
+            opacity: 0.6;
+            position: fixed;
+            width: 400px;
+            top: 50%;
+            left: 50%;
+            margin-left: -165px;
+        }
+
+        @@media only screen and (max-width: 375px) {
+            .fontalert {
+                font-size: 1.5rem;
+                width: 300px;
+                top: 50%;
+                left: 50%;
+                margin-left: -125px;
+            }
+        }*/
+
+        .remove-img, .remove-video {
+            background: red;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            position: absolute;
+            z-index: 3;
+            font-size: medium;
+        }
+
+            .remove-img:hover, .remove-video:hover {
+                background: white;
+                color: red;
+            }
+    </style>
+}
+
+<input type="hidden" id="caseid" value="@(caseID)" />
+<input type="hidden" id="datenow" value="@( date.ToShortDateString() +" "+ date.ToShortTimeString())" />
+<input type="hidden" id="reportdata" value="@(caseSendReport != null ? caseSendReport.MetaValue : "")" />
+
+<div class="" id="donttouch">
+    <div class="mt-4 mb-3" id="fontalert" style="display:none">
+        <span>ส่งรายงานโครงการแล้ว</span>
+    </div>
+
+    <div class="col-md-12 mt-4 mb-3" id="comment" style="display:none">
+        <span class="row alerttext">&nbsp;แจ้งแก้ไขรายงาน&nbsp;</span>
+        <span class="row comment"></span>
+    </div>
+
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="col-12 text-center ">
+                <h3>แบบรายงานผลการสนับสนุนโครงการให้ความรู้ทางก็หมายแก่ประชาชน</h3>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <span class="font-weight-bold">1. หัวข้อโครงการ :</span> <span>@(caseApplicant != null ? caseApplicant.Subject : "")</span>
+                </div>
+                <div class="col-12">
+                    <span class="font-weight-bold">2. ชื่อผู้เสนอโครงการ :</span> <span>@(caseApplicant != null ? caseApplicant.Title + caseApplicant.FirstName + " " + caseApplicant.LastName : "")</span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <span class="font-weight-bold">ตำบล :</span> <span>@(address != null ? address.AddressRow.SubdistrictName : "")</span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <span class="font-weight-bold">อำเภอ :</span> <span>@(address != null ? address.AddressRow.DisctrictName : "")</span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <span class="font-weight-bold">จังหวัด :</span> <span>@(address != null ? address.AddressRow.ProvinceName : "")</span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <span class="font-weight-bold">เบอร์ติดต่อ :</span> <span>@(address != null ? address.ProjectAddress.TelephoneNo : "")</span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <span class="font-weight-bold">Email :</span> <span>@(address != null ? address.ProjectAddress.Email : "")</span>
+                </div>
+                <div class="col-12">
+                    <span class="font-weight-bold">3. วิธีการยื่นคำขอ :</span> <span>@(caseApplicant != null ? SingletonComplaintChannel.Instance.ComplaintChannelItem.Where(p => p.ChannelID == caseApplicant.ChannelID).FirstOrDefault().ChannelName : "")</span>
+                </div>
+                <div class="col-12">
+                    <span class="font-weight-bold">4. ประเภทโครการที่ขอรับการสนับสนุน</span>
+                </div>
+                @{
+                    if (caseProjectCharacteristicsData != null)
+                    {
+                        CharacteristicsOfProjectData characteristics = null;
+                        foreach (var i in caseProjectCharacteristicsData)
+                        {
+                            characteristics = SingletonProject.Instance.CharacteristicsOfProjectItem.Where(p => p.CharacteristicID == i.CharacteristicID).FirstOrDefault();
+                            <div class="col-12 pl-5">
+                                <span>@(characteristics != null ? "-" + characteristics.Characteristic : "")</span>
+                            </div>
+                            if (i.CharacteristicID == 4)
+                            {
+                                <div class="col-12 pl-5">
+                                    <span class="pl-5">
+                                        @(i.Remark)
+                                    </span>
+                                </div>
+                            }
+
+                        }
+                    }
+
+                }
+                <div class="col-12">
+                    <span class="font-weight-bold">5. วัตถุประสงค์</span>
+                </div>
+                <div class="col-12 pl-5">
+                    <span>@(caseProject!=null? caseProject.ProjectObjective: "")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="accordion" class="mb-2">
+        @Html.Partial("_Participant", new ViewDataDictionary { { "caseID", caseID }, { "CaseProjectMetaData", caseProjectMetaParicipant } , { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    </div>
+    <div id="accordion1" class="mb-2">
+        @Html.Partial("_CaseSchedule", new ViewDataDictionary { { "caseID", caseID }, { "CaseProjectMetaData", caseProjectMetaSchedule }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    </div>
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <span class="font-weight-bold">8. วันที่/เวลา/สถานที่ของโครงการ</span>
+                </div>
+                <div class="col-12 pl-5">
+                    <span>@(!string.IsNullOrEmpty(locationProject) ? locationProject : "")</span>
+                </div>
+                <div class="col-12">
+                    <span class="font-weight-bold">9. ผลที่คาดว่าจะได้รับ</span>
+                </div>
+                <div class="col-12 pl-5">
+                    <span>@(caseProject!=null? caseProject.ProjectResult: "")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_AllocateBudget", new ViewDataDictionary { { "caseID", caseID }, { "applicantID", applicantID }, { "CaseExpenseEx", CaseExpenseEx }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    <div id="accordion2" class="mb-2">
+        @Html.Partial("_FollowUpResults", new ViewDataDictionary { { "caseID", caseID }, { "FollowUpResults", FollowUpResults }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    </div>
+    @Html.Partial("_ProjectProponent", new ViewDataDictionary { { "caseID", caseID }, { "applicantID", applicantID }, { "caseApplicant", caseApplicant }, { "caseProjectProponent", caseProjectProponent }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    @Html.Partial("_ResultAttachFile", new ViewDataDictionary { { "caseID", caseID }, { "applicantID", applicantID }, { "ProjectResultAttachfile", listResultAttachfiles }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    @Html.Partial("_ResultAttachImage", new ViewDataDictionary { { "caseID", caseID }, { "applicantID", applicantID }, { "ProjectResultAttachfile", listResultAttachfiles }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+    @Html.Partial("_ResultAttachVideo", new ViewDataDictionary { { "caseID", caseID }, { "ProjectResultAttachVideo", listResultAttachVideo }, { "isSend", reviewdata != null ? reviewdata[0].isSendreport : 0 } })
+
+    @*<div class="text-right">
+            <a title="ดาวน์โหลด" href="/download/projectresult?caseid=@(caseID)&applicantid=@(applicantID)&depid=@(depID)" class="btn btn-square btn-outline-primary border-0"><i class="fa fa-download mr-1"></i> แบบรายงานผลการสนับสนุน</a>
+        </div>*@
+</div>
+
+
+<div class="d-flex justify-content-center mt-3 mb-3">
+    <input type="button" class="btn-danger btn-sm border-0" value="ส่งรายงานโครงการ" id="sendreport" style="display:none" />
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker-thai.js"></script>
+    <script src="~/assets/js/vendors/form-components/bootstrap-multiselect.js"></script>
+    <script src="~/assets/js/vendors/form-components/select2.min.js"></script>
+    <script src="~/assets/js/scripts-init/form-components/input-select.js"></script>
+    <script src="~/assets/js/vendors/form-components/input-mask.min.js"></script>
+    <script src="~/assets/js/vendors/form-components/textarea-autosize.min.js"></script>
+    <script src="~/assets/js/scripts-init/web-common.js"></script>
+    <script src="~/assets/js/vendors/toastr.js"></script>
+    <script src="~/assets/js/scripts-init/web-upload.js"></script>
+    <script src="~/assets/js/vendors/cropper.min.js"></script>
+    <script type="text/javascript">
+        $(".input-cardid").inputmask({ mask: "9-9999-99999-99-9", groupSeparator: "-", autoUnmask: true });
+        $(".input-decimal").inputmask({ alias: "decimal", groupSeparator: ",", rightAlign: true, autoGroup: true, autoUnmask: true });
+        $(".input-tel").inputmask({ mask: "99-99999999", placeholder: " " });
+        $(".input-number").inputmask({ alias: 'integer', rightAlign: true, allowPlus: false, allowMinus: false });
+        $(".input-email").inputmask({ alias: "email" });
+        $('textarea.autosize-input').textareaAutoSize();
+        $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_flat-grey',
+            radioClass: 'iradio_flat-grey'
+        });
+        var length = 0;
+        $(document).ready(function () {
+            if ($('#reportdata').val() != "") {
+                var json = JSON.parse($('#reportdata').val())
+                if (json[0].isSendreport == 1) {
+                    //$('#donttouch').addClass('donttouch');
+                    $('#fontalert').addClass('sendreport').show();
+                    //$('#fontalert').addClass('fontalert').show();
+                }
+                else
+                {
+                    $('#sendreport').show();
+                }
+                if (json[0].isCheck == 1 && json[0].isPass == 0 && json[0].Comment != "") {
+                    var textcm = $('#comment').find('.comment');
+                    textcm.html('หมายเหตุ: ' + json[0].Comment);
+                    $('#comment').show();
+                }
+            }
+            else
+            {
+                $('#sendreport').show();
+            }
+
+            $('textarea.autosize-input').attr('style', '');
+            $('.card').on('show.bs.collapse', function () {
+                const $this = $(this)
+                const ic = $this.find('.fa-plus')
+                ic.addClass('rotate-right')
+                ic.removeClass('rotate-left')
+            })
+            $('.card').on('hidden.bs.collapse', function () {
+                const $this = $(this)
+                const ic = $this.find('.fa-plus')
+                ic.removeClass('rotate-right')
+                ic.addClass('rotate-left')
+            })
+            $('body')
+                .off('change keyup ifChecked', '.js--text')
+                .on('change keyup ifChecked', '.js--text', function () {
+                    $(this).closest('.form-row').find('.js--btsave').show();
+                    $(this).closest('.form-row').find('.js--cancel').show();
+                })
+                .off('click', '.js--cancel')
+                .on('click', '.js--cancel', function () {
+                    $(this).closest('.form-row').find('.js--btsave').hide();
+                    $(this).closest('.form-row').find('.js--cancel').hide();
+                })
+                .off('click', '#sendreport')
+                .on('click', '#sendreport', function () {
+                    SWConfirm.fire({ title: 'ยืนยันการส่งรายงาน ?', html: '<span class="text-danger">หากส่งข้อมูลแล้วจะไม่สามารถแก้ไขข้อมูลในส่วนนี้ได้</span>' }).then((result) => {
+                        if (result.value) {
+                            var data = [];
+                            data.push({
+                                isSendreport: 1,
+                                isCheck: 0,
+                                isPass: 0,
+                                Comment: "",
+                                AliasName: "ผู้ยื่น",
+                                DateSend: $('#datenow').val()
+                            });
+                            var jsonstring = JSON.stringify(data);
+                            $.ajax({
+                                url: '/form/sendreport',
+                                method: 'POST',
+                                data: {
+                                    caseid: $('#caseid').val(),
+                                    data: jsonstring
+                                },
+                                beforeSend: function () {
+                                    $('#sendreport').val('กำลังส่งรายงาน...').prop('disabled', true);
+                                },
+                                success: function (data) {
+                                    if (data.Status) {
+                                        SWSuccess.fire();
+                                        window.location.reload();
+                                    }
+                                }
+                                , error: function (err) {
+                                    SWError.fire();
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    });
+                })
+
+        });
+    </script>
+}

@@ -1,0 +1,4 @@
+25 พ.ย 64/Piak
+#เพิ่มตาราง
+ -MemberTransactionMapping
+ -CaseApplicantRequestExtension

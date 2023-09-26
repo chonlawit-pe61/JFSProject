@@ -1,0 +1,8 @@
+﻿@{
+    string JobID = (string)ViewData["JobID"];
+}
+<h3>@(JobID)</h3>
+@*@Html.Resource(@<script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>, "js")*@
+@*to use  uncomment @Html.Resource(@<link rel="stylesheet" href="@Url.Content("~/CSS/style.css")" />, "css")*@
+@Html.Resource(@<script id="tmpl-caseattachfile" type="text/x-handlebars-template"></script>,"js")
+

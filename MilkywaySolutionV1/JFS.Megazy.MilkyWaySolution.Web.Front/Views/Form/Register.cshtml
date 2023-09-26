@@ -1,0 +1,2445 @@
+﻿@using JFS.Megazy.MilkyWaySolution.Engine.Singleton
+@using JFS.Megazy.MilkyWaySolution.Engine.Structure;
+@using JFS.Megazy.MilkyWaySolution.Engine.Helpers
+@using JFS.Megazy.MilkyWaySolution.Engine.DataRepository
+
+@model JFS.Megazy.MilkyWaySolution.Engine.DataRepository.CaseRegisterDataResponse
+<!--Multiselect-->
+@{
+    ProjectAddressDataRequest address = null;
+    CaseProjectData caseProject = null;
+    ProjectContactPersonDataRequest projectContact = null;
+    AddressRow projectContactAddressRow = null;
+    CaseApplicantData caseApplicantData = null;
+    CaseApplicantExtensionData caseApplicantEx = null;
+    ProjectLocationData location = null;
+    AddressRow locationAddress = null;
+    CaseProjectSourceFundData[] caseProjectSourceFundData = null;
+    CaseProjectReferencePersonData[] caseProjectReferencePersonData = null;
+    CaseProjectCharacteristicsData[] caseProjectCharacteristicsData = null;
+    CaseProjectDocumentCheckData[] caseProjectDocumentCheckData = null;
+    CaseExpenseData[] caseExpense = null;
+    List<ProjectAttachfile> listAttachfiles = null;
+    ProxyData ProxyData = null;
+    ProxyAddressRow[] ProxAddress = null;
+    AddressRow[] ProxAddressDetail = null;
+
+    var currentUser = SiteSession.GetCurrentUser();
+    string remark = "";
+    string fname = "";
+    string lname = "";
+    string PxReligionother = "";
+    string phonenumber = currentUser.PhoneNumber;
+    string email = currentUser.Email;
+    int status = 0;
+    if (currentUser.MemberTypeID == "1")
+    {
+        fname = currentUser.AliasName.Split(' ')[0];
+        lname = currentUser.AliasName.Split(' ')[1];
+    }
+    if (Model != null)
+    {
+
+        status = Model.caseApplicant.StatusID;
+        if (Model.caseProjectData != null)
+        {
+            address = Model.caseProjectData.ProjectAddressData;
+            caseProject = Model.caseProjectData.CaseProjectData;
+            caseApplicantData = Model.caseProjectData.CaseApplicantData;
+            caseApplicantEx = Model.caseProjectData.CaseApplicantExData;
+
+
+            if (Model.caseProjectData.ProxyData != null)
+            {
+                PxReligionother = Model.caseProjectData.ProxyData.Religionother;
+
+                ProxyData = Model.caseProjectData.ProxyData.ProxyDetail;
+                if (Model.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddress = Model.caseProjectData.ProxyData.ProxAddress;
+                }
+                if (Model.caseProjectData.ProxyData.ProxAddress.Length > 0)
+                {
+                    ProxAddressDetail = Model.caseProjectData.ProxyData.Address;
+                }
+            }
+
+            if (Model.caseProjectData.ProjectLocation != null)
+            {
+                location = Model.caseProjectData.ProjectLocation.ProjectLocation;
+                locationAddress = Model.caseProjectData.ProjectLocation.AddressRow;
+            }
+            if (Model.caseProjectData.ProjectContactPersonData != null)
+            {
+                projectContact = Model.caseProjectData.ProjectContactPersonData;
+                if (Model.caseProjectData.ProjectContactPersonData.AddressRow != null)
+                {
+                    projectContactAddressRow = Model.caseProjectData.ProjectContactPersonData.AddressRow;
+
+                }
+            }
+            if (Model.caseProjectData.CaseProjectSourceFundData != null)
+            {
+                caseProjectSourceFundData = Model.caseProjectData.CaseProjectSourceFundData;
+            }
+            if (Model.caseProjectData.CaseProjectReferencePersonData != null)
+            {
+                caseProjectReferencePersonData = Model.caseProjectData.CaseProjectReferencePersonData;
+            }
+            if (Model.caseProjectData.CaseProjectCharacteristicsData != null)
+            {
+                caseProjectCharacteristicsData = Model.caseProjectData.CaseProjectCharacteristicsData;
+            }
+            if (Model.caseProjectData.CaseProjectDocumentCheckData != null)
+            {
+                caseProjectDocumentCheckData = Model.caseProjectData.CaseProjectDocumentCheckData;
+            }
+            if (Model.caseProjectData.ProjectCaseExpenseData != null)
+            {
+                caseExpense = Model.caseProjectData.ProjectCaseExpenseData.caseExpense;
+
+            }
+        }
+        listAttachfiles = (List<ProjectAttachfile>)ViewData["ProjectAttachfile"];
+        remark = (string)ViewData["Remark"];
+    }
+}
+@section styles{
+    <link href="~/Scripts/datetimepicker/local/datepicker.css" rel="stylesheet" />
+
+    <style>
+        .title {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            background-color: rgb(72 92 212 / 10%);
+            padding: 10px;
+            color: #000000;
+            border-left: 3px #d44863 solid;
+        }
+
+        .required:after {
+            content: " *";
+            color: red;
+        }
+
+        .disable-ct {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        /*.sectionlock{
+            color:red;
+        }*/
+        .js--slide {
+            cursor: pointer;
+        }
+
+        .iconhead {
+            float: right;
+            margin-top: 3px;
+        }
+
+        .blockscreen {
+            font-size: 2rem;
+            color: rgb(255 0 0 / 0.37);
+            position: fixed;
+            top: 50%;
+            left: 40%;
+            right: 40%;
+            z-index: 2;
+            font-weight: bold;
+        }
+
+        @@media only screen and (max-width: 425px) {
+            /* For mobile phones: */
+            .blockscreen {
+                font-size: 1.75rem;
+                left: 9%;
+                right: 9%;
+            }
+        }
+
+        @@media only screen and (max-width: 375px) {
+            /* For mobile phones: */
+            .blockscreen {
+                font-size: 1.75rem;
+                left: 5%;
+                right: 5%;
+            }
+        }
+
+        @@media only screen and (max-width: 320px) {
+            /* For mobile phones: */
+            .blockscreen {
+                font-size: 1.5rem;
+                top: 50%;
+                left: 3%;
+                right: 3%;
+            }
+        }
+    </style>
+} 
+<div class="blockscreen @(Model != null ? Model.caseApplicant.StatusID != 3 && Model.caseApplicant.StatusID != 5 && Model.caseApplicant.StatusID != 0 ? "" : "d-none" : "d-none") col-md-12">
+    เจ้าหน้าที่กำลังดำเนินการ
+</div>
+<form class="@(Model != null ? Model.caseApplicant.StatusID >= 1 && Model.caseApplicant.StatusID <= 4 ? "disable-ct" : "" : "")" id="frmapplicant">
+    <input type="hidden" id="TransactionID" value="@(Model != null?Model.caseApplicant.TransactionID:0)" />
+    <h3>ยื่นคำขอกองทุนยุติธรรมออนไลน์</h3>
+    @if (!string.IsNullOrEmpty(remark) && status == 5 || status == 3)
+    {
+        <section>
+            @*<h3 class="title js--slide" data-isopen="1">@(status == 5 ? "หมายเหตุ/แก้ไข" : "หมายเหตุ")<i class="iconhead fa fa-angle-up"></i></h3>*@
+            @*<div class="form-row slide-ct">*@
+            <div class="alert alert-warning text-danger col-12" role="alert">
+                <p> @(status == 5 ? "หมายเหตุ/แก้ไข" : "หมายเหตุ"): @(remark) </p>
+            </div>
+            @*<div class="input-group input-group-sm">
+                    <input type="text" maxlength="250" class="form-control validate[required]" id="" value="" placeholder="">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" id="">ค้นหา</button>
+                    </div>
+                </div>*@
+            @*</div>*@
+        </section>
+    }
+
+    <section>
+        <h3 class="title @(Model != null?"js--slide":"") " data-isopen="0">ข้อมูลโครงการ <i class="iconhead @(Model != null?"fa fa-angle-down":"d-none")"></i></h3>
+        <div class="form-row slide-ct" style="display:@(Model != null ? "none;" : "")">
+            <div class="form-group col-md-12">
+                <label for="subject" class="required">
+                    ชื่อโครงการ
+                </label>
+                <input type="text" class="form-control form-control-sm js--text validate[required] required" maxlength="950" id="subject" value="@(caseProject != null?caseProject.ProjectTitle:"")">
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-8">
+                <label for="JFSCaseType" class="required">ประเภทการขอรับความช่วยเหลือ</label>
+                <select class="multiselect-dropdown form-control form-control-sm  validate[required] js-province" id="JFSCaseType">
+                    <option disabled>เลือกประเภทขอความช่วยเหลือ</option>
+                    @foreach (var item in SingletonJFCaseType.Instance.JFCaseTypeItem.Where(p => p.JFCaseTypeID == 4).ToArray())
+                    {
+                        <option value="@item.JFCaseTypeID" selected>@(item.JFCaseTypeName)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-4 col-lg-4">
+                <label for="RequestAmount" class="required">จำนวนเงินที่ร้องขอ</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" id="RequestAmount" autocomplete="off" class="form-control form-control-sm input-decimal js--text  validate[required]" value="@(caseProject!=null?(caseApplicantData.RequestAmount!=0?caseApplicantData.RequestAmount.ToString():""):"")" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">บาท</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <section>
+        <h3 class="title @(Model != null ? "js--slide" : "")" data-isopen="0">ข้อมูลผู้เสนอโครงการ<i class="iconhead @(Model != null ? "fa fa-angle-down" : "d-none")"></i></h3>
+
+        <div class="form-row slide-ct" style="display:@(Model != null ? "none;" : "")">
+            <div class="form-group col-auto">
+                <label for="rdomale" class="col-12 p-0">เพศ <span class="text-danger">*</span></label>
+                <div class="error-groupreq">
+                    <div class="form-check form-check-inline ml-3 mt-2">
+                        <input class="form-check-input icheck validate[groupRequired[sex] js--text" type="radio" @(Model != null ? Model.caseApplicant.Gender == "m" ? "checked" : "" : "") name="rdosex" id="rdomale" value="m">
+                        <label class="form-check-label pl-2" for="rdomale">ชาย</label>
+                    </div>
+                    <div class="form-check form-check-inline ml-3 mt-2">
+                        <input class="form-check-input icheck validate[groupRequired[sex] js--text" type="radio" @(Model != null ? Model.caseApplicant.Gender == "m" ? "" : "checked" : "") name="rdosex" id="rdofemale" value="f">
+                        <label class="form-check-label pl-2" for="rdofemale">หญิง</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="Title" class="required">คำนำหน้าชื่อ</label>
+                <input type="hidden" id="datatitle" />
+                <select class="multiselect-dropdown-other form-control form-control-sm validate[required] js-text required" id="Title">
+                    <option value="" disabled selected>เลือก</option>
+
+                    @foreach (var item in SingletonPrefixName.Instance.PrefixItem)
+                    {
+                        <option value="@(item.Title)" @(Model != null ? Model.caseApplicant.Title == item.Title ? "selected" : "" : "")>@(item.Title)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="FirstName" class="required">ชื่อ</label>
+                <input type="text" class="form-control form-control-sm js--text validate[required]" id="FirstName" maxlength="150" value="@(Model != null?Model.caseApplicant.FirstName:fname)" />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="LastName" class="required">นามสกุล</label>
+                <input type="text" class="form-control form-control-sm js--text validate[required]" id="LastName" maxlength="150" value="@(Model != null?Model.caseApplicant.LastName:lname)" />
+            </div>
+            <div class="form-group col-md-8">
+                <label for="ProposerEN" class="">ชื่อ-นามสกุล(EN)</label>
+                <input type="text" class="form-control form-control-sm" id="ProposerEN" maxlength="250" value="@(caseProject!=null?caseProject.ProposerEN:"")" />
+            </div>
+            <div class="form-group col-md-6 col-lg-3">
+                <label for="dateOfBirth" class="required">เกิดวันที่</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" id="dateOfBirth" data-toggle="datepicker" autocomplete="off" readonly class="form-control form-control-sm datepicker js--text validate[required]" value="@(caseApplicantEx!=null?caseApplicantEx.DateOfBirthStr:"")" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary datepicker-trigger" style="pointer-events: none;">
+                            <i class="fas fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="cardType" class="required">ประเภทบัตร</label>
+                <select class="multiselect-dropdown form-control form-control-sm js--text validate[required,custom[selectOne]]" id="cardType">
+                    <option value="" disabled selected>เลือก</option>
+                    @foreach (var item in SingletonPersonalInfo.Instance.CardTypeData)
+                    {
+                        <option value="@item.CardTypeID" @(caseApplicantEx != null ? caseApplicantEx.CardType == item.CardTypeID ? "selected" : "" : "") data-cardname="@item.CardTypeName">@item.CardTypeName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-6 col-lg-6 ">
+                <label for="cardID" class="required" id="cardLabel">เลขประจำตัวประชาชน</label>
+                <input type="text" class="form-control form-control-sm  validate[required] js--text input-cardid" id="cardID" value="@(Model != null?Model.caseApplicant.CardID:"")">
+            </div>
+
+
+
+        </div>
+    </section>
+    <section>
+        <h3 class="title @(Model != null?"js--slide":"")" data-isopen="0">ที่อยู่โครงการ<i class="iconhead @(Model != null?"fa fa-angle-down":"d-none")"></i></h3>
+        <div class="form-row slide-ct address" style="display:@(Model != null ? "none;" : "")">
+            <label class="required pl-1">เลือกประเภทที่อยู่</label>
+            <div class="col-md-12 error-groupreq mt-2 mb-2">
+                @*@{
+                        ProposerTypeData[] Data = null;
+                        string check = "";
+                        if (currentUser.MemberTypeID == "1")
+                        {
+                            Data = SingletonProject.Instance.ProposerTypeItem.Where(p => p.ProposerTypeID == 1).ToArray();
+                            check = "checked";
+                        }
+                        else
+                        {
+                            Data = SingletonProject.Instance.ProposerTypeItem.Where(p => p.ProposerTypeID != 1).ToArray();
+                        }
+                    }*@
+
+                @foreach (var item in SingletonProject.Instance.ProposerTypeItem)
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input icheck validate[required]" type="radio" name="rdoProposerType" id="rdoProposerType@(item.ProposerTypeID)" @(caseProject != null ? caseProject.ProposerTypeID == item.ProposerTypeID ? "checked" : currentUser.MemberTypeID == "2" ? (item.ProposerTypeID == 3 ? "checked" : "") : (item.ProposerTypeID == 1 ? "checked" : "") : currentUser.MemberTypeID == "2" ? (item.ProposerTypeID == 3 ? "checked" : "") : (item.ProposerTypeID == 1 ? "checked" : "")) value="@(item.ProposerTypeID)">
+                        <label class="form-check-label ml-2" for="rdoProposerType@(item.ProposerTypeID)">@item.ProposerTypeName</label>
+                    </div>
+                }
+            </div>
+            <div class="col-12 col-md-12 mt-2 mb-2 divOtherProposerType" style="display:none;">
+                <input type="text" id="OtherProposerType" maxlength="150" placeholder="อื่นๆ โปรดระบุ" class="form-control form-control-sm js--text validate[required]" value="@(caseProject!=null?caseProject.ProposerTypeOther:"")" />
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <label for="HouseNo" class="required">เลขที่</label>
+                <input type="text" class="form-control form-control-sm js--text validate[required]" maxlength="50" id="HouseNo" value="@(address!=null?address.AddressRow.HouseNo:"")" />
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <label for="VillageNo">หมู่ที่</label>
+                <input type="text" class="form-control form-control-sm " id="VillageNo" maxlength="50" value="@(address!=null?address.AddressRow.VillageNo:"")" />
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <label for="Soi">ซอย</label>
+                <input type="text" class="form-control form-control-sm " id="Soi" maxlength="50" value="@(address!=null?address.AddressRow.Soi:"")" />
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <label for="Street">ถนน</label>
+                <input type="text" class="form-control form-control-sm " id="Street" maxlength="50" value="@(address!=null?address.AddressRow.Street:"")" />
+            </div>
+
+
+
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <input type="hidden" id="selectProvince" value="@(address!=null?address.AddressRow.ProvinceID:0)" />
+                <label for="Province" class="required">จังหวัด</label>
+                <select class="multiselect-dropdown form-control form-control-sm js--text validate[required] js-province" id="Province">
+                    <option disabled selected>เลือกจังหวัด</option>
+                    @foreach (var row in SingletonProvince.Instance.ProvinceRow)
+                    {
+                        <option value="@row.ProvinceID" @(address != null ? address.AddressRow.ProvinceID == row.ProvinceID ? "selected" : "" : "")>@(row.ProvinceName)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <input type="hidden" id="selectDistrict" value="@(address!=null?address.AddressRow.DisctrictID:0)" />
+                <label for="District" class="required">อำเภอ</label>
+                <select class="form-control form-control-sm js--text  validate[required,custom[selectOne]] js-district" id="District" disabled>
+                    <option value="">เลือก</option>
+
+
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <input type="hidden" id="selectSubDistrict" value="@(address!=null?address.AddressRow.SubdistrictID:0)" />
+                <label for="SubDistrict" class="required">ตำบล</label>
+                <select class="form-control form-control-sm js--text validate[required,custom[selectOne]] js-subdistrict" id="SubDistrict" disabled>
+                    <option disabled selected>เลือก</option>
+
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <label for="PostCode" class="required">รหัสไปรษณีย์</label>
+                <input type="text" maxlength="5" class="form-control form-control-sm  js--text validate[required] js-postcode" data-preval="@(address!=null?address.AddressRow.PostCode:"0")" id="PostCode" value="@(address!=null?address.AddressRow.PostCode:"")" />
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <label for="TelephonNumber" class="required">เบอร์โทร</label>
+                <input type="text" maxlength="50" class="form-control form-control-sm input-tel js--text validate[required] " placeholder="00-00000000" id="TelephonNumber" value="@(address!=null?address.ProjectAddress.TelephoneNo:phonenumber)" />
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <label for="FaxNumber">เบอร์แฟกซ์</label>
+                <input type="text" maxlength="50" class="form-control form-control-sm input-tel " placeholder="00-00000000" id="FaxNumber" value="@(address != null ? address.ProjectAddress.FaxNo : "")">
+            </div>
+            <div class="form-group col-12 col-md-6 col-lg-3">
+                <label for="ProposerEmail">อีเมล</label>
+                <input type="text" maxlength="150" class="form-control form-control-sm " id="ProposerEmail" value="@(address != null ? address.ProjectAddress.Email : email)">
+            </div>
+        </div>
+    </section>
+    @if (Model != null)
+    {
+
+        <section>
+            <h3 class="title js--slide" data-isopen="1">ผู้ประสานงานโครงการ<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct address">
+                <div class="btn-actions-pane-right actions-icon-btn">
+                    <a href="javascript:void(0)" class="border-0 btn-transition float-right btn-square btn btn-outline-primary js-copy" data-type="1"><i class="fa fa-clone btn-icon-wrapper"></i> คัดลอกที่อยู่โครงการ</a>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="ContactName" class="">ชื่อ-นามสกุล</label>
+                    <input type="text" class="form-control form-control-sm" id="ContactName" maxlength="250" value="@(projectContact != null ?  (!string.IsNullOrEmpty(projectContact.ProjectContactPerson.FirstName)?projectContact.ProjectContactPerson.FirstName:"") + " " + (!string.IsNullOrEmpty(projectContact.ProjectContactPerson.LastName)?projectContact.ProjectContactPerson.LastName:"") : "")" />
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label for="ContactHouseNo" class="required">เลขที่</label>
+                    <input type="text" class="form-control form-control-sm js--text validate[required]" maxlength="50" id="ContactHouseNo" value="@(projectContactAddressRow != null ? projectContactAddressRow.HouseNo : "")" />
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label for="ContactVillageNo">หมู่ที่</label>
+                    <input type="text" class="form-control form-control-sm " id="ContactVillageNo" maxlength="50" value="@(projectContactAddressRow != null ? projectContactAddressRow.VillageNo : "")" />
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label for="ContactSoi">ซอย</label>
+                    <input type="text" class="form-control form-control-sm " id="ContactSoi" maxlength="50" value="@(projectContactAddressRow != null ? projectContactAddressRow.Soi : "")" />
+                </div>
+                <div class="form-group col-12 col-md-3">
+                    <label for="ContactStreet">ถนน</label>
+                    <input type="text" class="form-control form-control-sm " id="ContactStreet" maxlength="50" value="@(projectContactAddressRow != null ? projectContactAddressRow.Street : "")" />
+                </div>
+
+
+
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ContactProvince" class="required">จังหวัด</label>
+                    <select class="multiselect-dropdown form-control form-control-sm js--text validate[required] js-province" id="ContactProvince">
+                        <option disabled selected>เลือกจังหวัด</option>
+                        @foreach (var row in SingletonProvince.Instance.ProvinceRow)
+                        {
+                            <option value="@row.ProvinceID" @(projectContactAddressRow != null ? projectContactAddressRow.ProvinceID == row.ProvinceID ? "selected" : "" : "")>@(row.ProvinceName)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <input type="hidden" id="selectContactDistrict" value="@(projectContactAddressRow != null ? projectContactAddressRow.DisctrictID : 0)" />
+                    <label for="ContactDistrict" class="required">อำเภอ</label>
+                    <select class="form-control form-control-sm  js--text validate[required,custom[selectOne]] js-district" id="ContactDistrict" disabled>
+                        <option value="">เลือก</option>
+
+
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <input type="hidden" id="selectContactSubdistrictID" value="@(projectContactAddressRow != null ? projectContactAddressRow.SubdistrictID : 0)" />
+                    <label for="ContactSubDistrict" class="required">ตำบล</label>
+                    <select class="form-control form-control-sm js--text validate[required,custom[selectOne]] js-subdistrict" id="ContactSubDistrict" disabled>
+                        <option disabled selected>เลือก</option>
+
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ContactPostCode" class="required">รหัสไปรษณีย์</label>
+                    <input type="text" maxlength="5" class="form-control form-control-sm js--text  validate[required] js-postcode" data-preval="@(projectContactAddressRow != null ? projectContactAddressRow.PostCode : "0")" id="ContactPostCode" value="@(projectContactAddressRow != null ? projectContactAddressRow.PostCode : "")" />
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ContactTelephonNumber" class="required">เบอร์โทร</label>
+                    <input type="text" maxlength="50" class="form-control form-control-sm input-tel js--text validate[required] " placeholder="00-00000000" id="ContactTelephonNumber" value="@(projectContact != null ? (!string.IsNullOrEmpty(projectContact.ProjectContactPerson.TelephoneNo)?projectContact.ProjectContactPerson.TelephoneNo:""): "")" />
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ContactFaxNumber">เบอร์แฟกซ์</label>
+                    <input type="text" maxlength="50" class="form-control form-control-sm input-tel" id="ContactFaxNumber" value="@(projectContact != null ? (!string.IsNullOrEmpty(projectContact.ProjectContactPerson.FaxNo)?projectContact.ProjectContactPerson.FaxNo:""): "")">
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ContactEmail">อีเมล</label>
+                    <input type="text" maxlength="150" class="form-control form-control-sm input-" id="ContactEmail" value="@(projectContact != null ? (!string.IsNullOrEmpty(projectContact.ProjectContactPerson.Email)?projectContact.ProjectContactPerson.Email:"") : "")">
+                </div>
+            </div>
+        </section>
+        <div class="row">
+            <div class="col-12 text-right">
+                <div class="form-check form-check-inlinek col-md-12" id="haveproxy">
+                    <label class="form-check-label" for="Ishaveproxy" style="cursor:pointer;">
+                        <input class="form-check-input icheck col-2 " type="checkbox" name="Ishaveproxy" id="Ishaveproxy" value="1">
+                        ผู้รับมอบอำนาจ
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <section id="section_proxy" class="d-none">
+            @{
+                string ComponentName = "Proxy";
+            }
+            <h3 class="title js--slide js--proxy" data-isopen="0">ผู้รับมอบอำนาจ(ถ้ามี)<i class="iconhead fa fa-angle-down"></i></h3>
+            <div class="form-row slide-ct" style="display:none;">
+                <div class="col-12">
+                    <h4 class="h5">ข้อมูลส่วนตัว</h4>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="rdomale" class="col-12 p-0 required">เพศ</label>
+                    <div class="error-groupreq">
+                        <div class="form-check form-check-inline ml-3 mt-2">
+                            <input class="form-check-input icheck js--text validate[groupRequired[sex] js--proxydetail" type="radio" @(ProxyData != null ? ProxyData.Gender == "m" ? "checked" : "" : "") name="rdosex@(ComponentName)" id="rdomale@(ComponentName)" value="m">
+                            <label class="form-check-label ml-2" for="rdomale@(ComponentName)">ชาย</label>
+                        </div>
+                        <div class="form-check form-check-inline ml-3 mt-2">
+                            <input class="form-check-input icheck js--text validate[groupRequired[sex] js--proxydetail" type="radio" @(ProxyData != null ? ProxyData.Gender == "f" ? "checked" : "" : "") name="rdosex@(ComponentName)" id="rdofemale@(ComponentName)" value="f">
+                            <label class="form-check-label ml-2" for="rdofemale@(ComponentName)">หญิง</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="Title@(ComponentName)" class="required">คำนำหน้าชื่อ</label>
+                    <select class="multiselect-dropdown-other form-control form-control-sm js--proxydetail js--text validate[required]" id="Title@(ComponentName)">
+                        <option value="" disabled selected>เลือก</option>
+                        @foreach (var item in SingletonPrefixName.Instance.PrefixItem)
+                        {
+                            <option value="@(item.Title)" @(ProxyData != null ? ProxyData.Title == item.Title ? "selected" : "" : "")>@(item.Title)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="FirstName" class="required">ชื่อ</label>
+                    <input type="text" class="form-control form-control-sm js--text validate[required] js--proxydetail" id="FirstName@(ComponentName)" maxlength="150" value="@(ProxyData!=null?ProxyData.FirstName:"")">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="LastName">นามสกุล</label>
+                    <input type="text" class="form-control form-control-sm js--text validate[required] js--proxydetail" id="LastName@(ComponentName)" maxlength="150" value="@(ProxyData!=null?ProxyData.LastName:"")">
+                </div>
+
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="cardID" class="required">เลขประจำตัวประชาชน</label>
+                    <input type="text" class="form-control form-control-sm js--text  validate[required] js--proxydetail input-cardid" id="cardID@(ComponentName)" value="@(ProxyData!=null?ProxyData.CardID:"")">
+                </div>
+
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="dateOfBirth" class="required">เกิดวันที่</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="dateOfBirth@(ComponentName)" data-toggle="datepicker" autocomplete="off" readonly class="form-control form-control-sm js--text validate[required] js--proxydetail" value="@(ProxyData!=null?ProxyData.DateOfBirthStr:"")" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-secondary datepicker-trigger" disabled>
+                                <i class="fas fa-calendar" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-lg-3">
+                    <label for="Nationality@(ComponentName)" class="required">สัญชาติ</label>
+                    <select class="multiselect-dropdown form-control form-control-sm  js--text validate[required,custom[selectOne]] js--proxydetail" id="Nationality@(ComponentName)">
+                        <option value="" disabled selected>เลือก</option>
+                        @foreach (var item in SingletonPersonalInfo.Instance.NationalityData)
+                        {
+                            <option value="@item.NationalityID" @(ProxyData != null ? ProxyData.NationalityID == item.NationalityID ? "selected" : "" : "")>@(item.NationalityName)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-sm-6 col-lg-3">
+                    <label for="rdorace1" class="col-12 p-0 required">เชื้อชาติ</label>
+                    <div class="error-groupreq">
+                        @foreach (var item in SingletonPersonalInfo.Instance.RaceData)
+                        {
+                            <div class="form-check form-check-inline ml-3 mt-2">
+                                <input class="form-check-input icheck js--text validate[groupRequired[race] js--proxydetail" type="radio" name="rdorace@(ComponentName)" @(ProxyData != null ? ProxyData.RaceID == item.RaceID ? "checked" : "" : "") id="rdorace@(ComponentName)@(item.RaceID)" value="@(item.RaceID)">
+                                <label class="form-check-label ml-2" for="rdorace@(ComponentName)@(item.RaceID)">@item.RaceName</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-lg-6 col-md-6">
+                    <label for="" class="col-12 p-0 required">ศาสนา</label>
+                    <div class="error-groupreq form-inline">
+                        @foreach (var item in SingletonPersonalInfo.Instance.ReligionData)
+                        {
+                            <div class="form-check form-check-inline ml-3">
+                                <input class="form-check-input icheck js--text validate[groupRequired[religion] js--proxydetail" type="radio" name="rdoreligion@(ComponentName)" data-isother="@(item.IsOther ? 1 : 0)" @(ProxyData != null ? ProxyData.ReligionID == item.ReligionID ? "checked" : "" : "") id="rdoreligion@(ComponentName)@(item.ReligionID)" value="@(item.ReligionID)">
+                                <label class="form-check-label ml-2" for="rdoreligion@(ComponentName)@(item.ReligionID)">@item.ReligionName</label>
+                            </div>
+                        }
+                        <div class="form-check form-inline ml-3 religionother" style="display:none;">
+                            <input type="text" class="form-control form-control-sm js--text validate[required] js--text" id="religionother@(ComponentName)" maxlength="50" value="@(PxReligionother)">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group col-12 col-lg-3 col-md-6">
+                    <label for="relatedas required">ความสัมพันธ์</label>
+                    <input class="form-control form-control-sm  js--text validate[required] js--proxydetail" id="relatedas@(ComponentName)" value="@(ProxyData!=null?ProxyData.RelatedAs:"")" />
+                </div>
+                <div class="col-12">
+                    <h4>ที่อยู่ตามภูมิลำเนา</h4>
+                </div>
+                <div class="address col-md-12 form-row">
+                    <div class="form-group col-12 col-md-3">
+                        <label for="HouseNo@(ComponentName)" class="required">เลขที่</label>
+                        <input type="text" class="form-control form-control-sm js--text validate[required] js--text" maxlength="50" id="HouseNo@(ComponentName)" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].HouseNo:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="VillageNo@(ComponentName)">หมู่ที่</label>
+                        <input type="text" class="form-control form-control-sm  js--text" id="VillageNo@(ComponentName)" maxlength="150" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].VillageNo:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="Soi@(ComponentName)">ซอย</label>
+                        <input type="text" class="form-control form-control-sm js--text" id="Soi@(ComponentName)" maxlength="50" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].Soi:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="Street@(ComponentName)">ถนน</label>
+                        <input type="text" class="form-control form-control-sm  js--text" id="Street@(ComponentName)" maxlength="150" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].Street:"")">
+                    </div>
+
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="Province@(ComponentName)" class="required">จังหวัด</label>
+                        <select class="multiselect-dropdown form-control form-control-sm js--text validate[required] js-province js--text" id="Province@(ComponentName)">
+                            <option disabled selected>เลือกจังหวัด</option>
+                            @foreach (var item in SingletonProvince.Instance.ProvinceRow)
+                            {
+                                <option value="@item.ProvinceID" @(ProxAddressDetail != null ? ProxAddressDetail[0].ProvinceID == item.ProvinceID ? "selected" : "" : "")>@(item.ProvinceName)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="District@(ComponentName)" class="required">อำเภอ</label>
+                        <input id="selectDistrict@(ComponentName)" type="hidden" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].DisctrictID:0)" />
+                        <select class="form-control form-control-sm js--text  validate[required,custom[selectOne]] js-district js--text" id="District@(ComponentName)" disabled>
+                            <option value="">เลือก</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="SubDistrict@(ComponentName)" class="required">ตำบล</label>
+                        <input id="selectSubDistrict@(ComponentName)" type="hidden" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].SubdistrictID:0)" />
+                        <select class="form-control form-control-sm js--text validate[required,custom[selectOne]] js-subdistrict js--text" id="SubDistrict@(ComponentName)" disabled>
+                            <option disabled selected>เลือก</option>
+
+
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="PostCode@(ComponentName)" class="required">รหัสไปรษณีย์</label>
+                        <input type="text" maxlength="5" class="form-control form-control-sm js--text  validate[required] js-postcode js--text" data-preval="@(ProxAddressDetail!=null?ProxAddressDetail[0].PostCode:"")" id="PostCode@(ComponentName)" value="@(ProxAddressDetail!=null?ProxAddressDetail[0].PostCode:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="TelephonNumber@(ComponentName)">เบอร์โทร</label>
+                        <input type="text" maxlength="50" class="form-control form-control-sm js--text input-tel" placeholder="00-00000000" id="TelephonNumber@(ComponentName)" value="@(ProxAddress!=null?ProxAddress[0].TelephoneNo:"")">
+                    </div>
+                    <div class="form-group  col-12 col-md-6 col-lg-3">
+                        <label for="Stay@(ComponentName)" class="required">พักอาศัยเป็นระยะเวลา</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control form-control-sm js--text " min="0" max="99" id="Stay@(ComponentName)" aria-label="พักอาศัยเป็นระยะเวลา" value="@(ProxAddress!=null?ProxAddress[0].Stay:1)">
+                            <div class="input-group-append">
+                                <select class="form-control form-control-sm js--text  validate[condRequired[Stay@(ComponentName)]]" id="StayUnit@(ComponentName)">
+                                    <option value="" disabled selected>เลือก</option>
+                                    <option @(ProxAddress != null ? ProxAddress[0].StayUnit == "M" ? "selected" : "" : "") value="M">เดือน</option>
+                                    <option @(ProxAddress != null ? ProxAddress[0].StayUnit == "Y" ? "selected" : "" : "") value="Y">ปี</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 error-groupreq">
+                        @foreach (var item in SingletonAddressType.Instance.AddressTypeForCase)
+                        {
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input icheck js--text validate[groupRequired[addtype]] js--text" type="radio" name="rdoAddrType@(ComponentName)" id="rdoAddrType@(ComponentName)@(item.AddressTypeID)" @(ProxAddress != null ? ProxAddress[0].AddressTypeID == item.AddressTypeID ? "checked" : "" : "") value="@(item.AddressTypeID)">
+                                <label class="form-check-label ml-2" for="rdoAddrType@(ComponentName)@(item.AddressTypeID)">@item.TypeName</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <h4>ที่อยู่ปัจจุบัน</h4>
+                </div>
+                <div class="address col-md-12 form-row">
+                    <div class="btn-actions-pane-right actions-icon-btn col-12">
+                        <a href="javascript:void(0)" class="border-0 btn-transition float-right btn-square btn btn-outline-primary js-copy" data-type="0"><i class="fa fa-clone btn-icon-wrapper"></i> คัดลอกที่อยู่ตามภูมิลำเนา</a>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="CurrentHouseNo@(ComponentName)">เลขที่</label>
+                        <input type="text" class="form-control form-control-sm js--text validate[required] js--text--current" maxlength="50" id="CurrentHouseNo@(ComponentName)" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].HouseNo:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="CurrentVillageNo@(ComponentName)">หมู่ที่</label>
+                        <input type="text" class="form-control form-control-sm   js--text--current" id="CurrentVillageNo@(ComponentName)" maxlength="150" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].VillageNo:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="CurrentSoi@(ComponentName)">ซอย</label>
+                        <input type="text" class="form-control form-control-sm js--text--current" id="CurrentSoi@(ComponentName)" maxlength="50" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].Soi:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="CurrentStreet@(ComponentName)">ถนน</label>
+                        <input type="text" class="form-control form-control-sm  js--text--current" id="CurrentStreet@(ComponentName)" maxlength="150" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].Street:"")">
+                    </div>
+
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="CurrentProvince@(ComponentName)">จังหวัด</label>
+                        <select class="multiselect-dropdown form-control form-control-sm js--text validate[required] js-province js--text--current" id="CurrentProvince@(ComponentName)">
+                            <option disabled selected>เลือกจังหวัด</option>
+                            @foreach (var item in SingletonProvince.Instance.ProvinceRow)
+                            {
+                                <option value="@item.ProvinceID" @(ProxAddressDetail != null ? ProxAddressDetail[1].ProvinceID == item.ProvinceID ? "selected" : "" : "")>@(item.ProvinceName)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="CurrentDistrict@(ComponentName)">อำเภอ</label>
+                        <input id="selectCurrentDistrict@(ComponentName)" type="hidden" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].DisctrictID:0)" />
+                        <select class="form-control form-control-sm  js--text validate[required,custom[selectOne]] js-district js--text--current" id="CurrentDistrict@(ComponentName)" disabled>
+                            <option value="">เลือก</option>
+
+
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="CurrentSubDistrict@(ComponentName)">ตำบล</label>
+                        <input id="selectCurrentSubDistrict@(ComponentName)" type="hidden" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].SubdistrictID:0)" />
+                        <select class="form-control form-control-sm js--text validate[required,custom[selectOne]] js-subdistrict js--text--current" id="CurrentSubDistrict@(ComponentName)" disabled>
+                            <option disabled selected>เลือก</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="CurrentPostCode@(ComponentName)">รหัสไปรษณีย์</label>
+                        <input type="text" maxlength="5" class="form-control form-control-sm js--text  validate[required] js-postcode js--text--current" data-preval="@(ProxAddressDetail!=null?ProxAddressDetail[1].PostCode:"")" id="CurrentPostCode@(ComponentName)" value="@(ProxAddressDetail!=null?ProxAddressDetail[1].PostCode:"")">
+                    </div>
+                    <div class="form-group col-12 col-md-6 col-lg-3">
+                        <label for="CurrentTelephonNumber@(ComponentName)">เบอร์โทร</label>
+                        <input type="text" maxlength="50" class="form-control form-control-sm js--text validate[required]  js--text--current input-tel" placeholder="00-00000000" id="CurrentTelephonNumber@(ComponentName)" value="@(ProxAddress!=null?ProxAddress[1].TelephoneNo:"")">
+                    </div>
+                    <div class="form-group  col-12 col-md-6 col-lg-3">
+                        <label for="CurrentStay@(ComponentName)" class="required">พักอาศัยเป็นระยะเวลา</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control form-control-sm js--text--current" min="0" max="99" id="CurrentStay@(ComponentName)" aria-label="พักอาศัยเป็นระยะเวลา" value="@(ProxAddress!=null?ProxAddress[1].Stay:1)">
+                            <div class="input-group-append">
+                                <select class="form-control form-control-sm  js--text validate[condRequired[CurrentStay@(ComponentName)]]" id="CurrentStayUnit@(ComponentName)">
+                                    <option value="" disabled selected>เลือก</option>
+                                    <option @(ProxAddress != null ? ProxAddress[1].StayUnit == "M" ? "selected" : "" : "") value="M">เดือน</option>
+                                    <option @(ProxAddress != null ? ProxAddress[1].StayUnit == "Y" ? "selected" : "" : "") value="Y">ปี</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12  error-groupreq">
+                        @foreach (var item in SingletonAddressType.Instance.AddressTypeForCase)
+                        {
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input icheck js--text validate[groupRequired[curraddtype]] js--text--current" type="radio" name="CurrentrdoAddrType@(ComponentName)" @(ProxAddress != null ? ProxAddress[1].AddressTypeID == item.AddressTypeID ? "checked" : "" : "") id="CurrentrdoAddrType@(ComponentName)@(item.AddressTypeID)" value="@(item.AddressTypeID)">
+                                <label class="form-check-label ml-2" for="CurrentrdoAddrType@(ComponentName)@(item.AddressTypeID)">@item.TypeName</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h3 class="title js--slide" data-isopen="1">ข้อมูลทั่วไป<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct">
+                <div class="form-group col-12">
+                    <label for="objectiveToHelp">วัตถุประสงค์ที่ขอรับความช่วยเหลือ</label>
+                    <textarea rows="1" class="form-control  form-control-sm  autosize-input  js-text" id="ObjectiveToHelp" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="">@(caseProject != null ? caseProject.ObjectiveToHelp : "")</textarea>
+
+                </div>
+                <div class="form-group col-12">
+                    <label for="ProjectInAction">กิจกรรมหรือโครงการที่ดำเนินการอยู่ในปัจจุบัน</label>
+                    <textarea rows="1" class="form-control form-control-sm autosize-input  js-text" id="ProjectInAction" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="โดยสรุป">@(caseProject != null ? caseProject.ProjectInAction : "")</textarea>
+
+                </div>
+                <div class="form-group col-12">
+                    <label for="Portfolio">ผลงานในรอบ 1 ปี ที่ผ่านมา</label>
+                    <textarea rows="1" class="form-control form-control-sm autosize-input  js-text" id="Portfolio" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="โดยสรุป">@(caseProject != null ? caseProject.Portfolio : "")</textarea>
+
+                </div>
+                <div class="form-group col-12">
+                    <label for="ProjectObjective">วัตถุประสงค์โครงการ</label>
+                    <textarea rows="1" class="form-control form-control-sm autosize-input  js-text" id="ProjectObjective" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="โดยสรุป">@(caseProject != null ? caseProject.ProjectObjective : "")</textarea>
+
+                </div>
+                <div class="form-group col-12">
+                    <label for="ProjectResult">ผลที่คาดว่าจะได้รับ</label>
+                    <textarea rows="1" class="form-control form-control-sm autosize-input  js-text" id="ProjectResult" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="โดยสรุป">@(caseProject != null ? caseProject.ProjectResult : "")</textarea>
+
+                </div>
+                <div class="form-group col-12">
+                    <label for="ProjectTarget">กลุ่มเป้าหมาย</label>
+                    <textarea rows="1" class="form-control form-control-sm autosize-input  js-text" id="ProjectTarget" autocomplete='off' style="max-height: 200px; height: 45px;" maxlength="1000" placeholder="โดยสรุป">@(caseProject != null ? caseProject.ProjectTarget : "")</textarea>
+
+                </div>
+
+            </div>
+        </section>
+        <section>
+            <h3 class="title js--slide" data-isopen="1">สถานที่จัดโครงการ<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct address">
+                <div class="form-group col-md-12">
+                    <label for="ProjectAddressName" class="required">ชื่อสถานที่</label>
+                    <input type="text" class="form-control form-control-sm js--text  validate[required]" id="ProjectAddressName" maxlength="250" value="@(location!=null?(!string.IsNullOrEmpty(location.LocationName)?location.LocationName:""):"")" />
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <input type="hidden" id="selectProjectProvince" value="@(locationAddress!=null?locationAddress.ProvinceID:0)" />
+                    <label for="ProjectProvince" class="required">จังหวัด</label>
+                    <select class="multiselect-dropdown form-control form-control-sm js--text validate[required,custom[selectOne]] js-province" id="ProjectProvince">
+                        <option disabled selected>เลือกจังหวัด</option>
+                        @foreach (var row in SingletonProvince.Instance.ProvinceRow)
+                        {
+                            <option value="@row.ProvinceID" @(locationAddress != null ? locationAddress.ProvinceID == row.ProvinceID ? "selected" : "" : "")>@(row.ProvinceName)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <input type="hidden" id="selectProjectDistrict" value="@(locationAddress!=null?locationAddress.DisctrictID:0)" />
+                    <label for="ProjectDistrict" class="required">อำเภอ</label>
+                    <select class="form-control form-control-sm  js--text validate[required,custom[selectOne]] js-district" id="ProjectDistrict" disabled>
+                        <option value="">เลือก</option>
+
+
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <input type="hidden" id="selectProjectSubDistrict" value="@(locationAddress!=null?locationAddress.SubdistrictID:0)" />
+                    <label for="ProjectSubDistrict" class="required">ตำบล</label>
+                    <select class="form-control form-control-sm js--text validate[required,custom[selectOne]] js-subdistrict" id="ProjectSubDistrict" disabled>
+                        <option disabled selected>เลือก</option>
+
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6 col-lg-3">
+                    <label for="ProjectPostCode" class="required">รหัสไปรษณีย์</label>
+                    <input type="text" maxlength="5" class="form-control form-control-sm js--text validate[required] js-postcode" data-preval="@(locationAddress!=null?(!string.IsNullOrEmpty(locationAddress.PostCode)?locationAddress.PostCode:""):"")" id="ProjectPostCode" value="@(locationAddress!=null?(!string.IsNullOrEmpty(locationAddress.PostCode)?locationAddress.PostCode:""):"")" />
+                </div>
+            </div>
+        </section>
+        <section>
+            <h3 class="title js--slide" data-isopen="1">ความประสงค์จะขอรับเงินช่วยเหลือหรือค่าใช้จ่ายจากกองทุน<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct">
+                @{
+                    double total = 0;
+                    foreach (var item in SingletonExpense.GetByJFCaseType(4))
+                    {
+                        bool isChecked = false;
+                        CaseExpenseData expenseItem = null;
+                        if (caseExpense != null) {
+
+                            total = caseExpense.Sum(o => o.RequestAmount);
+                            expenseItem = caseExpense.Where(p => p.ExpenseID == item.ExpenseID).FirstOrDefault();
+                            if (expenseItem == null)
+                            {
+                                expenseItem = new CaseExpenseData();
+                            }
+                            else
+                            {
+                                isChecked = expenseItem.ExpenseID == item.ExpenseID;
+                            }
+                        }
+                        <div class="form-check form-check-inlinek col-md-12">
+                            <div class="d-flex">
+                                <div class="p-2 flex-grow-1 bd-highlight">
+                                    <label class="form-check-label" for="ckExpense@(item.ExpenseID)" style="cursor:pointer;">
+                                        <input class="form-check-input icheck col-2 js-text" type="checkbox" @(isChecked ? "checked" : "") name="ckExpense" id="Expense@(item.ExpenseID)" value="@(item.ExpenseID)" data-interval="@(item.IsOther)">
+                                        @(item.ExpenseName) @(item.PriceThreshold != 0 ? $"(ไม่เกิน {item.PriceThreshold})":"")
+                                    </label>
+                                </div>
+                                <div>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control form-control-sm  js--amount input-decimal js--calc" maxlength="7" value="@(expenseItem != null ? (expenseItem.RequestAmount > 0 ? expenseItem.RequestAmount.ToString() :"" ):"")" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">บาท</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }     <div class="form-check form-check-inlinek col-md-12">
+                    <div class="d-flex">
+                        <div class="p-2 flex-grow-1 bd-highlight text-right">รวม</div>
+                        <div>
+                            <div class="input-group input-group-sm  border-0">
+                                <input type="text" id="totalExpense" class="form-control form-control-sm  js--amount input-decimal border-0" disabled="disabled" maxlength="7" value="@(total)" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text border-0 bg-white">บาท</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section>
+            <h3 class="title js--slide" data-isopen="1">แหล่งความช่วยเหลือ/บุคคลอ้างอิง<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct">
+
+                @for (int i = 0; i < 2; i++)
+                {
+                    <div class="form-row col-md-12 sourceFund">
+                        <div class="form-group col-md-8">
+                            <label for="SourceFund@(i+1)">แหล่งเงินทุน (@(i + 1))</label>
+                            <input type="text" id="SourceFund@(i+1)" maxlength="50" class="form-control form-control-sm js--sourceFundName" value="@(caseProjectSourceFundData != null ? caseProjectSourceFundData[i].SourceFundName : "")" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="Amount@(i+1)">จำนวน (@(i + 1))</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm js--amount input-decimal" id="Amount@(i+1)" maxlength="7" value="@(caseProjectSourceFundData != null ? caseProjectSourceFundData[i].Amount.ToString() : "")">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">บาท</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+
+                <span>รายชื่อบุคคลที่น่าเชื่อถือ ที่สามารถอธิบายถึงผลงานของผู้ขอรับความช่วยเหลือที่ผ่านมาได้ จำนวน 2 ท่าน</span>
+
+                @for (int i = 0; i < 2; i++)
+                {
+                    <div class="form-row col-md-12 personRefName">
+                        <div class="form-group col-md-8">
+                            <label for="PersonRefName@(i+1)">คนที่ (@(i + 1))</label>
+                            <input type="text" id="PersonRefName@(i+1)" maxlength="150" class="form-control form-control-sm js--refPersonName" value="@(caseProjectReferencePersonData != null ? caseProjectReferencePersonData[i].RefPersonName : "")" />
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="PersonRefTelephone@(i+1)">เบอร์โทร (@(i + 1))</label>
+                            <input type="text" id="PersonRefTelephone@(i+1)" maxlength="250" class="form-control form-control-sm js--refPersonTelephonNo input-tel" placeholder="00-00000000" value="@(caseProjectReferencePersonData != null ? caseProjectReferencePersonData[i].RefPersonTelephonNo : "")" />
+
+                        </div> <div class="form-group col-md-12">
+                            <label for="PersonRefAddress@(i+1)">ที่อยู่/หน่วยงาน (@(i + 1))</label>
+                            <input type="text" id="PersonRefAddress@(i+1)" maxlength="250" class="form-control form-control-sm js--refPersonAddress" value="@(caseProjectReferencePersonData != null ? caseProjectReferencePersonData[i].RefPersonAddress : "")" />
+
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section>
+            <h3 class="title js--slide" data-isopen="1">ลักษณะโครงการที่ขอรับความช่วยเหลือเงินกองทุน<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct error-groupreq">
+                @{
+                    foreach (var item in SingletonProject.Instance.CharacteristicsOfProjectItem)
+                    {
+                        var characteristicsItem = caseProjectCharacteristicsData != null ? caseProjectCharacteristicsData.Where(o => o.CharacteristicID == item.CharacteristicID).FirstOrDefault() : new CaseProjectCharacteristicsData();
+
+                            <div class="form-check col-md-12 form-check-inlinek js--characteristics" id="box-characteristics-@(item.CharacteristicID)">
+                                <label class="form-check-label" for="ckCharacter@(item.CharacteristicID)" style="cursor:pointer;">
+                                    <input class="form-check-input icheck col-2 validate[required]" type="checkbox" @(characteristicsItem != null ? "checked" : "") name="ckCharacter" id="ckCharacter@(item.CharacteristicID)" value="@(item.CharacteristicID)">
+                                    @(item.Characteristic)
+                                </label>
+                            </div>
+                        }
+                }
+                <div class="form-row divOtherCharacter p-2" style="display:none;">
+                    <input type="text" id="OtherCharacter" maxlength="150" placeholder="อื่นๆ โปรดระบุ" value="ขอรับความช่วยเหลือเงินกองทุน" class="form-control form-control-sm js--text validate[required]" />
+                </div>
+            </div>
+        </section>
+
+        <section>
+            @{
+                //int j = 0;
+                List<int> checkdoc = new List<int>();
+                CaseProjectDocumentCheckData ckeckDocID = null;
+                if (caseProjectDocumentCheckData != null)
+                {
+                    foreach (var item in SingletonDocumentCheckList.Instance.DocumentItem)
+                    {
+                        foreach (var row in item.DocumentsList)
+                        {
+                            ckeckDocID = caseProjectDocumentCheckData.Where(p => p.DocumentID == row.DocumentID).FirstOrDefault();
+                            if (ckeckDocID != null)
+                            {
+                                checkdoc.Add(row.DocumentID);
+                            }
+                            else
+                            {
+                                checkdoc.Add(999);
+
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            <h3 class="title js--slide" data-isopen="1">เอกสาร<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct">
+                <table class="table table-responsive-md tb--normal" style="display:none">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">รายการเอกสาร</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                แบบคําขอรับความช่วยเหลือเงินกองทุนยุติธรรม กรณีการสนับสนุนโครงการให้ความรู้
+                                ทางกฎหมายแก่ประชาชน (แบบ กทย. 4 )
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>
+                                <strong>    รายละเอียดโครงการ ประกอบด้วย</strong>
+                                - ชื่อโครงการ<br />
+                                - หลักการและเหตุผล<br />
+                                - วัตถุประสงค์<br />
+                                - กลุ่มเป้าหมายและจำนวน<br />
+                                - วิธีการดำเนินการ<br />
+                                - ระยะเวลาดำเนินการ<br />
+                                - สถานที่ดำเนินการ<br />
+                                - งบประมาณค่าใช้จ่าย<br />
+                                - ผลที่คาดว่าจะได้รับ<br />
+                                ** ทั้งนี้ต้องมีการวิเคราะห์ความรู้กฎหมายที่กลุ่มเป้าหมายควรได้รับด้วย **
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>
+                                หนังสือรับรองว่ามีผลงานหรือเป็นบุคคลที่มีบทบาทเกี่ยวข้องกับการคุ้มครองสิทธิและเสรีภาพ พร้อมบุคคลอ้างอิงลงนามรับรอง จำนวน ๒ คน
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>
+                                แนบผลงานที่มีบทบาทเกี่ยวข้องกับการคุ้มครองสิทธิและเสรีภาพ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>
+                                หนังสือรับรองว่าไม่ได้รับการสนับสนุนงบประมาณจากหน่วยงานอื่นใด หรือได้รับงบประมาณ
+                                แต่ไม่เพียงพอ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">6</th>
+                            <td>
+                                กำหนดการหรือตารางการฝึกอบรมให้ระบุความรู้กฎหมาย หลักสูตรการฝึกอบรมและวิทยากรผู้บรรยาย (***ต้องมี พรบ.กองทุนยุติธรรม พ.ศ. 2558 /พระราชบัญญัติการไกล่เกลี่ย
+                                ข้อพิพาท พ.ศ. 2562/ พระราชบัญญัติค่าตอบแทนผู้เสียหาย และค่าทดแทนและค่าใช้จ่ายแก่จำเลย
+                                ในคดีอาญา พ.ศ. 2544 และที่แก้ไขเพิ่มเติม (ฉบับที่ 2) พ.ศ. 2559/ พระราชบัญญัติคุ้มครองพยานในคดีอาญา พ.ศ. ๒๕๔๖***)
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">7</th>
+                            <td>
+                                แบบประเมินผลโครงการหรือแบบประเมินความพึงพอใจของผู้เข้าร่วมโครงการ และตัวชี้วัดการจัดโครงการ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">8</th>
+                            <td>
+                                สำเนาบัตรประจำตัวประชาชนของผู้เสนอโครงการ พร้อมรับรองสำเนาถูกต้อง
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">9</th>
+                            <td>
+                                สำเนาทะเบียนบ้านของผู้เสนอโครงการ พร้อมรับรองสำเนาถูกต้อง
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">10</th>
+                            <td>
+                                แผนที่ระบุสถานที่ดำเนินงานโครงการ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">11</th>
+                            <td>
+                                แผนที่แสดงที่อยู่ของผู้ขอรับความช่วยเหลือ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12</th>
+                            <td>
+                                กรณีขอสนับสนุนงบประมาณกว่า 50,000 บาท ให้ทำหนังสือรับรองผลงานและ
+                                ให้บุคคลอ้างอิงลงนามรับรอง จำนวน 2 คน พร้อมสำเนาบัตรของผู้รับรอง
+
+                            </td>
+                        </tr>
+                </table>
+                <table class="table table-responsive-md tb--organization" style="display:none">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">รายการเอกสาร</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                แบบคําขอรับความช่วยเหลือเงินกองทุนยุติธรรม กรณีการสนับสนุนโครงการให้ความรู้
+                                ทางกฎหมายแก่ประชาชน (แบบ กทย. 4 )
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>
+                                <strong>    รายละเอียดโครงการ ประกอบด้วย</strong>
+                                - ชื่อโครงการ<br />
+                                - หลักการและเหตุผล<br />
+                                - วัตถุประสงค์<br />
+                                - กลุ่มเป้าหมายและจำนวน<br />
+                                - วิธีการดำเนินการ<br />
+                                - ระยะเวลาดำเนินการ<br />
+                                - สถานที่ดำเนินการ<br />
+                                - งบประมาณค่าใช้จ่าย<br />
+                                - ผลที่คาดว่าจะได้รับ<br />
+                                ** ทั้งนี้ต้องมีการวิเคราะห์ความรู้กฎหมายที่กลุ่มเป้าหมายควรได้รับด้วย **
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">3</th>
+                            <td>
+                                คำสั่งการจัดตั้งหน่วยงานหรือองค์กร/ศูนย์ไกล่เกลี่ยข้อพิพาท/ศูนย์ยุติธรรมชุมชน
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>
+                                คำสั่งแต่งตั้งคณะกรรมการของหน่วยงานหรือองค์กร/คณะทำงานศูนย์ไกล่เกลี่ยข้อพิพาท/คณะทำงานศูนย์ยุติธรรมชุมชน
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>
+                                หนังสือรับรองจากประธานหรือผู้อำนวยการของหน่วยงานหรือองค์กร/ศูนย์ไกล่เกลี่ยข้อพิพาท/
+                                ศูนย์ยุติธรรมชุมชน ว่าไม่ได้รับการสนับสนุนงบประมาณจากหน่วยงานอื่นใดหรือได้รับงบประมาณ
+                                แต่ไม่เพียงพอ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">6</th>
+                            <td>
+                                มติที่ประชุมหรือรายงานการประชุมของหน่วยงานหรือองค์กร/ศูนย์ไกล่เกลี่ยข้อพิพาท/ศูนย์ยุติธรรมชุมชน ซึ่งให้ความเห็นชอบโครงการที่เสนอขอรับเงินสนับสนุน
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">7</th>
+                            <td>
+                                กำหนดการหรือตารางการฝึกอบรมให้ระบุความรู้กฎหมาย หลักสูตรการฝึกอบรมและวิทยากรผู้บรรยาย (***ต้องมี พรบ.กองทุนยุติธรรม พ.ศ. 2558 /พระราชบัญญัติการไกล่เกลี่ย
+                                ข้อพิพาท พ.ศ. 2562/ พระราชบัญญัติค่าตอบแทนผู้เสียหาย และค่าทดแทนและค่าใช้จ่าย
+                                แก่จำเลยในคดีอาญา พ.ศ. 2544 และที่แก้ไขเพิ่มเติม (ฉบับที่ 2) พ.ศ. 2559/ พระราชบัญญัติคุ้มครองพยานในคดีอาญา พ.ศ. ๒๕๔๖***)
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">8</th>
+                            <td>
+                                แบบประเมินผลโครงการหรือแบบประเมินความพึงพอใจของผู้เข้าร่วมโครงการ และตัวชี้วัดการจัดโครงการ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">9</th>
+                            <td>
+                                สำเนาบัตรประจำตัวประชาชนของผู้เสนอโครงการ พร้อมรับรองสำเนาถูกต้อง
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">10</th>
+                            <td>
+                                สำเนาทะเบียนบ้านของผู้เสนอโครงการ พร้อมรับรองสำเนาถูกต้อง
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">11</th>
+                            <td>
+                                <strong>* กรณีมอบอำนาจ</strong> <br />
+                                - หนังสือมอบอำนาจ พร้อมติดอากรแสตมป์ 30 บาท<br />
+                                - สำเนาบัตรประจำตัวประชาชนและสำเนาทะเบียนบ้าน (ผู้มอบอำนาจ) พร้อมรับรองสำเนาถูกต้อง<br />
+                                - สำเนาบัตรประจำตัวประชาชนและสำเนาทะเบียนบ้าน (ผู้รับมอบอำนาจ) พร้อมรับรองสำเนาถูกต้อง
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12</th>
+                            <td>
+                                แผนที่ระบุสถานที่ดำเนินงานโครงการ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">13</th>
+                            <td>
+                                แผนที่แสดงที่อยู่ของผู้ขอรับความช่วยเหลือ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">14</th>
+                            <td>
+                                กรณีขอสนับสนุนงบประมาณกว่า 50,000 บาท ให้ทำหนังสือรับรองผลงานและ
+                                ให้บุคคลอ้างอิงลงนามรับรอง จำนวน 2 คน พร้อมสำเนาบัตรของผู้รับรอง
+
+                            </td>
+                        </tr>
+                </table>
+                @*</div>
+                    <div class="form-row slide-ct error-groupreq">*@
+
+                @*@foreach (var item in SingletonDocumentCheckList.Instance.DocumentItem)
+                    {
+                        @item.DocumentGroupName
+                        foreach (var row in item.DocumentsList)
+                        {
+                            <div class="form-check form-check-inlinek col-md-12 js--document" id="box-document-@(row.DocumentID)">
+                                <label class="form-check-label" for="ckDocument@(row.DocumentID)" style="cursor:pointer;">
+                                    <input class="form-check-input icheck col-2 validate[required]" type="checkbox" name="ckDocument" @(checkdoc.Count > 0 ? checkdoc[j] == row.DocumentID ? "checked" : "" : "") id="ckDocument@(row.DocumentID)" value="@(row.DocumentID)" data-isother="@(row.IsShowOther)">
+                                    @(row.DocumentName)
+                                </label>
+                            </div>
+                            j++;
+                        }
+                    }
+                    @{
+                        CaseProjectDocumentCheckData OtherDocument = null;
+                        if (caseProjectDocumentCheckData != null)
+                        {
+                            OtherDocument = caseProjectDocumentCheckData.Where(p => p.DocumentID == 5).FirstOrDefault();
+                        }
+                    }
+                    <div class="row divOtherDocument p-2 col-md-12" style="display:@(OtherDocument!=null?"":"none;");">
+                        <input type="text" id="divOtherDocument" maxlength="150" placeholder="อื่นๆ โปรดระบุ" value="@(OtherDocument!=null?OtherDocument.Remark:"")" class="form-control form-control-sm js--text validate[required]" />
+                    </div>*@
+            </div>
+        </section>
+        <section>
+            <h3 class="title js--slide" data-isopen="1">อัปโหลดเอกสาร<i class="iconhead fa fa-angle-up"></i></h3>
+            <div class="form-row slide-ct">
+                <input type="hidden" id="isloadData-" value="0" />
+                <div class="col-md-12">
+                    <a href="javascript:void(0)" class="btn btn-hover-shine btn btn-outline-primary btn-sm" id="btn-add-attach-file">เพิ่มเอกสาร</a>
+                </div>
+                <div class="p-2 col-md-12 doc">
+                    <ul class="todo-list-wrapper list-group list-group-flush" id="boxdocs">
+                        @if (listAttachfiles != null)
+                        {
+                            foreach (var i in listAttachfiles)
+                            {
+                                <li class="list-group-item" id="box-attachfile-@(i.AttachFileID)">
+                                    <div class="todo-indicator bg-success"></div>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-2">
+
+                                            </div>
+                                            <div class="widget-content-left flex2">
+                                                <div class="widget-heading js--lablefile">@(i.LableFile)</div>
+                                                <div class="widget-subheading js--description">@(i.Description)</div>
+                                            </div>
+
+                                            <div class="widget-content-right">
+                                                <div class="badge badge-light mr-2 js--filetype">@(i.FileType)</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="badge badge-secondary mr-2 js--modifieddate">@(i.ModifiedDateStr)</div>
+                                            </div>
+
+                                            <div class="widget-content-right">
+                                                <a href="@(i.Path)"
+                                                   data-toggle="tooltip"
+                                                   title="ดาวน์โหลดเอกสาร"
+                                                   data-placement="top"
+                                                   download target="_blank" class="border-0 btn-transition btn btn-outline-primary">
+                                                    <i class="fa fa-download"></i>
+                                                </a>
+                                                <button class="border-0 btn-transition btn btn-outline-secondary js--delete-doc"
+                                                        data-attachfileid="@(i.AttachFileID)"
+                                                        data-name="@(i.FileName)"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="ลบเอกสาร">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+
+                        }
+                    </ul>
+                </div>
+                <div id="form-edit-docs" class="col-md-12" style="display:none;">
+                    <input name="attachFileID" id="attachFileID" value="0" type="hidden">
+
+                    <div class="form-row">
+
+                        <div class="position-relative form-group col-6">
+                            <label for="lableFile" class="required">ชื่อเอกสาร</label>
+                            <input name="lableFile" id="lableFile" maxlength="250" type="text" class="form-control form-control-sm js--text validate[required]">
+                        </div>
+
+                        <div class="position-relative form-group col-6">
+                            <label for="description" class="">คำอธิบายเพิ่มเติม</label>
+                            <input name="description" id="description" maxlength="500" placeholder="" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <input type="file" id="fileupload" accept="application/msword, application/vnd.ms-excel,text/plain, application/pdf, image/*" data-max-size="68157440" />
+                            <small class="form-text text-muted"><span class="required"></span> ไฟล์เอกสารต้องมีขนาดไม่เกิน 65 MB.</small>
+                            <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                0%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix mt-2">
+
+                        <a href="javascript:void(0)" class="border-0 btn-transition  btn btn-primary" id="btnsave-docs">อัปโหลดไฟล์</a>
+                        <a href="javascript:void(0)" class="border-0 btn-transition  btn btn-secondary" id="cancels-docs">ยกเลิก</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    <div class="form-group text-center mt-5 @(Model != null ? Model.caseApplicant.StatusID >= 1 && Model.caseApplicant.StatusID <= 4 ? "d-none" : "" : "")">
+        @if (Model != null)
+        {
+            <div class="row">
+                <div class="col-12 pb-3">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="IsAgree">
+                        <label class="custom-control-label" for="IsAgree">ข้าพเจ้าขอยืนยันว่า ข้อความดังกล่าวข้างต้น ในแบบคำขอรับความช่วยเหลือเงินกองทุนยุติธรรมเป็นจริงทุกประการ</label>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <a href="javascript:void(0)" class="btn btn-primary btn-hover-shine js--save font-size-md" data-type="0" id="btdraf">บันทึกเป็นแบบร่าง</a>
+            <a href="javascript:void(0)" class="btn btn-primary btn-hover-shine js--save font-size-md disable-ct" data-type="1" id="btsave">ยื่นคำขอ</a>
+        }
+        else
+        {
+            <a href="javascript:void(0)" class="btn btn-primary btn-hover-shine js--save font-size-md" data-type="0" id="btdraf">บันทึก</a>
+        }
+        <a href="/form/" class="btn btn-secondary btn-hover-shine font-size-md">ยกเลิก</a>
+    </div>
+
+</form>
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datetimepicker/bootstrap-datepicker-thai.js"></script>
+    <script src="~/assets/js/vendors/form-components/bootstrap-multiselect.js"></script>
+    <script src="~/assets/js/vendors/form-components/select2.min.js"></script>
+    <script src="~/assets/js/scripts-init/form-components/input-select.js"></script>
+    <script src="~/assets/js/vendors/form-components/input-mask.min.js"></script>
+    <script src="~/assets/js/vendors/form-components/moment.min.js"></script>
+    <script src="~/assets/js/scripts-init/web-upload.js"></script>
+    <script src="~/assets/js/vendors/toastr.js"></script>
+    <script tyep="text/javascript">
+        const componentName = 'Proxy';
+        $(function () {
+            $('.datepicker').datepicker({ autoclose: true });
+        });
+
+        $(document).ready(function () {
+
+            if ($('input[name=rdoProposerType]:checked').val() == 1) {
+
+                $('.tb--normal').show();
+            }
+            else {
+                $('.tb--organization').show();
+            }
+            if ($('#selectDistrict').val() != 0 && $('#selectSubDistrict').val() != 0) {
+                handleChange($('#Province'), setDistrict($('#selectDistrict').val(), $('#selectSubDistrict').val(), '', ''));
+            }
+            setTimeout(function () {
+                if (typeof $('#selectContactDistrict').val() != 'undefined' && typeof $('#selectContactSubdistrictID').val() != 'undefined') {
+                    if ($('#selectContactDistrict').val() != 0 && $('#selectContactSubdistrictID').val() != 0) {
+                        handleChange($('#ContactProvince'), setDistrict($('#selectContactDistrict').val(), $('#selectContactSubdistrictID').val(), 'Contact', ''));
+                    }
+                }
+            }, 1000);
+            setTimeout(function () {
+                if (typeof $('#selectProjectDistrict').val() != 'undefined' && typeof $('#selectProjectSubDistrict').val() != 'undefined') {
+                    if ($('#selectProjectDistrict').val() != 0 && $('#selectProjectSubDistrict').val() != 0) {
+                        handleChange($('#ProjectProvince'), setDistrict($('#selectProjectDistrict').val(), $('#selectProjectSubDistrict').val(), 'Project', ''));
+                    }
+                }
+            }, 1500);
+            setTimeout(function () {
+                if (typeof $('#selectDistrict' + componentName).val() != 'undefined' && typeof $('#selectSubDistrict' + componentName).val() != 'undefined') {
+                    if ($('#selectDistrict' + componentName).val() != 0 && $('#selectSubDistrict' + componentName).val() != 0) {
+                        handleChange($('#Province' + componentName), setDistrict($('#selectDistrict' + componentName).val(), $('#selectSubDistrict' + componentName).val(), '', componentName));
+                    }
+                }
+            }, 2000);
+
+            setTimeout(function () {
+                if (typeof $('#selectCurrentDistrict' + componentName).val() != 'undefined' && typeof $('#CurrentSubDistrict' + componentName).val() != 'undefined') {
+                    if ($('#selectCurrentDistrict' + componentName).val() != 0 && $('#CurrentSubDistrict' + componentName).val() != 0) {
+                        handleChange($('#CurrentProvince' + componentName), setDistrict($('#selectCurrentDistrict' + componentName).val(), $('#selectCurrentSubDistrict' + componentName).val(), 'Current', componentName));
+                    }
+                }
+            }, 2500);
+
+
+            let date = new Date();
+            if ($('#dateOfBirth').val() != '') {
+                let date = $('#dateOfBirth').val();
+                $('#dateOfBirth').datepicker('update', date.toString())
+            }
+            if (typeof $('#dateOfBirth' + componentName).val() != 'undefined') {
+                if ($('#dateOfBirth' + componentName).val() != '') {
+                    let date = $('#dateOfBirth' + componentName).val();
+                    $('#dateOfBirth' + componentName).datepicker('update', date.toString())
+                }
+            }
+
+            $('#dateOfBirth,#dateOfBirth' + componentName).datepicker('setEndDate', date);
+            $(".input-cardid").inputmask({ mask: "9-9999-99999-99-9", groupSeparator: "-", autoUnmask: true });
+            $(".input-decimal").inputmask({ alias: "decimal", groupSeparator: ",", rightAlign: true, autoGroup: true, autoUnmask: true });
+            $(".input-tel").inputmask({ mask: "99-99999999", placeholder: " " });
+            $(".input-number").inputmask({ alias: 'integer', rightAlign: true, allowPlus: false, allowMinus: false });
+            $(".input-email").inputmask({ alias: "email" });
+            $('.icheck').iCheck({
+                checkboxClass: 'icheckbox_flat-grey',
+                radioClass: 'iradio_flat-grey'
+            });
+
+            $('body')
+                .off('click', '.js--slide')
+                .on('click', '.js--slide', function () {
+                    const $this = $(this);
+                    const isopen = $this.data('isopen');
+                    if (isopen == 0) {
+                        $this.find('i').removeClass('fa-angle-down');
+                        $this.find('i').addClass('fa-angle-up');
+                        $this.closest('section').find('.slide-ct').slideDown('slow');
+                        $this.data('isopen', 1);
+                    } else {
+                        $this.find('i').removeClass('fa-angle-up');
+                        $this.find('i').addClass('fa-angle-down');
+                        $this.closest('section').find('.slide-ct').slideUp('slow');
+                        $this.data('isopen', 0);
+                    }
+                })
+                .off('change', '#IsAgree')
+                .on('change', '#IsAgree', function () {
+                    if ($(this).is(':checked')) {
+                        $('#btsave').removeClass('disable-ct')
+                    } else {
+                        $('#btsave').addClass('disable-ct')
+                    }
+                })
+                .off('ifChanged', '[name="ckDocument"]')
+                .on('ifChanged', '[name="ckDocument"]', function () {
+                    $('[name="ckDocument"]').each(function () {
+                        if ($(this).is(':checked')) {
+                            $(this).closest('section').find('h3').removeClass('sectionlock');
+                            return false;
+                        } else {
+                            $(this).closest('section').find('h3').addClass('sectionlock');
+                        }
+                    })
+                })
+                .off('ifChecked', '[name="rdoProposerType"]')
+                .on('ifChecked', '[name="rdoProposerType"]', function () {
+                    console.log($(this).val());
+                    if ($(this).val() == 1) {
+                        $('.tb--normal').fadeIn();
+                        $('.tb--organization').fadeOut();
+                    }
+                    else {
+                        $('.tb--normal').fadeOut();
+                        $('.tb--organization').fadeIn();
+                    }
+                })
+                .off('ifChanged', '[name="ckCharacter"]')
+                .on('ifChanged', '[name="ckCharacter"]', function () {
+                    $('[name="ckCharacter"]').each(function () {
+                        if ($(this).is(':checked')) {
+                            $(this).closest('section').find('h3').removeClass('sectionlock');
+                            return false;
+                        } else {
+                            $(this).closest('section').find('h3').addClass('sectionlock');
+                        }
+                    })
+                })
+                .off('keyup change click', '.js--text')
+                .on('keyup change click', '.js--text', function () {
+                    const $this = $(this);
+                    //var len = $this.closest('section').find('.js--text').length;
+                    var len = 0;
+                    var check = [];
+                    $this.closest('section').find('.js--text').each(function () {
+
+                        if ($(this).closest('.divOtherProposerType').length == 0) {
+                            len += 1;
+                            if ($(this).val() == '' || $(this).val() == null) {
+                                $this.closest('section').find('h3').addClass('sectionlock');
+                            } else {
+                                check.push(1)
+                            }
+                        } else {
+                            if ($this.closest('div').attr('style') != 'display:none;') {
+                                if ($(this).val() == '' || $(this).val() == null) {
+                                    $this.closest('section').find('h3').addClass('sectionlock');
+                                } else {
+                                    check.push(1)
+                                }
+                            }
+                        }
+
+                    })
+                    if (len == check.length) {
+                        check = []
+                        $this.closest('section').find('h3').removeClass('sectionlock');
+                    }
+                })
+
+                .off('change', '#cardType')
+                .on('change', '#cardType', function (e) {
+                    $('#cardLabel').html($('#cardType option:selected').data('cardname'));
+                    if ($(this).val() == 1) {
+                        $("#cardID").inputmask({ mask: "9-9999-99999-99-9", groupSeparator: "-", autoUnmask: true });
+                    } else {
+                        $('#cardID').inputmask('remove');
+                        $('#cardID').removeClass('input-cardid');
+                    }
+                })
+                .off('focus', '.js-postcode')
+                .on('focus', '.js-postcode', function (event) {
+                    $(this).data('preval', $(this).val());
+                })
+                .off('click', '#btn-add-attach-file')
+                .on('click', '#btn-add-attach-file', function (e) {
+                    $('#form-edit-docs').slideDown('slow');
+                })
+                .off('ifChecked', 'input[name="ckCharacter"]')
+                .on('ifChecked', 'input[name="ckCharacter"]', function (e) {
+
+
+                    if ($(this).val() == 4) {
+                        var id = $(this).val();
+                        $('.divOtherCharacter').toggle();
+                        $('.divOtherCharacter').appendTo('#box-characteristics-' + id);
+                    }
+
+                })
+                .off('ifUnchecked', 'input[name="ckCharacter"]')
+                .on('ifUnchecked', 'input[name="ckCharacter"]', function (e) {
+
+
+                    if ($(this).val() == 4) {
+
+                        $('.divOtherCharacter').val('').hide();
+
+                    }
+
+                })
+                .off('click', '.js-copy')
+                .on('click', '.js-copy', function (e) {
+                    e.preventDefault()
+                    if ($(this).data('type') == 1) {
+                        SWConfirm.fire({ title: 'คุณต้องการคัดลอกที่อยู่โครงการหรือไม่ ? ' }).then((result) => {
+                            if (result.value) {
+
+                                $('#ContactDistrict').attr('disabled', 'disabled');
+                                $('#ContactSubDistrict').attr('disabled', 'disabled');
+
+                                $('#ContactHouseNo').val($('#HouseNo').val());
+                                $('#ContactVillageNo').val($('#VillageNo').val());
+                                $('#ContactStreet').val($('#Street').val());
+                                $('#ContactPostCode').val($('#PostCode').val());
+
+                                $('#ContactProvince').val($('#Province').val());
+                                $('#ContactProvince').trigger('change', [$('#ContactDistrict').val(), $('#ContactSubDistrict').val()]);
+                                setTimeout(function () {
+                                    getDistictByProvinceIDapplicantdetail($('#Province').val(), $('#District').val(), "ContactDistrict");
+                                }, 2000);
+                                setTimeout(function () {
+                                    getSubDistictByDistrictIDapplicantdetail($('#District').val(), $('#SubDistrict').val(), "ContactSubDistrict");
+                                }, 2000);
+
+
+
+                            }
+                        });
+                    } else {
+                        SWConfirm.fire({ title: 'คุณต้องการคัดลอกที่อยู่ตามภูมิลำเนาหรือไม่ ? ' }).then((result) => {
+                            if (result.value) {
+
+                                $('#CurrentDistrict' + componentName).attr('disabled', 'disabled');
+                                $('#CurrentSubDistrict' + componentName).attr('disabled', 'disabled');
+
+                                $('#CurrentHouseNo' + componentName).val($('#HouseNo' + componentName).val());
+                                $('#CurrentVillageNo' + componentName).val($('#VillageNo' + componentName).val());
+                                $('#CurrentSoi' + componentName).val($('#Soi' + componentName).val());
+                                $('#CurrentStreet' + componentName).val($('#Street' + componentName).val());
+                                $('#CurrentPostCode' + componentName).val($('#PostCode' + componentName).val());
+                                $('#CurrentTelephonNumber' + componentName).val($('#TelephonNumber' + componentName).val());
+                                $('#CurrentStay' + componentName).val($('#Stay' + componentName).val());
+                                $('#CurrentStayUnit' + componentName).val($('#StayUnit' + componentName).val()).trigger('change');
+
+                                if ($(':radio[name=rdoAddrType' + componentName + ']').is(':checked')) {
+                                    var vl = $(':radio[name=rdoAddrType' + componentName + ']:checked').val();
+                                    $(':radio[name=CurrentrdoAddrType' + componentName + '][value=' + vl + ']').iCheck('check');
+                                }
+
+                                $('#CurrentProvince' + componentName).val($('#Province' + componentName).val());
+                                $('#CurrentProvince' + componentName).trigger('change', [$('#CurrentDistrict' + componentName).val(), $('#CurrentSubDistrict' + componentName).val()]);
+                                setTimeout(function () {
+                                    getDistictByProvinceIDapplicantdetail($('#Province' + componentName).val(), $('#District' + componentName).val(), "CurrentDistrict" + componentName);
+                                }, 2000);
+                                setTimeout(function () {
+                                    getSubDistictByDistrictIDapplicantdetail($('#District' + componentName).val(), $('#SubDistrict' + componentName).val(), "CurrentSubDistrict" + componentName);
+                                }, 2000);
+
+
+
+                            }
+                        });
+                    }
+                })
+                .off('ifChecked', 'input[name=rdoreligion' + componentName + ']:radio')
+                .on('ifChecked', 'input[name=rdoreligion' + componentName + ']:radio', function (e) {
+                    //alert(1);
+                    var ele = $(this).closest('.form-group');
+                    var religionid = $(this).val();
+                    var isOther = $(this).data('isother');
+                    if (isOther == 1) {
+                        ele.find('.religionother').show();
+                    } else {
+                        ele.find('.religionother').hide();
+                    }
+                })
+                .off('click', '#cancels-docs')
+                .on('click', '#cancels-docs', function (e) {
+                    e.preventDefault();
+                    $('#fileDocs').val('');
+                    $('#lableFile').val('');
+                    $('#description').val('');
+                    $('#attachFileID').val(0);
+                    $('#form-edit-docs').slideUp('slow');
+
+                })
+                .off('click', '.js--delete-doc')
+                .on('click', '.js--delete-doc', function (e) {
+                    e.preventDefault();
+                    const $this = $(this);
+                    SWConfirm.fire({ 'title': 'ยืนยันการลบข้อมูล' }).then((result) => {
+                        if (result.value) {
+                            const attachfileID = $this.data('attachfileid');
+                            $.ajax({
+                                url: '/upload/deletefile',
+                                method: 'POST',
+                                data: {
+                                    id: attachfileID,
+                                },
+                                beforeSend: function () { },
+                                success: function (data) {
+                                    if (data.Status) {
+                                        SWSuccess.fire({
+                                            'title': 'ลบข้อมูลสำเร็จ',
+                                            onClose: () => {
+                                                $('#box-attachfile-' + attachfileID).remove();
+
+                                            }
+                                        });
+                                    } else {
+
+                                        SWError.fire();
+                                    }
+                                }
+                                , error: function (err) {
+                                    if (err.status == 401) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+
+                        }
+
+                    });
+
+                })
+                .off('ifChanged', '#Ishaveproxy')
+                .on('ifChanged', '#Ishaveproxy', function () {
+                    if ($(this).is(':checked')) {
+                        $('#section_proxy').removeClass('d-none');
+                    } else {
+                        $('#section_proxy').addClass('d-none');
+                    }
+                })
+                .off('click', '#btnsave-docs')
+                .on('click', '#btnsave-docs', function (event) {
+                    if ($('#form-edit-docs').validationEngine('validate')) {
+                        var TransactionID = $('#TransactionID').val();
+                        var lableFile = $('#lableFile').val();
+                        var attachFileID = $('#attachFileID').val();
+                        var description = $('#description').val();
+                        var attachFileData = {
+                            TransactionID: TransactionID,
+                            AttachFileID: attachFileID,
+                            LableFile: lableFile,
+                            Description: description
+                        }
+                        var data = new FormData();
+                        data.append('attachFileData', JSON.stringify(attachFileData));
+                        var regex = new RegExp("^.*\.(pdf|PDF|doc|DOCX|jpg|JPG|png|JPEG)$");
+                        var fileupload = document.getElementById('fileupload');
+                        if (regex.test(fileupload.value.toLowerCase())) {
+                            //Check whether HTML5 is supported.
+                            if (typeof (fileupload.files) != "undefined") {
+                                var maxSize = $(fileupload).data('max-size');
+                                var fileSize = fileupload.files[0].size;
+                                if (maxSize > fileSize) {
+                                    data.append('fileToUpload', fileupload.files[0]);
+                                    WebUpload.uploadFile(data, '/upload/filecaseuploads', $('#progressBar'), function (e) {
+                                        var data = JSON.parse(e);
+                                        if (data.Status) {
+                                            SWSuccess.fire({
+                                                onClose: () => {
+                                                    $('#attachFileID').val(0);
+                                                    $('#lableFile').val('');
+                                                    $('#description').val('');
+                                                    $('#fileupload').val('');
+                                                    $('form-edit-docs').slideUp('slow');
+                                                    const temp = Handlebars.compile($('#tmpl-caseattachfile').html())
+                                                    $('#boxdocs').append(temp(data.Data));
+                                                }
+                                            });
+                                        }
+
+                                    });
+                                } else {
+                                    WebUpload.fileSelected(fileupload);
+                                    toastr.error('ไฟล์มีขนาดใหญ่')
+                                    $(fileupload).val('');
+                                }
+                            }
+                        } else {
+                            toastr.error('กรุณาเลือกไฟล์')
+                            $(fileupload).val('');
+                        }
+
+
+                    }
+
+                })
+                .off('change', '#fileupload')
+                .on('change', '#fileupload', function (event) {
+                    WebUpload.fileSelected(this);
+                })
+                .off('ifClicked', 'input[name="ckDocument"]')
+                .on('ifClicked', 'input[name="ckDocument"]', function (e) {
+
+
+                    if ($(this).data('isother') == "True") {
+
+                        var id = $(this).val();
+
+                        $('.divOtherDocument').toggle();
+                        $('#box-document-' + id).append($('.divOtherDocument'));
+                    }
+
+                })
+                .off('ifChecked', ':radio[name=rdoProposerType]')
+                .on('ifChecked', ':radio[name=rdoProposerType]', function (e) {
+                    if ($(this).val() == 7) {
+                        $('.divOtherProposerType').show();
+                    } else {
+                        $('.divOtherProposerType').hide().val('');
+                    }
+                })
+                .off('blur', '.js-postcode')
+                .on('blur', '.js-postcode', function (e) {
+                    if ($.trim($(this).val()).length == 5 &&
+                        ($(this).val() != $(this).data('preval'))) {
+                        var el = $(this).closest('.card-body');
+                        el.find('.js-province').html('');//  $('#Province').html('');
+                        el.find('.js-subdistrict').html('');//$('#SubDistrict').html('');
+                        el.find('.js-district').html('');//$('#District').html('');
+                        $.ajax({
+                            url: '/jfservices/address/getaddresslistbypostcode',
+                            method: 'POST',
+                            data: {
+                                postCode: $(this).val()
+                            },
+                            beforeSend: function () { },
+                            success: function (data) {
+                                if (data.Status) {
+                                    //จังหวัด
+                                    el.find('.js-province').html('<option value="' + data.Data.Province.ProvinceID + '">' + data.Data.Province.ProvinceName + '</option>');
+                                    //ตำบล
+                                    var temp = Handlebars.compile($('#tmpl-lisdistrict').html());
+                                    el.find('.js-district').html(temp(data.Data.District));
+                                    el.find('.js-district').removeAttr('disabled');
+                                    //อำเภอ
+                                    var temp = Handlebars.compile($('#tmpl-lissubdistrict').html());
+                                    el.find('.js-subdistrict').html(temp(data.Data.SubDistrict));
+                                    el.find('.js-subdistrict').removeAttr('disabled');
+
+                                }
+                            },
+                            error: function (err) {
+                            }
+                        });
+                    } //end if
+                })
+                .off('change', '.js-province')
+                .on('change', '.js-province', function (e, para, para2) {
+                    if (typeof para !== "undefined") {
+                        if ($(this).attr('id') == "Province") { handleChange($(this), setDistrict(para, para2, '')); }
+                        if ($(this).attr('id') == "ContractProvince") { handleChange($(this), setDistrict(para, para2, 'Contract')); }
+
+                    } else {
+
+                        handleChange($(this));
+                    }
+                })
+                .off('change', '.js-district')
+                .on('change', '.js-district', function (e) {
+                    var el = $(this).closest('.address');
+                    $.ajax({
+                        url: '/jfservices/address/getsubdistrictlist',
+                        method: 'POST',
+                        data: { id: $(this).val() },
+                        beforeSend: function () { },
+                        success: function (data) {
+                            //console.log(data);
+                            if (data.Status) {
+                                var temp = Handlebars.compile($('#tmpl-lissubdistrict').html());
+                                el.find('.js-subdistrict').html(temp(data.Data));
+                                el.find('.js-subdistrict').removeAttr('disabled');
+
+                            }
+                        }
+                        , error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                })
+                .off('change', '.js-subdistrict')
+                .on('change', '.js-subdistrict', function (e) {
+                    var el = $(this).closest('.address');
+                    el.find('.js-postcode').val($(this).find(':selected').data('postcode'));
+                })
+                .off('click', '.js--save')
+                .on('click', '.js--save', function (e) {
+                    const $this = $(this);
+                    const type = $this.data('type');
+
+                    if ($('#complaintChannel').val() != 10008) {
+                        $('#ChannelCommunity').val('');
+                    }
+
+                    if (type == 1) {
+                        if ($('#frmapplicant').validationEngine('validate')) {
+                            $this.addClass('disable-ct')
+                            var req = dataReq(type);
+                            SaveRegis(req, $this);
+
+                        }
+                    } else {
+                        if ($('#frmapplicant').validationEngine('validate')) {
+                            $this.addClass('disable-ct')
+                            var req = dataReq(type);
+                            SaveRegis(req, $this);
+                        }
+                    }
+
+
+                }).off('keyup', '.js--calc')
+                .on('keyup', '.js--calc', function (e) {
+                    let amount = 0;
+                    $('[name="ckExpense"]').each(function (i, v) {
+                        
+                         let lineTotal = isNaN(parseFloat($(this).closest('.d-flex').find('.js--amount').val())) ? 0 : parseFloat($(this).closest('.d-flex').find('.js--amount').val());
+                        if (lineTotal > 0) {
+                            console.log({ lineTotal: this });
+                            $(this).iCheck('check');
+                            $(this).iCheck('update');
+                        } else {
+                            $(this).iCheck('uncheck');
+                            $(this).iCheck('update');
+                        }
+                        amount += lineTotal;
+                       
+                    });
+                    $('#totalExpense').val(amount);
+                });
+
+        });
+        function dataReq(type) {
+            //case Project
+            var caseProjectData = {
+                ProposerTypeID: $('.checked input[name="rdoProposerType"]').val(),
+                ProposerTypeOther: $('#OtherProposerType').val(),
+                ProjectTitle: $('#subject').val(),
+                ProposerEN: $('#ProposerEN').val(), //ชื่อผู้เสนอโครงการ(ภาษาอังกฤษ)
+                ObjectiveToHelp: $('#ObjectiveToHelp').val(), //วัตถุประสงค์ที่ขอรับความช่วยเหลือ
+                ProjectInAction: $('#ProjectInAction').val(), //กิจกรรมหรือโครงการที่ดำเนินการอยู่ในปัจจุบัน (โดยสรุป)
+                ProjectObjective: $('#ProjectObjective').val(), //วัตถุประสงค์โครงการ (โดยสรุป)
+                Portfolio: $('#Portfolio').val(),
+                ProjectResult: $('#ProjectResult').val(),
+                ProjectTarget: $('#ProjectTarget').val(),
+            }
+            var Expense = []
+            $('[name="ckExpense"]:checked').each(function (i, v) {
+                let amount = $(this).closest('.d-flex').find('.js--amount').val();
+                Expense.push({ ExpenseID: v.value, RequestAmount: amount });
+            });
+            var caseApplicantExData = {
+                CardID: $('#cardID').val(),
+                CardType: $('#cardType').val(),
+                DateOfBirthStr: $('#dateOfBirth').datepicker({ dateFormat: 'dd/MM/yyyy' }).val()
+            }
+            ////console.log('Project');
+            ////console.log(caseProjectData);
+
+            //แหล่งเงินทุน
+            var caseProjectSourceFund = [];
+
+            $(".sourceFund").each(function () {
+                caseProjectSourceFund.push({
+                    SourceFundName: $(this).find('.js--sourceFundName').val(),
+                    Amount: $(this).find('.js--amount').val()
+                });
+            });
+
+            ////console.log('แหล่งเงินทุน');
+            ////console.log(caseProjectSourceFund);
+
+            //บุคคลอ้างอิง
+            var caseProjectReferencePersonData = [];
+            $(".personRefName").each(function () {
+                caseProjectReferencePersonData.push({
+                    RefPersonName: $(this).find('.js--refPersonName').val(),
+                    RefPersonAddress: $(this).find('.js--refPersonAddress').val(),
+                    RefPersonTelephonNo: $(this).find('.js--refPersonTelephonNo').val()
+                });
+            });
+            ////console.log('บุคคลอ้างอิงขอรับเงิน');
+            ////console.log(caseProjectReferencePersonData);
+
+            //ลักษณะโครงการที่ขอรับเงิน
+            var caseProjectCharacteristicsData = [];
+            var characteristics = $('input[name="ckCharacter"]:checked');
+            characteristics.each(function () {
+                caseProjectCharacteristicsData.push({
+                    CharacteristicID: parseInt(this.value),
+                    Remark: parseInt(this.value) == 4 ? $('#OtherCharacter').val() : ""
+                })
+            });
+            //file
+            var attachfile = [];
+
+            $('.list-group-item').each(function (i, v) {
+                attachfile.push({
+                    AttachFileID: $(this).find('button').data('attachfileid'),
+                    Path: $(this).find('button').closest('.widget-content-right').find('a').attr('href'),
+                    Url: window.location.origin + $(this).find('button').closest('.widget-content-right').find('a').attr('href'),
+                    FileName: $(this).find('button').data('name'),
+                    LableFile: $(this).find('.js--lablefile').text(),
+                    Description: $(this).find('.js--description').text(),
+                    FileType: $(this).find('.js--filetype').text(),
+                    ModifiedDateStr: $(this).find('.js--modifieddate').text(),
+                    TransactionID: $('#TransactionID').val()
+                });
+            });
+            //console.log(attachfile);
+            ////console.log('ลักษณะโครงการที่ขอรับเงิน');
+            ////console.log(caseProjectCharacteristicsData);
+
+
+            //เอกสารโครงการ
+            //var caseProjectDocumentCheckData = [];
+            //var documentCheck = $('input[name="ckDocument"]:checked');
+
+            //documentCheck.each(function () {
+            //    var isother = $(this).data('isother');
+            //    var passIsother = JSON.parse(isother.toLowerCase());
+            //    caseProjectDocumentCheckData.push({
+            //        DocumentID: this.value,
+            //        Remark: passIsother ? $('#divOtherDocument').val() : "",
+            //    });
+            //});
+
+
+            ////console.log('เอกสารโครงการ');
+            ////console.log(caseProjectDocumentCheckData);
+
+            //name,description,path
+            //Applicant
+            var caseApplicantData = {
+                Gender: $('.checked input[name="rdosex"]').val(),
+                Title: $('#Title').val(),
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                RequestAmount: $('#RequestAmount').val(),
+                HasProxy: 0,
+            }//หนึ่งคดีมีได้หลายคน
+
+            ////console.log('Applicant');
+            ////console.log(caseApplicantData);
+
+
+            //case
+            var caseApplicationData = {
+                Subject: $('#subject').val(),
+                DepartmentID: 2,
+                ProvinceID: 1,
+                JFCaseTypeID: 4,
+                ChannelID: 10006,
+                CaseOwnerDepartmentID: 1,
+                WorkStepID: 1,
+                RegisterDateStr: type == 0 ? '' : moment().format('dd/MM/yyyy'),
+            }
+
+            ////console.log('caseApplicationData');
+            ////console.log(caseApplicationData);
+
+
+            //ProjectContactPersonData
+            var contactFname = '';
+            var contactLname = '';
+            if (typeof $('#ContactName').val() != 'undefined') {
+                var contactName = $('#ContactName').val();
+                contactFname = contactName.split(" ")[0];
+                contactLname = contactName.split(" ")[1];
+            }
+
+
+            //ผู้ประสานงานโครงการ
+            var projectContactPersonData = {
+
+                ProjectContactPerson: {
+                    FirstName: contactFname,
+                    LastName: contactLname,
+                    Email: $('#ContactEmail').val(),
+                    TelephoneNo: $('#ContactTelephonNumber').val(),
+                    FaxNo: $('#ContactFaxNumber').val(),
+                },
+
+                AddressRow: {
+                    HouseNo: $('#ContactHouseNo').val(),
+                    VillageNo: $('#ContactVillageNo').val(),
+                    Soi: $('#ContactSoi').val(),
+                    Street: $('#ContactStreet').val(),
+                    ProvinceID: $('#ContactProvince').val(),
+                    DisctrictID: $('#ContactDistrict').val(),
+                    SubdistrictID: $('#ContactSubDistrict').val(),
+                    PostCode: $('#ContactPostCode').val()
+                }
+            }
+
+            ////console.log('ProjectContactPersonData');
+            //console.log(projectContactPersonData);
+
+            var proxyadd = ["", "Current"]
+            var proxydetail = {
+                ProxyID: $('#proxyID' + componentName).val(),
+                CaseID: $('#caseID' + componentName).val(),
+                ApplicantID: $('#applicantID' + componentName).val(),
+                Title: $('#Title' + componentName).val(),
+                FirstName: $('#FirstName' + componentName).val(),
+                LastName: $('#LastName' + componentName).val(),
+                CardID: $('#cardID' + componentName).val(),
+                DateOfBirth: $('#dateOfBirth' + componentName).datepicker({ dateFormat: 'dd/MM/yyyy' }).val(),
+                DateOfBirthStr: $('#dateOfBirth' + componentName).val(),
+                Gender: $(':radio[name=rdosex' + componentName + ']:checked').val(),
+                RaceID: $(':radio[name=rdorace' + componentName + ']:checked').val(),
+                ReligionID: $(':radio[name=rdoreligion' + componentName + ']:checked').val(),
+                NationalityID: $('#Nationality' + componentName).val(),
+                RelatedAs: $('#relatedas' + componentName).val(),
+            }
+            var proxyaddressdetail = [];
+            var addressproxy = [];
+            for (var i = 0; i < proxyadd.length; i++) {
+
+                var present;
+                var premanent;
+                if (i == 0) {
+                    present = false;
+                    premanent = true
+                }
+                else {
+                    present = true;
+                    premanent = false
+                }
+                proxyaddressdetail.push({
+                    AddressID: $('#' + proxyadd[i] + 'addressID' + componentName).val(),
+                    AddressTypeID: $(':radio[name=' + proxyadd[i] + 'rdoAddrType' + componentName + ']:checked').val(),
+                    Stay: $('#' + proxyadd[i] + 'Stay' + componentName).val(),
+                    StayUnit: $('#' + proxyadd[i] + 'StayUnit' + componentName).val(),
+                    TelephoneNo: $('#' + proxyadd[i] + 'TelephonNumber' + componentName).val(),
+                    IsPresentAddress: present,
+                    IsPermanentAddress: premanent,
+                });
+                addressproxy.push({
+                    AddressID: $('#' + proxyadd[i] + 'addressID' + componentName).val(),
+                    HouseNo: $('#' + proxyadd[i] + 'HouseNo' + componentName).val(),
+                    VillageNo: $('#' + proxyadd[i] + 'VillageNo' + componentName).val(),
+                    Street: $('#' + proxyadd[i] + 'Street' + componentName).val(),
+                    ProvinceID: $('#' + proxyadd[i] + 'Province' + componentName).val(),
+                    DisctrictID: $('#' + proxyadd[i] + 'District' + componentName).val(),
+                    SubdistrictID: $('#' + proxyadd[i] + 'SubDistrict' + componentName).val(),
+                    PostCode: $('#' + proxyadd[i] + 'PostCode' + componentName).val(),
+                });
+
+
+            }
+            var religionother = '';
+            var isReligionOther = $(':radio[name=rdoreligion' + componentName + ']:checked').data('isother')
+            if (isReligionOther == 1) {
+                religionother = $('#religionother' + componentName).val();
+            }
+            var proxydata = null;
+
+            if (typeof $('#FirstName' + componentName).val() != 'undefined') {
+                if ($('#FirstName' + componentName).val() != '' && $('#cardID' + componentName).val() != '' && $('#dateOfBirth' + componentName).datepicker({ dateFormat: 'dd/MM/yyyy' }).val() != '') {
+                    proxydata = {
+
+                        ProxyDetail: proxydetail,
+                        ProxAddress: proxyaddressdetail,
+                        Address: addressproxy,
+                        Religionother: religionother
+                    }
+                }
+            }
+
+            //console.log('proxydata: ',proxydata)
+
+            //ที่อยู่
+            var projectAddressData = {
+                ProjectAddress: {
+                    Email: $('#ProposerEmail').val(),
+                    TelephoneNo: $('#TelephonNumber').val(),
+                    FaxNo: $('#FaxNumber').val(),
+                },
+
+                AddressRow: {
+                    HouseNo: $('#HouseNo').val(),
+                    VillageNo: $('#VillageNo').val(),
+                    Soi: $('#Soi').val(),
+                    Street: $('#Street').val(),
+                    ProvinceID: $('#Province').val(),
+                    DisctrictID: $('#District').val(),
+                    SubdistrictID: $('#SubDistrict').val(),
+                    PostCode: $('#PostCode').val()
+                },
+            }
+            var projectLocation = {
+                ProjectLocation: {
+                    LocationName: $('#ProjectAddressName').val()
+                },
+                AddressRow: {
+                    ProvinceID: $('#ProjectProvince').val(),
+                    DisctrictID: $('#ProjectDistrict').val(),
+                    SubdistrictID: $('#ProjectSubDistrict').val(),
+                    PostCode: $('#ProjectPostCode').val()
+                }
+            }
+            ////console.log('projectAddressData');
+            //console.log(window.location.origin);
+            //var CaseApplicationChannelData = {
+            //    CaseID: $('#caseID').val(),
+            //    ChannelName: $('#ChannelCommunity').val()
+            //}
+
+            var caseProjectData = {
+                CaseApplicationData: caseApplicationData,
+                CaseApplicantData: caseApplicantData,
+                CaseProjectData: caseProjectData,
+                ProjectAttachfile: attachfile,
+                //ChannelData: CaseApplicationChannelData,
+                CaseProjectSourceFundData: caseProjectSourceFund,
+                CaseProjectReferencePersonData: caseProjectReferencePersonData,
+                CaseProjectCharacteristicsData: caseProjectCharacteristicsData,
+                //CaseProjectDocumentCheckData: caseProjectDocumentCheckData,
+                ProjectContactPersonData: projectContactPersonData,
+                ProjectAddressData: projectAddressData,
+                caseApplicantExData: caseApplicantExData,
+                ProxyData: proxydata,
+                ProjectCaseExpenseData: {
+                    caseExpense: Expense
+                },
+                ProjectLocation: projectLocation
+
+            }
+            var data = {
+                TransactionID: $('#TransactionID').val(),
+                Subject: $('#subject').val(),
+                TelephoneNo: $('#TelephonNumber').val(),
+                Gender: $('.checked input[name="rdosex"]').val(),
+                Title: $('#Title').val(),
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                CardID: $('#cardID').val(),
+                StatusID: type == 0 ? 0 : 4,
+                Email: $('#ProposerEmail').val(),
+                IsAgree: $('#IsAgree').length ? $('#IsAgree').is(':checked') : 1
+
+            }
+            var req = {
+                data: data,
+                caseProjectData: caseProjectData
+            }
+            return req;
+        }
+        const SaveRegis = (data, ele) => {
+            SWConfirm.fire().then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: '/form/tempregister',
+                        method: 'POST',
+                        data: {
+                            req: data
+                        },
+                        beforeSend: function () { },
+                        success: function (data) {
+                            if (data.Status) {
+                                SWSuccess.fire({
+                                    onClose: () => {
+                                        window.location.href = "/form/register?id=" + data.DataID;
+                                    }
+                                });
+
+                            } else {
+                                SWError.fire();
+                            }
+                            ele.removeClass('disable-ct');
+                        }
+                        , error: function (err) {
+                            ele.removeClass('disable-ct');
+                            if (err.status == 401) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                } else {
+                    ele.removeClass('disable-ct');
+                    ele.val('บันทึกและรับคำขอ');
+                }
+            });
+        }
+        function getAttachFile() {
+            $.ajax({
+                url: '/jfservices/getcaseattachfile',
+                method: 'POST',
+                data: {
+                    applicantID: $('#applicantID').val(),
+                    caseID: $('#caseID').val(),
+                    workStepID: $('#workStepID').val()
+                },
+                beforeSend: function () { },
+                success: function (data) {
+
+                    $('#boxdocs').html('');
+                    if (data.Data != null) {
+                        //console.log("data Data",data.Data);
+                        var temp = Handlebars.compile($('#tmpl-caseattachfile').html());
+                        $.each(data.Data, function (index, value) {
+                            $('#boxdocs').append(temp(value));
+                        });
+                    }
+                }
+                , error: function (err) {
+                    //console.log(err);
+                }
+            });
+        }
+        function handleChange(elem, callback) {
+            var el = elem.closest('.address');
+            $.ajax({
+                url: '/jfservices/address/getdistrictlist',
+                method: 'POST',
+                data: { id: elem.val() },
+                beforeSend: function () { },
+                success: function (data) {
+                    if (data.Status) {
+                        var temp = Handlebars.compile($('#tmpl-lisdistrict').html());
+                        el.find('.js-district').html(temp(data.Data));
+                        el.find('.js-district').removeAttr('disabled');
+                        el.find('.js-subdistrict').html('').attr('disabled', 'disabled');
+                        el.find('.js-district,.js-subdistrict').select2({
+                            theme: "bootstrap4",
+                            width: "100%"
+                        });
+                    }
+                }
+                , error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            if (typeof callback === "function") {
+                callback();
+            }
+        }
+
+        function setDistrict(para, para2, elId, componame) {
+            let compoName = ''
+            if (typeof componame != 'undefined') {
+                compoName = componame;
+            }
+
+            setTimeout(function () {
+                $('#' + elId + 'District' + compoName).removeAttr('disabled');
+                $('#' + elId + 'District' + compoName).val(para);
+                $('#' + elId + 'District' + compoName).trigger('change');
+                setSubDistrict(para2, elId, compoName);
+            }, 2000);
+        }
+        function setSubDistrict(para, elId, componame) {
+            setTimeout(function () {
+                $('#' + elId + 'SubDistrict' + componame).removeAttr('disabled');
+                $('#' + elId + 'SubDistrict' + componame).val(para).trigger('change');
+            }, 2000);
+        }
+        function getDistictByProvinceIDapplicantdetail(provinceid, districtid, elementID) {
+            if (provinceid != 0) {
+                $('#' + elementID).html('');
+
+                $.ajax({
+                    url: '/jfservices/address/getdistrictlist',
+                    method: 'POST',
+                    data: { id: provinceid },
+                    beforeSend: function () {
+                        //$('#SubDistrict').html('Loading...')
+                    },
+                    success: function (data) {
+                        ////console.log(data);
+                        if (data.Status) {
+                            var temp = Handlebars.compile($('#tmpl-lisdistrict').html());
+                            $('#' + elementID).html(temp(data.Data));
+                            $('#' + elementID).removeAttr('disabled');
+                            $('#' + elementID).val(districtid);
+                        }
+                    }
+                    , error: function (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+        }
+
+
+        function getSubDistictByDistrictIDapplicantdetail(districtid, subDistrictid, elementID) {
+            if (districtid != 0) {
+                $('#' + elementID).html('');
+                $.ajax({
+                    url: '/jfservices/address/getsubdistrictlist',
+                    method: 'POST',
+                    data: { id: districtid },
+                    beforeSend: function () {
+                        //$('#SubDistrict').html('Loading...')
+                    },
+                    success: function (data) {
+                        ////console.log(data);
+                        if (data.Status) {
+                            var temp = Handlebars.compile($('#tmpl-lissubdistrict').html());
+                            $('#' + elementID).html(temp(data.Data));
+                            $('#' + elementID).removeAttr('disabled');
+                            $('#' + elementID).val(subDistrictid);
+
+                        }
+                    }
+                    , error: function (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+        }
+    </script>
+
+
+
+    <script id="tmpl-lisdistrict" type="text/x-handlebars-template">
+        <option value="" disabled selected>เลือก</option>
+        {{#each this}}
+        <option value="{{DistrictID}}">{{ DistrictName }}</option>
+        {{/ each}}
+    </script>
+    <script id="tmpl-lissubdistrict" type="text/x-handlebars-template">
+        <option value="" disabled selected>เลือก</option>
+        {{#each this}}
+        <option value="{{SubDistrictID}}" data-postcode="{{PostCode}}">{{SubDistrictName}}</option>
+        {{/each}}
+    </script>
+    <script id="tmpl-caseattachfile" type="text/x-handlebars-template">
+
+
+        <li class="list-group-item" id="box-attachfile-{{AttachFileID}}">
+            <div class="todo-indicator bg-success"></div>
+            <div class="widget-content p-0">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-left mr-2">
+
+                    </div>
+                    <div class="widget-content-left flex2">
+                        <div class="widget-heading js--lablefile">{{LableFile}}</div>
+                        <div class="widget-subheading js--description">{{Description}}</div>
+                    </div>
+
+                    <div class="widget-content-right">
+                        <div class="badge badge-light mr-2 js--filetype">{{FileType}}</div>
+                    </div>
+                    <div class="widget-content-right">
+                        <div class="badge badge-secondary mr-2 js--modifieddate">{{ModifiedDateStr}}</div>
+                    </div>
+
+                    <div class="widget-content-right">
+                        <a href="{{Path}}"
+                           data-toggle="tooltip"
+                           title="ดาวน์โหลดเอกสาร"
+                           data-placement="top"
+                           download target="_blank" class="border-0 btn-transition btn btn-outline-primary">
+                            <i class="fa fa-download"></i>
+                        </a>
+                        <button class="border-0 btn-transition btn btn-outline-secondary js--delete-doc"
+                                data-attachfileid="{{AttachFileID}}"
+                                data-name="{{FileName}}"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="ลบเอกสาร">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+    </script>
+}

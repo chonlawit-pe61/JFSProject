@@ -1,0 +1,111 @@
+//แกไข้ ให้สามารถ Validate MultiSelect ได้
+https://social.msdn.microsoft.com/Forums/office/en-US/a8ce34f2-7d15-484c-b97f-68b205c72fef/openxml-word-text-alignment?forum=oxmlsdk
+jquery.validationEngine.js
+แก้ไข บรรทัดที่ 828
+if (field.next('span.select2-container').length) {
+ field.next('span.select2-container').removeClass(options.addFailureCssClassToField);
+}
+
+ {{#ifCond ComplaintStatus "==" "2"}}
+            <span class="badge badge-pill ml-2 {{ComplaintStatus ComplaintStatus}}">เสร็จสิ้น</span>
+                {{/ifCond}}
+
+
+  $('.icheck').iCheck({
+                checkboxClass: 'icheckbox_flat-grey',
+                radioClass: 'iradio_flat-grey'
+            });
+
+   Gender: $(':radio[name=rdosex]').is(':checked') ? $(':radio[name=rdosex]:checked').val() : 'm',
+                             
+                             
+$("input[name=mygroup][value=" + value + "]")
+$(':radio[name=CurrentrdoAddrType][value=' + vl + ']').iCheck('check');
+  $("#" + componentName + '-' + data.Data.EducationLevelID).iCheck('check');
+
+   <div class="form-check form-check-inline">
+                    <label class="form-check-label  pl-2" for="ckExpense@(item.ExpenseID)" style="cursor:pointer;">
+                        <input class="form-check-input icheck col-2" type="checkbox" name="ckExpense" id="ckExpense@(item.ExpenseID)" value="@(item.ExpenseID)">
+                        @(item.ExpenseName)
+                    </label>
+                </div>
+
+
+
+    List<TranCity> TranCity = JsonConvert.DeserializeObject<List<TranCity>>(item.TranCity);
+                            if (TranCity.Safe().Any())
+                            {
+                                var rowName = (from q in TranCity
+                                               select q).FirstOrDefault();
+                                if (rowName == null)
+                                {
+                                    rowName = TranCity[0];
+                                }
+                                item.TranCity = rowName.CityName;
+                            }
+
+//////////////////////// Set dropdown select value select2 /////////////////////
+    $('body').off('change', '#department')
+        .on('change', '#department', function (e) {
+            if ($('#CaseOwnerDepartmentID').length) {
+                $('#CaseOwnerDepartmentID').val($(this).val()).trigger('change');
+            }
+
+        });
+
+
+
+        ('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
+
+
+เลือก select2 จาก text
+  var posi = $(this).data('description');
+                    $('[id=Position] option').filter(function () {
+                        return ($(this).text() == posi); //To select position
+                    }).prop('selected', true);
+                    $('#Position').trigger('change');
+
+
+กำหนดเลือกวันของ bootstrap datepicker
+$(document).ready(function () {
+    $('#dateApp').datepicker('setStartDate', moment().subtract(1, 'years').format('DD/MM/YYYY'));
+   $('#dateApp').datepicker('setEndDate', moment().format('DD/MM/YYYY'));
+});
+
+หรือ
+
+ $('#dateOfBirth').datepicker({
+                startDate: moment().subtract(90, 'years').format('DD/MM/YYYY'),
+                endDate: moment().subtract(1, 'years').format('DD/MM/YYYY'),
+});
+
+กำหนดช่วงวันให้เลือก
+วันเกิดเหตุ วันสิ้นสุด
+ $('#accidentDate' + componentName).datepicker('setEndDate', Common.GetDate());
+        $('#accidentDateTo' + componentName).datepicker('setEndDate', Common.GetDate());
+        var startDate = new Date();
+        var endDate = new Date();
+        $('#accidentDate' + componentName).datepicker().on('changeDate', function (ev) {
+            startDate = new Date(ev.date);
+            $('#accidentDateTo' + componentName).datepicker('setStartDate', ev.date);
+        });
+        $('#accidentDateTo' + componentName).datepicker().on('changeDate', function (ev) {
+            endDate = new Date(ev.date);
+            var datedif = Common.DiffDays(startDate, endDate);
+            if (datedif < 0) {
+                ev.preventDefault();
+                $('#accidentDateTo' + componentName).val('');
+                SWError.fire({ title: 'วันที่เกิดเหตุระบุไม่ถูกต้อง'});
+            }
+        });
+
+
+

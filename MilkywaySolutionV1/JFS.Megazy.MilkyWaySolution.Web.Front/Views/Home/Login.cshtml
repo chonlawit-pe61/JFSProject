@@ -1,0 +1,246 @@
+﻿
+@section styles{
+    <style>
+        svg {
+            width: 100px;
+            height: 100px;
+        }
+
+        .icon {
+            fill: #fff;
+            /*fill: #003462;*/
+        }
+
+        .logo {
+            max-width: 75px;
+            max-height: 75px;
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        .path2 {
+            fill: #fff;
+            /*fill: #EA98BE;*/
+        }
+
+        /*        body {
+            background-image: linear-gradient( 135deg, #fde9f2 0%, #d881d2 100%) !important;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }*/
+
+        .card-login {
+            width: 25rem;
+            margin: auto;
+            height: auto;
+        }
+    </style>
+}
+
+<div class="container">
+    @*<div class="d-flex">
+        <div class="p-2 bd-highlight"><a style="font-size: x-large;" href="/" title="หน้าแรก"><i class="fa fa-home"></i></a></div>
+    </div>*@
+    <h2 class="h4 text-center mt-4">ระบบยื่นคำขอกรณีการสนับสนุนโครงการให้ความรู้ทางกฎหมายแก่ประชาชน</h2>
+
+    <div class="row mt-4">
+
+        <div class="card card-login">
+            <img class="card-img-top mt-4 logo" src="~/assets/images/logo.svg" />
+            <div class="card-body">
+                @*<h4 class="mt-2 mb-4 text-center">
+                    เข้าสู่ระบบ
+                </h4>*@
+                <form class="form-validation" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class=" form-group">
+                                <label for="email" class="">ชื่อผู้ใช้งาน/อีเมล</label>
+                                <input name="email" id="email" placeholder="กรอกชื่อผู้ใช้งานหรืออีเมล.." onkeyup="" type="text" class="form-control js--username" value="@(ViewBag.Username)" required>
+                                <small id="emailHelp" class="form-text text-danger d-none">กรอกภาษาอังกฤษเท่านั้น</small>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class=" form-group">
+                                <label for="password" class="">รหัสผ่าน</label>
+                                <input name="password" id="password" placeholder="กรอกรหัสผ่าน.." type="password" class="form-control js--password" value="@(ViewBag.Pwd)" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="js--alert text-center d-none" style="color:#d9534f;">
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row justify-content-center">
+                        <div class="col-7">
+                            <button class="btn btn-primary btn-sm btn-block btn-hover-shine" type="submit">เข้าสู่ระบบ</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="mt-5 d-flex justify-content-end">
+                    <div style="padding-top: 1px;">
+                        <a href="javascript:void(0);" id="RecoverPassword" class="btn-sm btn btn-link">Recover Password</a>
+                    </div>
+                    <div class="pt-1">
+                        <p>ไม่มีบัญชี? <a href="/signup" class="text-primary">สร้างบัญชีใหม่</a></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center text-black-50 opacity-8 mt-4 small">Copyright ©@(DateTime.Now.Year) สงวนลิขสิทธิ์โดย สำนักงานกองทุนยุติธรรม สำนักงานปลัดกระทรวงยุติธรรม</div>
+</div>
+@section modals{
+    <form id="frmRecoverPassword">
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="form-row">
+                            <div class="col-12 text-center">
+                                <span class="text-danger h4" id="textAlert">กรุณาติดต่อเจ้าหน้าที่</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+@section scripts{
+    <script type="text/javascript">
+        var arr = [];
+        for (var i = 33; i < 127; ++i) {
+            arr.push(String.fromCharCode(i))
+        };
+        $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_flat-grey',
+            radioClass: 'iradio_flat-grey'
+        });
+        $(document).ready(function () {
+            $(".input-tel").inputmask({ mask: "99-99999999", placeholder: " " });
+            $(".input-number").inputmask({ alias: 'integer', rightAlign: true, allowPlus: false, allowMinus: false });
+            $(".input-email").inputmask({ alias: "email" });
+
+            $('.form-validation').submit(function () {
+                sendContactForm($(this));
+                return false;
+            });
+            $('body')
+                .off('change', '#email,#username')
+                .on('change', '#email,#username', function () {
+                    const $this = $(this);
+                    const text = $this.val()
+                    if (text != '') {
+                        if (!checkchar(text)) {
+                            $this.closest('div').find('#emailHelp').removeClass('d-none');
+                            $this.addClass('border-danger')
+                            setTimeout(function () {
+                                $this.val('')
+                            }, 1000);
+
+                        };
+                    }
+                })
+                .off('focus', '#email,#username')
+                .on('focus', '#email,#username', function () {
+                    const $this = $(this);
+                    $this.removeClass('border-danger')
+                    $this.closest('div').find('#emailHelp').addClass('d-none');
+                })
+                .off('click', '#RecoverPassword')
+                .on('click', '#RecoverPassword', function (e) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'กรุณาติดต่อเจ้าหน้าที่',
+                        text: 'โทร 02-1415455, 02-1415456',
+                        showConfirmButton: true
+                    })
+                })
+        });
+        function checkValueModal(ele) {
+            let res = false;
+            ele.closest('.form-row').find('input').each(function () {
+                if ($(this).val() != '') {
+                    res = true;
+                    return false;
+                }
+            })
+            return res;
+        }
+        function sendContactForm(ele) {
+            if ($('#email').val() != '' && $('#password').val() != '') {
+                $.ajax({
+                    url: '/loginverify',
+                    method: 'POST',
+                    data: { username: $('#email').val(), password: $('#password').val() },
+                    beforeSend: function () {
+                        SWSaveing.fire({ title: 'กำลังเข้าสู่ระบบ', timer: 30000 });
+                    },
+                    success: function (data) {
+
+                        if (data.Status) {
+                            window.location.href = '/form';
+                        }
+                        else {
+                            swal.close()
+                            ele.find('.js--password').val('');
+                            ele.find('.js--alert').removeClass('d-none');
+                            ele.find('.js--alert').html(data.Message);
+                            if (data.DataID == 1) {
+                                ele.find('.js--username').val('');
+
+                            } else if (data.DataID == 3) {
+                                /*ตรวจสอบเบอร์มือถือ*/
+                                window.location.href = '/verifymobile';
+                            } else {
+                                ele.find('.js--username').val('');
+                            }
+                        }
+                    }
+                    , error: function (err) {
+                        SWError.fire();
+                        console.log(err);
+                    }
+                });
+            }
+        }
+        function checkchar(text) {
+            var x = 1;
+            var result = true;
+            for (i = 0; i < text.length; i++) {
+                if (!arr.filter(p => p == text.substring(i, x)).length > 0) {
+                    result = false;
+                    break;
+                }
+                x++;
+            }
+            return result
+        }
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('form-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+
+        })();
+    </script>
+
+}

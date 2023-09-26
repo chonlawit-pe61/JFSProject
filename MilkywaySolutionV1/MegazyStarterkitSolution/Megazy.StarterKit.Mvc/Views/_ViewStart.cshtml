@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var act = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    var ctrl = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+
+    if (ctrl == "home" && (act == "websignin" || act == "jfsignin"))
+    {
+        //  Layout = "";
+        Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    }
+    else if (ctrl == "report")
+    {
+        //  Layout = "";
+        Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    //else if (ctrl == "contents" && act == "views")
+    //{
+
+    //    Layout = "~/Areas/TSB/Views/Shared/_LayoutViews.cshtml";
+    //}
+
+}

@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLL", "DLL", "{0D966BB9-A78C-4AAD-9543-D35F62416D45}"
+	ProjectSection(SolutionItems) = preProject
+		DLL\Archi.DevelopComponent.Transaction.Engine.dll = DLL\Archi.DevelopComponent.Transaction.Engine.dll
+		DLL\Banish.Treasure.Megazy.dll = DLL\Banish.Treasure.Megazy.dll
+		DLL\CaptchaMvc.dll = DLL\CaptchaMvc.dll
+		Note.txt = Note.txt
+		PageTemplate.txt = PageTemplate.txt
+		PartialViewTemplate.txt = PartialViewTemplate.txt
+		DLL\Sk.StepUpSolution.SComponent.dll = DLL\Sk.StepUpSolution.SComponent.dll
+		DLL\Thaibulksms.Megazy.UltraBoostSolution.Library.dll = DLL\Thaibulksms.Megazy.UltraBoostSolution.Library.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFS.Megazy.MilkyWaySolution.Web.Front", "JFS.Megazy.MilkyWaySolution.Web.Front\JFS.Megazy.MilkyWaySolution.Web.Front.csproj", "{D58A2998-C14C-4FCA-A26E-4E7817A24955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFS.Megazy.MilkyWaySolution.Engine", "JFS.Megazy.MilkyWaySolution.Engine\JFS.Megazy.MilkyWaySolution.Engine.csproj", "{C4009792-064D-4092-BA50-B30D847EC4E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFS.Megazy.MilkyWaySolution.Web", "JFS.Megazy.MilkyWaySolution.Web\JFS.Megazy.MilkyWaySolution.Web.csproj", "{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C07901B-6C72-40C7-8D41-79872A85307A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JusticFund", "JusticFund", "{A293920F-1ED1-42A8-92AF-6B7D7BD96D12}"
+	ProjectSection(SolutionItems) = preProject
+		EditNote.txt = EditNote.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Debug|x86.Build.0 = Debug|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Release|x86.ActiveCfg = Release|Any CPU
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955}.Release|x86.Build.0 = Release|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4009792-064D-4092-BA50-B30D847EC4E9}.Release|x86.Build.0 = Release|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Debug|x86.Build.0 = Debug|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Release|x86.ActiveCfg = Release|Any CPU
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D58A2998-C14C-4FCA-A26E-4E7817A24955} = {A293920F-1ED1-42A8-92AF-6B7D7BD96D12}
+		{C4009792-064D-4092-BA50-B30D847EC4E9} = {A293920F-1ED1-42A8-92AF-6B7D7BD96D12}
+		{1AB8C64B-70AB-497C-AAA9-13F6C6CF7C34} = {A293920F-1ED1-42A8-92AF-6B7D7BD96D12}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67EF6510-DACB-4AB3-B6BB-C9121FC49E4C}
+	EndGlobalSection
+EndGlobal

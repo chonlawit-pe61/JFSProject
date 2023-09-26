@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Megazy.StarterKit.Mvc.Transaction.Structure.UserRow>
+<h2>UserList</h2>
+<p>
+    @Html.ActionLink("Create New", "AddUsers")
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <!-- ใช้ความสามารถของ Razor เรียนชื่อคอลัมน์    -->
+                    @Html.DisplayNameFor(model => model.UserID)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.AliasName)
+                </th>             
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th scope="col">
+                  <!-- หรือจะใช้วิธีพิมพ์โดยตรง -->
+                   อีเมล
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AliasName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <!-- วิธีแสดงค่าอื่นๆ  -->
+                    @(item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditUsers", new { userID = item.UserID }) |
+                    @Html.ActionLink("Details", "UserDetail", new { userID = item.UserID }) |
+                    @Html.ActionLink("Delete", "DeleteAddress", new { userID = item.UserID })                  
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+@section scripts{
+    
+}
